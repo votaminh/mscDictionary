@@ -4,17 +4,18 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.MotionEvent;
 import android.view.View;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.msc.mscdictionary.R;
 import com.msc.mscdictionary.base.BaseFragment;
+import com.msc.mscdictionary.model.Word;
 
 public class TranslateFragment extends BaseFragment {
     public static final String TAG = "TranslateFragment";
 
     TextView tvMean;
+    TextView tvVoice;
     WebView webViewMean;
 
     @Override
@@ -25,13 +26,17 @@ public class TranslateFragment extends BaseFragment {
     @Override
     public void initView(View view) {
         tvMean = view.findViewById(R.id.tvMean);
+        tvVoice = view.findViewById(R.id.tvVoice);
+
         webViewMean = view.findViewById(R.id.webviewMean);
         webViewMean.setHorizontalScrollBarEnabled(false);
     }
 
-    public void showResult(String commonMean, String fullMean){
+    public void showResult(Word word){
         new Handler(Looper.getMainLooper()).post(() -> {
-            webViewMean.loadDataWithBaseURL(null, fullMean, "text/html", "utf-8", null);
+            tvVoice.setText(word.getVoice());
+            tvMean.setText(word.getEnWord().substring(0, 1).toUpperCase() + word.getEnWord().substring(1).toLowerCase());
+            webViewMean.loadDataWithBaseURL(null, word.getHtmlFullMean(), "text/html", "utf-8", null);
         });
     }
 }

@@ -1,7 +1,6 @@
 package com.msc.mscdictionary.service;
 
-import android.util.Log;
-import android.webkit.WebView;
+import com.msc.mscdictionary.model.Word;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -12,7 +11,7 @@ import java.io.IOException;
 import java.net.URL;
 
 public class Dictionary {
-    String textVi = "";
+    String textEn = "";
     TranslateCallback translateCallback;
     private static Dictionary dictionary = null;
 
@@ -23,13 +22,13 @@ public class Dictionary {
         if(dictionary == null){
             dictionary = new Dictionary();
         }
-        dictionary.setTextVi(textVi);
+        dictionary.setTextEn(textVi);
         dictionary.setTranslateCallback(translateCallback);
         return dictionary;
     }
 
-    private void setTextVi(String textVi){
-        this.textVi = textVi;
+    private void setTextEn(String textEn){
+        this.textEn = textEn;
     }
     private void setTranslateCallback(TranslateCallback translateCallback){
         this.translateCallback = translateCallback;
@@ -40,7 +39,7 @@ public class Dictionary {
             @Override
             public void run() {
                 super.run();
-                String url = "https://dict.laban.vn/find?type=1&query=" + textVi;
+                String url = "https://dict.laban.vn/find?type=1&query=" + textEn;
                 Document doc = null;
                 try {
                     doc = Jsoup.parse(new URL(url).openStream(), "utf-8", url);
@@ -56,16 +55,25 @@ public class Dictionary {
 
                 Elements sub = doc.select("div#content_selectable");
 
+                Elements word = doc.select("div.world");
+                Element elementFirstWord = word.first();
+
+                String voice = elementFirstWord.select("span.color-black").first().text();
+
+                String urlVoide = "";
+
                 Element content = sub.first();
 
                 Elements meanSelection = content.select("div.content");
-                translateCallback.success(meanSelection.toString());
+
+                String commonMean = meanSelection.first().select("div.margin25").first().text();
+                translateCallback.success(new Word(textEn, meanSelection.toString(), commonMean, voice, urlVoide));
             }
         }.start();
     }
 
     public interface TranslateCallback{
-        void success(String mean);
+        void success(Word word);
         void fail(String error);
     }
 }

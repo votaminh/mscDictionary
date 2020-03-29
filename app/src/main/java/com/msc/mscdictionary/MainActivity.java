@@ -12,6 +12,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 
 import com.msc.mscdictionary.base.BaseActivity;
 import com.msc.mscdictionary.fragment.TranslateFragment;
+import com.msc.mscdictionary.model.Word;
 import com.msc.mscdictionary.service.Dictionary;
 import com.msc.mscdictionary.util.Constant;
 
@@ -39,8 +40,8 @@ public class MainActivity extends BaseActivity {
             final String en = edTextEn.getText().toString();
             Dictionary.instance(en, new Dictionary.TranslateCallback() {
                 @Override
-                public void success(String mean) {
-                    setResultSearch(mean);
+                public void success(Word word) {
+                    setResultSearch(word);
                 }
 
                 @Override
@@ -54,9 +55,9 @@ public class MainActivity extends BaseActivity {
     private void setError(String error) {
     }
 
-    private void setResultSearch(String mean) {
+    private void setResultSearch(Word word) {
         if(translateFragment != null && translateFragment.isVisible()){
-            translateFragment.showResult("test mean", Constant.header + mean + Constant.endTag);
+            translateFragment.showResult(word);
         }
     }
 
