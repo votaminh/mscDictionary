@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">mscDictionary</string>
+    <string name="type_word_lable">Type Word</string>
+    <string name="tille_lable">MSC-DICTIONARY</string>
+</resources>

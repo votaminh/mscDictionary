@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawerLayout"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            app:elevation="0dp"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/background_content"
+                app:layout_scrollFlags="scroll|enterAlways|snap"
+                >
+                <View
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:background="@color/colorPrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="84dp"/>
+
+                <RelativeLayout
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/height_header"
+                    app:layout_constraintTop_toTopOf="parent"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/tille_lable"
+                        android:textColor="@color/white"
+                        android:layout_centerInParent="true"
+                        android:fontFamily="@font/poppins_bold"
+                        android:textSize="15sp"
+                        />
+
+                </RelativeLayout>
+
+                <EditText
+                    android:id="@+id/edTextEn"
+                    app:layout_constraintTop_toBottomOf="@id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="@dimen/margin_medium"
+                    android:layout_marginRight="@dimen/margin_medium"
+                    android:layout_height="@dimen/height_header"
+                    android:background="@drawable/border_search"
+                    android:hint="@string/type_word_lable"
+                    android:fontFamily="@font/poppins_medium"
+                    android:paddingLeft="@dimen/margin_medium"
+                    android:textSize="15sp"
+                    android:lines="1"
+                    android:imeOptions="actionDone"
+                    />
+
+                <TextView
+                    android:id="@+id/btnSearch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintRight_toRightOf="@id/edTextEn"
+                    app:layout_constraintTop_toTopOf="@id/edTextEn"
+                    app:layout_constraintBottom_toBottomOf="@id/edTextEn"
+                    android:text="Search"
+                    android:fontFamily="@font/poppins_bold"
+                    android:layout_marginRight="@dimen/margin_small"
+                    android:padding="10dp"
+                    android:textColor="@color/colorPrimary"
+                    />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <FrameLayout
+            android:id="@+id/container"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#231E1E"
+            />
+    </com.google.android.material.navigation.NavigationView>
+</androidx.drawerlayout.widget.DrawerLayout>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <TextView
+        android:id="@+id/tvMean"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/height_header"
+        android:text="mine"
+        android:fontFamily="@font/poppins_medium"
+        android:textColor="@color/black"
+        android:textSize="@dimen/big_size_text"
+        android:layout_marginLeft="@dimen/margin_small"
+        android:gravity="center_vertical"
+        />
+
+    <TextView
+        android:id="@+id/tvVoice"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/height_header"
+        android:text="voice"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/margin_small"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/big_size_text"
+        android:fontFamily="@font/poppins_medium"
+        android:gravity="center_vertical"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/height_header"
+        android:text="Favorite"
+        android:layout_marginRight="@dimen/margin_small"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/big_size_text"
+        android:fontFamily="@font/poppins_medium"
+        android:layout_toLeftOf="@id/tvVoice"
+        android:gravity="center_vertical"
+        />
+
+    <com.msc.mscdictionary.custom.NestedWebView
+        android:id="@+id/webviewMean"
+        android:layout_below="@id/tvMean"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+</RelativeLayout>
