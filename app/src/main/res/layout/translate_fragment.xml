@@ -50,6 +50,7 @@
             android:layout_centerInParent="true"
             android:layout_width="@dimen/size_progress"
             android:layout_height="@dimen/size_progress"
+            android:visibility="invisible"
             />
     </RelativeLayout>
 
@@ -60,6 +61,13 @@
         android:layout_toLeftOf="@id/llAudio"
         android:src="@drawable/ic_favourite"
         android:background="?attr/selectableItemBackgroundBorderless"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/diliver"
+        android:layout_below="@id/tvMean"
         />
 
     <com.msc.mscdictionary.custom.NestedWebView
