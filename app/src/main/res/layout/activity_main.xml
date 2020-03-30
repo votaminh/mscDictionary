@@ -35,6 +35,13 @@
                     app:layout_constraintTop_toTopOf="parent"
                     >
 
+                    <ImageButton
+                        android:id="@+id/btnMenuDrawer"
+                        android:layout_width="@dimen/height_header"
+                        android:layout_height="@dimen/height_header"
+                        android:src="@drawable/menu_drawer"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

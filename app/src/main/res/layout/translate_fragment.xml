@@ -12,7 +12,7 @@
         android:layout_height="@dimen/height_header"
         android:text="mine"
         android:fontFamily="@font/poppins_medium"
-        android:textColor="@color/black"
+        android:textColor="#454444"
         android:textSize="@dimen/big_size_text"
         android:layout_marginLeft="@dimen/margin_small"
         android:gravity="center_vertical"
@@ -30,29 +30,36 @@
         android:textSize="12sp"
         />
 
-    <TextView
-        android:id="@+id/tvAudio"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/llAudio"
+        android:layout_width="@dimen/height_header"
         android:layout_height="@dimen/height_header"
-        android:text="voice"
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/margin_small"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/big_size_text"
-        android:fontFamily="@font/poppins_medium"
-        android:gravity="center_vertical"
-        />
+        >
+        <ImageButton
+            android:id="@+id/tvAudio"
+            android:layout_width="@dimen/height_header"
+            android:layout_height="@dimen/height_header"
+            android:src="@drawable/ic_speaker"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            />
 
-    <TextView
-        android:layout_width="wrap_content"
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_centerInParent="true"
+            android:layout_width="@dimen/size_progress"
+            android:layout_height="@dimen/size_progress"
+            />
+    </RelativeLayout>
+
+
+    <ImageButton
+        android:layout_width="@dimen/height_header"
         android:layout_height="@dimen/height_header"
-        android:text="Favorite"
-        android:layout_marginRight="@dimen/margin_small"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/big_size_text"
-        android:fontFamily="@font/poppins_medium"
-        android:layout_toLeftOf="@id/tvAudio"
-        android:gravity="center_vertical"
+        android:layout_toLeftOf="@id/llAudio"
+        android:src="@drawable/ic_favourite"
+        android:background="?attr/selectableItemBackgroundBorderless"
         />
 
     <com.msc.mscdictionary.custom.NestedWebView

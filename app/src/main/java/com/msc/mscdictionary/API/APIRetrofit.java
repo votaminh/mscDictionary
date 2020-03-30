@@ -11,11 +11,13 @@ public class APIRetrofit {
     private static String urlRoot = "http://192.168.43.13/server/";
 
     public static Retrofit getAPI(){
-        Gson gson = new GsonBuilder().setLenient().create();
-        apiRetrofit = new Retrofit.Builder()
-                .baseUrl(urlRoot)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
+        if(apiRetrofit == null){
+            Gson gson = new GsonBuilder().setLenient().create();
+            apiRetrofit = new Retrofit.Builder()
+                    .baseUrl(urlRoot)
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .build();
+        }
         return apiRetrofit;
     }
 }
