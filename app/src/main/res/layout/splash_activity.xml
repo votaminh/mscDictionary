@@ -3,12 +3,30 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/bg_splash"
+        android:scaleType="centerCrop"
+        />
+
+
+    <ProgressBar
+        android:layout_width="@dimen/size_progress"
+        android:layout_height="@dimen/size_progress"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/tv"
+        android:layout_marginBottom="5dp"
+        />
+
     <TextView
+        android:id="@+id/tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="MSC-DICTIONARY"
-        android:layout_centerInParent="true"
-        android:textSize="23sp"
-        android:textStyle="bold"
+        android:text="MSC Solution"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:fontFamily="@font/poppins_medium"
+        android:layout_marginBottom="@dimen/margin_medium"
         />
 </RelativeLayout>

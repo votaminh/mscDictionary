@@ -147,4 +147,9 @@ public class MainActivity extends BaseActivity {
 
         replaceFragment(translateFragment, R.id.container, TranslateFragment.TAG);
     }
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
+    }
 }

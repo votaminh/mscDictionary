@@ -114,10 +114,118 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true">
 
-        <FrameLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#231E1E"
-            />
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tvLogin"
+                android:layout_width="match_parent"
+                android:layout_height="84dp"
+                android:background="@color/colorPrimary"
+                android:text="@string/tap_to_login_lable"
+                android:textColor="@color/white"
+                android:fontFamily="@font/poppins_bold"
+                android:textSize="15dp"
+                android:gravity="center"/>
+
+            <TextView
+                android:id="@+id/tvHistory"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_header"
+                android:text="@string/history_lable"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="15sp"
+                android:layout_below="@id/tvLogin"
+                android:paddingLeft="@dimen/margin_medium"
+                android:gravity="center_vertical"
+                android:textColor="@color/color_text_menu_item"
+                android:drawableLeft="@drawable/ic_history"
+                android:drawablePadding="@dimen/margin_medium"
+                />
+
+            <TextView
+                android:id="@+id/tvFavourite"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_header"
+                android:text="@string/favourite_lable"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="15sp"
+                android:layout_below="@id/tvHistory"
+                android:paddingLeft="@dimen/margin_medium"
+                android:gravity="center_vertical"
+                android:textColor="@color/color_text_menu_item"
+                android:drawableLeft="@drawable/ic_favourite"
+                android:drawablePadding="@dimen/margin_medium"
+                />
+
+            <TextView
+                android:id="@+id/tvPractice"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_header"
+                android:text="@string/practice_lable"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="15sp"
+                android:layout_below="@id/tvFavourite"
+                android:paddingLeft="@dimen/margin_medium"
+                android:gravity="center_vertical"
+                android:textColor="@color/color_text_menu_item"
+                android:drawableLeft="@drawable/ic_practice"
+                android:drawablePadding="@dimen/margin_medium"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/tvPractice"
+                android:background="@color/color_text_menu_item"
+                android:id="@+id/diliver"
+                android:layout_marginLeft="@dimen/margin_medium"
+                android:layout_marginRight="@dimen/margin_medium"
+                />
+
+            <TextView
+                android:id="@+id/tvRate"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_header"
+                android:text="@string/rate_lable"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="15sp"
+                android:layout_below="@id/diliver"
+                android:paddingLeft="@dimen/margin_medium"
+                android:gravity="center_vertical"
+                android:textColor="@color/color_text_menu_item"
+                android:drawableLeft="@drawable/ic_rate"
+                android:drawablePadding="@dimen/margin_medium"
+                />
+
+            <TextView
+                android:id="@+id/tvShare"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_header"
+                android:text="@string/share_lable"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="15sp"
+                android:layout_below="@id/tvRate"
+                android:paddingLeft="@dimen/margin_medium"
+                android:gravity="center_vertical"
+                android:textColor="@color/color_text_menu_item"
+                android:drawableLeft="@drawable/ic_share"
+                android:drawablePadding="@dimen/margin_medium"
+                />
+
+            <TextView
+                android:id="@+id/tvLogout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_header"
+                android:text="@string/logout_lable"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="15sp"
+                android:layout_alignParentBottom="true"
+                android:gravity="center"
+                android:textColor="@color/red"
+                android:visibility="invisible"
+                />
+        </RelativeLayout>
     </com.google.android.material.navigation.NavigationView>
 </androidx.drawerlayout.widget.DrawerLayout>

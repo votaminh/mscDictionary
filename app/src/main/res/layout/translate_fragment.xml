@@ -6,74 +6,101 @@
     android:background="@color/white"
     >
 
-    <TextView
-        android:id="@+id/tvMean"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/height_header"
-        android:text="mine"
-        android:fontFamily="@font/poppins_medium"
-        android:textColor="#454444"
-        android:textSize="@dimen/big_size_text"
-        android:layout_marginLeft="@dimen/margin_small"
-        android:gravity="center_vertical"
-        />
-
-    <TextView
-        android:id="@+id/tvVoice"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/height_header"
-        android:layout_toRightOf="@id/tvMean"
-        android:gravity="center_vertical"
-        android:layout_marginLeft="@dimen/margin_small"
-        android:text="/hei/"
-        android:fontFamily="@font/poppins_medium"
-        android:textSize="12sp"
-        />
-
     <RelativeLayout
-        android:id="@+id/llAudio"
-        android:layout_width="@dimen/height_header"
-        android:layout_height="@dimen/height_header"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/margin_small"
-        >
-        <ImageButton
-            android:id="@+id/tvAudio"
-            android:layout_width="@dimen/height_header"
+        android:id="@+id/llHeader"
+        android:layout_width="match_parent"
+        android:visibility="invisible"
+        android:layout_height="@dimen/height_header">
+        <TextView
+            android:id="@+id/tvMean"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/height_header"
-            android:src="@drawable/ic_speaker"
-            android:background="?attr/selectableItemBackgroundBorderless"
+            android:text="mine"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="#454444"
+            android:textSize="@dimen/big_size_text"
+            android:layout_marginLeft="@dimen/margin_small"
+            android:gravity="center_vertical"
             />
 
-        <ProgressBar
-            android:id="@+id/progress"
-            android:layout_centerInParent="true"
-            android:layout_width="@dimen/size_progress"
-            android:layout_height="@dimen/size_progress"
-            android:visibility="invisible"
+        <TextView
+            android:id="@+id/tvVoice"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/height_header"
+            android:layout_toRightOf="@id/tvMean"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="@dimen/margin_small"
+            android:text="/hei/"
+            android:fontFamily="@font/poppins_medium"
+            android:textSize="12sp"
+            />
+
+        <RelativeLayout
+            android:id="@+id/llAudio"
+            android:layout_width="@dimen/height_header"
+            android:layout_height="@dimen/height_header"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/margin_small"
+            >
+            <ImageButton
+                android:id="@+id/tvAudio"
+                android:layout_width="@dimen/height_header"
+                android:layout_height="@dimen/height_header"
+                android:src="@drawable/ic_speaker"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                />
+
+            <ProgressBar
+                android:id="@+id/progress"
+                android:layout_centerInParent="true"
+                android:layout_width="@dimen/size_progress"
+                android:layout_height="@dimen/size_progress"
+                android:visibility="invisible"
+                />
+        </RelativeLayout>
+
+
+        <ImageButton
+            android:layout_width="@dimen/height_header"
+            android:layout_height="@dimen/height_header"
+            android:layout_toLeftOf="@id/llAudio"
+            android:src="@drawable/ic_favourite"
+            android:background="?attr/selectableItemBackgroundBorderless"
             />
     </RelativeLayout>
 
-
-    <ImageButton
-        android:layout_width="@dimen/height_header"
-        android:layout_height="@dimen/height_header"
-        android:layout_toLeftOf="@id/llAudio"
-        android:src="@drawable/ic_favourite"
-        android:background="?attr/selectableItemBackgroundBorderless"
+    <com.msc.mscdictionary.custom.NestedWebView
+        android:id="@+id/webviewMean"
+        android:layout_below="@id/llHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
         />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="@drawable/diliver"
-        android:layout_below="@id/tvMean"
+        android:layout_below="@id/llHeader"
         />
 
-    <com.msc.mscdictionary.custom.NestedWebView
-        android:id="@+id/webviewMean"
-        android:layout_below="@id/tvMean"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/tvNodata"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/no_data_lable"
+        android:layout_above="@id/tvNoHistory"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/color_text_menu_item"
+        android:fontFamily="@font/poppins_medium"
+        />
+    <TextView
+        android:id="@+id/tvNoHistory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/no_history_lable"
+        android:fontFamily="@font/poppins_medium"
+        android:textColor="@color/color_text_menu_item"
         />
 </RelativeLayout>

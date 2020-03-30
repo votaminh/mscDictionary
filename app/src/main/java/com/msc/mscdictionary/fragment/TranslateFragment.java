@@ -9,6 +9,7 @@ import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +31,9 @@ public class TranslateFragment extends BaseFragment {
 
     ProgressBar progressBar;
     Word currentWord;
+
+    RelativeLayout llHeader;
+    TextView tvNoData, tvNoHistory;
     @Override
     public int resLayoutId() {
         return R.layout.translate_fragment;
@@ -45,6 +49,10 @@ public class TranslateFragment extends BaseFragment {
         webViewMean.setHorizontalScrollBarEnabled(false);
 
         progressBar = view.findViewById(R.id.progress);
+        tvNoData = view.findViewById(R.id.tvNodata);
+        tvNoHistory = view.findViewById(R.id.tvNoHistory);
+        llHeader = view.findViewById(R.id.llHeader);
+
         onClick();
     }
 
@@ -82,6 +90,14 @@ public class TranslateFragment extends BaseFragment {
             tvVoice.setText(word.getVoice());
             tvMean.setText(word.getEnWord().substring(0, 1).toUpperCase() + word.getEnWord().substring(1).toLowerCase());
             webViewMean.loadDataWithBaseURL(null, Constant.header + word.getHtmlFullMean() + Constant.endTag, "text/html", "utf-8", null);
+            showWebview();
         });
+    }
+
+    private void showWebview() {
+        webViewMean.setVisibility(View.VISIBLE);
+        llHeader.setVisibility(View.VISIBLE);
+        tvNoData.setVisibility(View.INVISIBLE);
+        tvNoHistory.setVisibility(View.INVISIBLE);
     }
 }
