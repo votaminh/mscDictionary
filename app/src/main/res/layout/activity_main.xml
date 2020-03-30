@@ -75,8 +75,19 @@
                     android:layout_marginRight="@dimen/margin_small"
                     android:padding="10dp"
                     android:textColor="@color/colorPrimary"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     />
 
+                <ProgressBar
+                    android:id="@+id/progress"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    app:layout_constraintTop_toTopOf="@id/btnSearch"
+                    app:layout_constraintRight_toRightOf="@id/btnSearch"
+                    app:layout_constraintBottom_toBottomOf="@id/btnSearch"
+                    app:layout_constraintLeft_toLeftOf="@id/btnSearch"
+                    android:visibility="invisible"
+                    />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

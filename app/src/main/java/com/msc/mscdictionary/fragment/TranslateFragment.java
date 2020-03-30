@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.msc.mscdictionary.R;
 import com.msc.mscdictionary.base.BaseFragment;
 import com.msc.mscdictionary.model.Word;
+import com.msc.mscdictionary.util.Constant;
 
 public class TranslateFragment extends BaseFragment {
     public static final String TAG = "TranslateFragment";
@@ -36,7 +37,7 @@ public class TranslateFragment extends BaseFragment {
         new Handler(Looper.getMainLooper()).post(() -> {
             tvVoice.setText(word.getVoice());
             tvMean.setText(word.getEnWord().substring(0, 1).toUpperCase() + word.getEnWord().substring(1).toLowerCase());
-            webViewMean.loadDataWithBaseURL(null, word.getHtmlFullMean(), "text/html", "utf-8", null);
+            webViewMean.loadDataWithBaseURL(null, Constant.header + word.getHtmlFullMean() + Constant.endTag, "text/html", "utf-8", null);
         });
     }
 }

@@ -1,6 +1,7 @@
 package com.msc.mscdictionary.service;
 
 import com.msc.mscdictionary.model.Word;
+import com.msc.mscdictionary.network.WordDAO;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -58,7 +59,10 @@ public class Dictionary {
                 Elements word = doc.select("div.world");
                 Element elementFirstWord = word.first();
 
-                String voice = elementFirstWord.select("span.color-black").first().text();
+                String voice = "";
+                if( elementFirstWord.select("span.color-black").first() != null){
+                    voice = elementFirstWord.select("span.color-black").first().text();
+                }
 
                 String urlVoide = "";
 
@@ -67,7 +71,10 @@ public class Dictionary {
                 Elements meanSelection = content.select("div.content");
 
                 String commonMean = meanSelection.first().select("div.margin25").first().text();
-                translateCallback.success(new Word(textEn, meanSelection.toString(), commonMean, voice, urlVoide));
+
+                Word w = new Word(textEn, meanSelection.toString(), commonMean, voice, urlVoide);
+                WordDAO.insertWord(w);
+                translateCallback.success(w);
             }
         }.start();
     }

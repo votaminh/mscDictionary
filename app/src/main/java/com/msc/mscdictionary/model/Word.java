@@ -1,13 +1,25 @@
 package com.msc.mscdictionary.model;
 
+import com.google.gson.annotations.SerializedName;
 import com.msc.mscdictionary.util.Constant;
 
 public class Word {
+    @SerializedName("id")
     private int id;
+
+    @SerializedName("en")
     private String enWord;
+
+    @SerializedName("html")
     private String htmlFullMean;
+
+    @SerializedName("vi")
     private String commonMean;
+
+    @SerializedName("voice")
     private String voice;
+
+    @SerializedName("url")
     private String urlSpeak;
 
     public Word() {
@@ -16,14 +28,14 @@ public class Word {
     public Word(int id,String enWord, String htmlFullMean, String commonMean, String voice, String urlSpeak) {
         this.id = id;
         this.enWord = enWord;
-        this.htmlFullMean = Constant.header + htmlFullMean + Constant.endTag;
+        this.htmlFullMean = htmlFullMean;
         this.commonMean = commonMean;
         this.voice = voice;
         this.urlSpeak = urlSpeak;
     }
 
     public Word(String enWord, String htmlFullMean, String commonMean, String voice, String urlSpeak) {
-        this.htmlFullMean = Constant.header + htmlFullMean + Constant.endTag;
+        this.htmlFullMean = htmlFullMean;
         this.enWord = enWord;
         this.commonMean = commonMean;
         this.voice = voice;
