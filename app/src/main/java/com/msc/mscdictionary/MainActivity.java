@@ -1,11 +1,13 @@
 package com.msc.mscdictionary;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -54,6 +56,8 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void intView() {
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
         edTextEn = findViewById(R.id.edTextEn);
         btnSearch = findViewById(R.id.btnSearch);
         progress = findViewById(R.id.progress);
@@ -63,6 +67,7 @@ public class MainActivity extends BaseActivity {
         openTranslateFragment();
         onClick();
     }
+
 
     private void onClick() {
         btnSearch.setOnClickListener((v) -> {
@@ -131,6 +136,11 @@ public class MainActivity extends BaseActivity {
             view = new View(activity);
         }
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    private void showKeyBroad() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
     }
 
     private void setResultSearch(Word word) {
