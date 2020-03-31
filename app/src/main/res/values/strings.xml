@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">mscDictionary</string>
+    <string name="app_name">MSC Dictionary</string>
     <string name="type_word_lable">Type Word</string>
     <string name="tille_lable">MSC-DICTIONARY</string>
     <string name="no_history_lable">You have not searched yet</string>
@@ -12,4 +12,5 @@
     <string name="rate_lable">Rate app</string>
     <string name="login_lable">Login</string>
     <string name="tap_to_login_lable">Tap to login</string>
+    <string name="run_service">Translate text running in device</string>
 </resources>

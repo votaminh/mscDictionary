@@ -2,9 +2,9 @@ package com.msc.mscdictionary;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -20,7 +20,8 @@ import com.msc.mscdictionary.base.BaseActivity;
 import com.msc.mscdictionary.fragment.TranslateFragment;
 import com.msc.mscdictionary.model.Word;
 import com.msc.mscdictionary.network.WordDAO;
-import com.msc.mscdictionary.service.Dictionary;
+import com.msc.mscdictionary.network.DictionaryCrawl;
+import com.msc.mscdictionary.service.ClipBroadService;
 import com.msc.mscdictionary.util.AppUtil;
 
 public class MainActivity extends BaseActivity {
@@ -51,13 +52,19 @@ public class MainActivity extends BaseActivity {
         onClick();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Intent service = new Intent(MainActivity.this, ClipBroadService.class);
+        startService(service);
+    }
 
     private void onClick() {
         btnSearch.setOnClickListener((v) -> {
             showLoad();
             hideKeyboard(this);
             final String en = edTextEn.getText().toString();
-            WordDAO.checkHasWord(new Word(en, "", "", "", ""), new Dictionary.TranslateCallback() {
+            WordDAO.checkHasWord(new Word(en, "", "", "", ""), new DictionaryCrawl.TranslateCallback() {
                 @Override
                 public void success(Word word) {
                     String encoding = word.getHtmlFullMean();
@@ -68,7 +75,7 @@ public class MainActivity extends BaseActivity {
 
                 @Override
                 public void fail(String error) {
-                    Dictionary.instance(en, new Dictionary.TranslateCallback() {
+                    DictionaryCrawl.instance(en, new DictionaryCrawl.TranslateCallback() {
                         @Override
                         public void success(Word word) {
                             setResultSearch(word);

@@ -1,13 +1,10 @@
 package com.msc.mscdictionary.network;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import com.msc.mscdictionary.API.APIRetrofit;
 import com.msc.mscdictionary.API.DataService;
-import com.msc.mscdictionary.MainActivity;
 import com.msc.mscdictionary.model.Word;
-import com.msc.mscdictionary.service.Dictionary;
 
 import java.io.IOException;
 import java.util.List;
@@ -43,7 +40,7 @@ public class WordDAO {
         });
     }
 
-    public static boolean checkHasWord(Word word, Dictionary.TranslateCallback callback){
+    public static boolean checkHasWord(Word word, DictionaryCrawl.TranslateCallback callback){
         Call<List<Word>> response = dataService.checkHasWord(word.getEnWord());
         response.enqueue(new Callback<List<Word>>() {
             @Override

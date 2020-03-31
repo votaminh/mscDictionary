@@ -1,11 +1,6 @@
-package com.msc.mscdictionary.service;
+package com.msc.mscdictionary.network;
 
-import android.util.Log;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.msc.mscdictionary.model.Word;
-import com.msc.mscdictionary.network.WordDAO;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,21 +12,21 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.net.URL;
 
-public class Dictionary {
+public class DictionaryCrawl {
     String textEn = "";
     TranslateCallback translateCallback;
-    private static Dictionary dictionary = null;
+    private static DictionaryCrawl dictionaryCrawl = null;
 
-    private Dictionary(){
+    private DictionaryCrawl(){
 
     }
-    public static Dictionary instance(String textVi, TranslateCallback translateCallback){
-        if(dictionary == null){
-            dictionary = new Dictionary();
+    public static DictionaryCrawl instance(String textVi, TranslateCallback translateCallback){
+        if(dictionaryCrawl == null){
+            dictionaryCrawl = new DictionaryCrawl();
         }
-        dictionary.setTextEn(textVi);
-        dictionary.setTranslateCallback(translateCallback);
-        return dictionary;
+        dictionaryCrawl.setTextEn(textVi);
+        dictionaryCrawl.setTranslateCallback(translateCallback);
+        return dictionaryCrawl;
     }
 
     private void setTextEn(String textEn){
