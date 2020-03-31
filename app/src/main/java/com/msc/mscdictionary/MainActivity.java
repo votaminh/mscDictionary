@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -15,17 +16,18 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.msc.mscdictionary.base.BaseActivity;
 import com.msc.mscdictionary.fragment.TranslateFragment;
+import com.msc.mscdictionary.media.MediaBuilder;
 import com.msc.mscdictionary.model.Word;
 import com.msc.mscdictionary.network.WordDAO;
 import com.msc.mscdictionary.network.DictionaryCrawl;
 import com.msc.mscdictionary.service.ClipBroadService;
-import com.msc.mscdictionary.util.AppUtil;
 
 public class MainActivity extends BaseActivity {
     private static final int DRAW_OVER_OTHER_APP_PERMISSION = 33;
@@ -33,6 +35,15 @@ public class MainActivity extends BaseActivity {
     TextView btnSearch;
     ProgressBar progress;
     ImageButton btnMenuDrawer;
+
+    TextView tvMean;
+    TextView tvVoice;
+    ImageButton btnSpeaker;
+    ProgressBar progressBar;
+
+    Word currentWord;
+
+    RelativeLayout llHeaderWord;
 
     private TranslateFragment translateFragment;
 
@@ -52,6 +63,13 @@ public class MainActivity extends BaseActivity {
         btnMenuDrawer = findViewById(R.id.btnMenuDrawer);
         drawerLayout = findViewById(R.id.drawerLayout);
 
+        tvMean = findViewById(R.id.tvMean);
+        tvVoice = findViewById(R.id.tvVoice);
+        btnSpeaker = findViewById(R.id.tvAudio);
+        progressBar = findViewById(R.id.progressVoice);
+
+        llHeaderWord = findViewById(R.id.llHeader);
+
         openTranslateFragment();
         onClick();
         askForSystemOverlayPermission();
@@ -65,6 +83,15 @@ public class MainActivity extends BaseActivity {
     }
 
     private void onClick() {
+        btnSpeaker.setOnClickListener(v -> {
+            if(currentWord != null){
+                playAudio(currentWord.getUrlSpeak());
+            }
+        });
+
+        edTextEn.setOnClickListener(v -> {
+            edTextEn.setCursorVisible(true);
+        });
         btnSearch.setOnClickListener((v) -> {
             showLoad();
             hideKeyboard(this);
@@ -72,8 +99,6 @@ public class MainActivity extends BaseActivity {
             WordDAO.checkHasWord(new Word(en, "", "", "", ""), new DictionaryCrawl.TranslateCallback() {
                 @Override
                 public void success(Word word) {
-                    String encoding = word.getHtmlFullMean();
-                    word.setHtmlFullMean(AppUtil.decodingHtml(encoding));
                     setResultSearch(word);
                     hideLoad();
                 }
@@ -103,6 +128,27 @@ public class MainActivity extends BaseActivity {
             drawerLayout.openDrawer(Gravity.LEFT);
             hideKeyboard(this);
         });
+
+    }
+
+    private void playAudio(String urlSpeak) {
+        MediaBuilder.playLink(urlSpeak, new MediaBuilder.MediaCallback() {
+            @Override
+            public void start() {
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    btnSpeaker.setVisibility(View.INVISIBLE);
+                    progressBar.setVisibility(View.VISIBLE);
+                });
+            }
+
+            @Override
+            public void end() {
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    btnSpeaker.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.INVISIBLE);
+                });
+            }
+        });
     }
 
     private void showLoad() {
@@ -118,6 +164,7 @@ public class MainActivity extends BaseActivity {
             btnSearch.setVisibility(View.VISIBLE);
             edTextEn.setText("");
             edTextEn.clearFocus();
+            edTextEn.setCursorVisible(false);
         }, 1000);
     }
 
@@ -131,6 +178,7 @@ public class MainActivity extends BaseActivity {
             view = new View(activity);
         }
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        edTextEn.setCursorVisible(false);
     }
 
     private void showKeyBroad() {
@@ -139,6 +187,12 @@ public class MainActivity extends BaseActivity {
     }
 
     private void setResultSearch(Word word) {
+        currentWord = word;
+        new Handler(Looper.getMainLooper()).post(() -> {
+            tvVoice.setText(word.getVoice());
+            tvMean.setText(word.getEnWord().substring(0, 1).toUpperCase() + word.getEnWord().substring(1).toLowerCase());
+            llHeaderWord.setVisibility(View.VISIBLE);
+        });
         if(translateFragment != null && translateFragment.isVisible()){
             translateFragment.showResult(word);
         }

@@ -17,6 +17,7 @@ import com.msc.mscdictionary.R;
 import com.msc.mscdictionary.base.BaseFragment;
 import com.msc.mscdictionary.media.MediaBuilder;
 import com.msc.mscdictionary.model.Word;
+import com.msc.mscdictionary.util.AppUtil;
 import com.msc.mscdictionary.util.Constant;
 
 import java.io.IOException;
@@ -24,15 +25,12 @@ import java.io.IOException;
 public class TranslateFragment extends BaseFragment {
     public static final String TAG = "TranslateFragment";
 
-    TextView tvMean;
-    TextView tvVoice;
-    ImageButton btnSpeaker;
+
+
     WebView webViewMean;
 
-    ProgressBar progressBar;
-    Word currentWord;
 
-    RelativeLayout llHeader;
+    Word currentWord;
     TextView tvNoData, tvNoHistory;
     @Override
     public int resLayoutId() {
@@ -41,54 +39,24 @@ public class TranslateFragment extends BaseFragment {
 
     @Override
     public void initView(View view) {
-        tvMean = view.findViewById(R.id.tvMean);
-        tvVoice = view.findViewById(R.id.tvVoice);
-        btnSpeaker = view.findViewById(R.id.tvAudio);
 
         webViewMean = view.findViewById(R.id.webviewMean);
         webViewMean.setHorizontalScrollBarEnabled(false);
 
-        progressBar = view.findViewById(R.id.progress);
         tvNoData = view.findViewById(R.id.tvNodata);
         tvNoHistory = view.findViewById(R.id.tvNoHistory);
-        llHeader = view.findViewById(R.id.llHeader);
-
-        onClick();
-    }
-
-    private void onClick() {
-        btnSpeaker.setOnClickListener(v -> {
-            if(currentWord != null){
-                playAudio(currentWord.getUrlSpeak());
-            }
-        });
-    }
-
-    private void playAudio(String urlSpeak) {
-        MediaBuilder.playLink(urlSpeak, new MediaBuilder.MediaCallback() {
-            @Override
-            public void start() {
-                new Handler(Looper.getMainLooper()).post(() -> {
-                    btnSpeaker.setVisibility(View.INVISIBLE);
-                    progressBar.setVisibility(View.VISIBLE);
-                });
-            }
-
-            @Override
-            public void end() {
-                new Handler(Looper.getMainLooper()).post(() -> {
-                    btnSpeaker.setVisibility(View.VISIBLE);
-                    progressBar.setVisibility(View.INVISIBLE);
-                });
-            }
-        });
     }
 
     public void showResult(Word word){
         currentWord = word;
         new Handler(Looper.getMainLooper()).post(() -> {
-            tvVoice.setText(word.getVoice());
-            tvMean.setText(word.getEnWord().substring(0, 1).toUpperCase() + word.getEnWord().substring(1).toLowerCase());
+            String content = "";
+            for (int i = 0; i < 13; i++) {
+                content += Constant.TAG_BR;
+            }
+            content += word.getHtmlFullMean();
+            word.setHtmlFullMean(content);
+
             webViewMean.loadDataWithBaseURL(null, Constant.header + word.getHtmlFullMean() + Constant.endTag, "text/html", "utf-8", null);
             showWebview();
         });
@@ -96,7 +64,7 @@ public class TranslateFragment extends BaseFragment {
 
     private void showWebview() {
         webViewMean.setVisibility(View.VISIBLE);
-        llHeader.setVisibility(View.VISIBLE);
+
         tvNoData.setVisibility(View.INVISIBLE);
         tvNoHistory.setVisibility(View.INVISIBLE);
     }

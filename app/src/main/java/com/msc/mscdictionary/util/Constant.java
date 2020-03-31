@@ -12,6 +12,7 @@ public class Constant {
     public static final String SHAREPREFERENCES = "share";
     public static final String X_FLOAT = "xFloat";
     public static final String Y_FLOAT = "yFloat";
+    public static final String TAG_BR = "</br>";
 
     public static String ip = "http://192.168.43.13/";
 }
