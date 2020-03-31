@@ -9,36 +9,19 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.google.gson.Gson;
-import com.msc.mscdictionary.API.APIRetrofit;
-import com.msc.mscdictionary.API.DataService;
 import com.msc.mscdictionary.base.BaseActivity;
 import com.msc.mscdictionary.fragment.TranslateFragment;
 import com.msc.mscdictionary.model.Word;
 import com.msc.mscdictionary.network.WordDAO;
 import com.msc.mscdictionary.service.Dictionary;
 import com.msc.mscdictionary.util.AppUtil;
-import com.msc.mscdictionary.util.Constant;
-
-import java.io.IOException;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class MainActivity extends BaseActivity {
     EditText edTextEn;
