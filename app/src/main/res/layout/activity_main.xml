@@ -14,20 +14,16 @@
             android:layout_width="match_parent"
             android:orientation="vertical"
             app:elevation="0dp"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/background_content"
+            >
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/background_content"
+                android:background="@color/colorPrimary"
                 app:layout_scrollFlags="scroll|enterAlways|snap"
                 >
-                <View
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:background="@color/colorPrimary"
-                    android:layout_width="match_parent"
-                    android:layout_height="84dp"/>
-
                 <RelativeLayout
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
@@ -54,9 +50,20 @@
 
                 </RelativeLayout>
 
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <View
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="28dp"
+                    android:background="@color/colorPrimary"/>
                 <EditText
+                    app:layout_constraintTop_toTopOf="parent"
                     android:id="@+id/edTextEn"
-                    app:layout_constraintTop_toBottomOf="@id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_marginLeft="@dimen/margin_medium"
                     android:layout_marginRight="@dimen/margin_medium"
@@ -95,9 +102,7 @@
                     app:layout_constraintLeft_toLeftOf="@id/btnSearch"
                     android:visibility="invisible"
                     />
-
             </androidx.constraintlayout.widget.ConstraintLayout>
-
         </com.google.android.material.appbar.AppBarLayout>
 
         <FrameLayout

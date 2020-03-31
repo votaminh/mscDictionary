@@ -18,6 +18,7 @@ package com.msc.mscdictionary.custom;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.webkit.WebView;
 
@@ -32,6 +33,7 @@ public class NestedWebView extends WebView implements NestedScrollingChild {
     private final int[] mScrollConsumed = new int[2];
     private int mNestedOffsetY;
     private NestedScrollingChildHelper mChildHelper;
+    private float initialX = 0;
 
     public NestedWebView(Context context) {
         this(context, null);
@@ -48,49 +50,36 @@ public class NestedWebView extends WebView implements NestedScrollingChild {
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent ev) {
-        boolean returnValue = false;
-
-        MotionEvent event = MotionEvent.obtain(ev);
+    public boolean onTouchEvent(MotionEvent event) {
         final int action = MotionEventCompat.getActionMasked(event);
         if (action == MotionEvent.ACTION_DOWN) {
             mNestedOffsetY = 0;
         }
         int eventY = (int) event.getY();
-        event.offsetLocation(0, mNestedOffsetY);
+
         switch (action) {
+            case MotionEvent.ACTION_DOWN:
+                mLastY = eventY;
+                initialX = event.getX();
+                startNestedScroll(ViewCompat.SCROLL_AXIS_VERTICAL);
+                break;
             case MotionEvent.ACTION_MOVE:
                 int deltaY = mLastY - eventY;
-                // NestedPreScroll
-                if (dispatchNestedPreScroll(0, deltaY, mScrollConsumed, mScrollOffset)) {
-                    deltaY -= mScrollConsumed[1];
-                    mLastY = eventY - mScrollOffset[1];
-                    event.offsetLocation(0, -mScrollOffset[1]);
-                    mNestedOffsetY += mScrollOffset[1];
-                }
-                returnValue = super.onTouchEvent(event);
 
-                // NestedScroll
-                if (dispatchNestedScroll(0, mScrollOffset[1], 0, deltaY, mScrollOffset)) {
-                    event.offsetLocation(0, mScrollOffset[1]);
-                    mNestedOffsetY += mScrollOffset[1];
-                    mLastY -= mScrollOffset[1];
+                if (dispatchNestedPreScroll(0, deltaY, mScrollConsumed, mScrollOffset)) {
+                    mLastY = eventY - mScrollOffset[1];
                 }
-                break;
-            case MotionEvent.ACTION_DOWN:
-                returnValue = super.onTouchEvent(event);
-                mLastY = eventY;
-                // start NestedScroll
-                startNestedScroll(ViewCompat.SCROLL_AXIS_VERTICAL);
+
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
-                returnValue = super.onTouchEvent(event);
                 // end NestedScroll
                 stopNestedScroll();
                 break;
         }
-        return returnValue;
+
+        event.setLocation(initialX, eventY);
+        return super.onTouchEvent(event);
     }
 
     // Nested Scroll implements
