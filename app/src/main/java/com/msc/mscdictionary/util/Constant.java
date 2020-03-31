@@ -13,6 +13,7 @@ public class Constant {
     public static final String X_FLOAT = "xFloat";
     public static final String Y_FLOAT = "yFloat";
     public static final String TAG_BR = "</br>";
+    public static final String BASELINK_SOHA = "https://dict.laban.vn/find?type=1&query=";
 
     public static String ip = "http://192.168.43.13/";
 }

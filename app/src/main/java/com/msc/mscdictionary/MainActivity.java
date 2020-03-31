@@ -93,35 +93,8 @@ public class MainActivity extends BaseActivity {
             edTextEn.setCursorVisible(true);
         });
         btnSearch.setOnClickListener((v) -> {
-            showLoad();
-            hideKeyboard(this);
             final String en = edTextEn.getText().toString();
-            WordDAO.checkHasWord(new Word(en, "", "", "", ""), new DictionaryCrawl.TranslateCallback() {
-                @Override
-                public void success(Word word) {
-                    setResultSearch(word);
-                    hideLoad();
-                }
-
-                @Override
-                public void fail(String error) {
-                    DictionaryCrawl.instance(en, new DictionaryCrawl.TranslateCallback() {
-                        @Override
-                        public void success(Word word) {
-                            setResultSearch(word);
-                            hideLoad();
-                        }
-
-                        @Override
-                        public void fail(final String error) {
-                            setError(error);
-                            hideLoad();
-                        }
-                    }).translate();
-                }
-            });
-
-
+            search(en);
         });
 
         btnMenuDrawer.setOnClickListener(v -> {
@@ -217,5 +190,37 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         moveTaskToBack(true);
+    }
+
+    public void search(String en) {
+        showLoad();
+        hideKeyboard(this);
+        llHeaderWord.setVisibility(View.INVISIBLE);
+        edTextEn.setText(en);
+        WordDAO.checkHasWord(new Word(en, "", "", "", ""), new DictionaryCrawl.TranslateCallback() {
+            @Override
+            public void success(Word word) {
+                setResultSearch(word);
+                hideLoad();
+            }
+
+            @Override
+            public void fail(String error) {
+                DictionaryCrawl.instance(en, new DictionaryCrawl.TranslateCallback() {
+                    @Override
+                    public void success(Word word) {
+                        setResultSearch(word);
+                        hideLoad();
+                    }
+
+                    @Override
+                    public void fail(final String error) {
+                        setError(error);
+                        hideLoad();
+                    }
+                }).translate();
+            }
+        });
+
     }
 }

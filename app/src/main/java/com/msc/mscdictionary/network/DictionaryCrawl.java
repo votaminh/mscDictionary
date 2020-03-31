@@ -1,6 +1,7 @@
 package com.msc.mscdictionary.network;
 
 import com.msc.mscdictionary.model.Word;
+import com.msc.mscdictionary.util.Constant;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,7 +42,7 @@ public class DictionaryCrawl {
             @Override
             public void run() {
                 super.run();
-                String url = "https://dict.laban.vn/find?type=1&query=" + textEn;
+                String url = Constant.BASELINK_SOHA + textEn;
                 Document doc = null;
                 try {
                     doc = Jsoup.parse(new URL(url).openStream(), "utf-8", url);
