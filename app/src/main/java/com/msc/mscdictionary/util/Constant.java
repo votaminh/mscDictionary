@@ -14,6 +14,7 @@ public class Constant {
     public static final String Y_FLOAT = "yFloat";
     public static final String TAG_BR = "</br>";
     public static final String BASELINK_SOHA = "https://dict.laban.vn/find?type=1&query=";
+    public static final String HAS_RAN_APP = "hasran";
 
     public static String ip = "http://192.168.43.13/";
 }

@@ -28,5 +28,6 @@
         android:layout_alignParentBottom="true"
         android:fontFamily="@font/poppins_medium"
         android:layout_marginBottom="@dimen/margin_medium"
+        android:textSize="10sp"
         />
 </RelativeLayout>

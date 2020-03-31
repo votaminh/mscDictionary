@@ -11,6 +11,8 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -19,8 +21,11 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.msc.mscdictionary.base.BaseActivity;
 import com.msc.mscdictionary.fragment.TranslateFragment;
 import com.msc.mscdictionary.media.MediaBuilder;
@@ -70,9 +75,28 @@ public class MainActivity extends BaseActivity {
 
         llHeaderWord = findViewById(R.id.llHeader);
 
+        disableScrollAppbar();
         openTranslateFragment();
         onClick();
         askForSystemOverlayPermission();
+    }
+
+    private void disableScrollAppbar() {
+        AppBarLayout appBarLayout = findViewById(R.id.appBarLayout);
+        appBarLayout.getViewTreeObserver().addOnGlobalFocusChangeListener(new ViewTreeObserver.OnGlobalFocusChangeListener() {
+            @Override
+            public void onGlobalFocusChanged(View oldFocus, View newFocus) {
+                CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
+                AppBarLayout.Behavior behavior = (AppBarLayout.Behavior) params.getBehavior();
+                behavior.setDragCallback(new AppBarLayout.Behavior.DragCallback() {
+                    @Override
+                    public boolean canDrag(@NonNull AppBarLayout appBarLayout) {
+                        return false;
+                    }
+                });
+            }
+        });
+
     }
 
     @Override
@@ -221,6 +245,11 @@ public class MainActivity extends BaseActivity {
                 }).translate();
             }
         });
+    }
 
+    public int[] getLocationHeader(){
+        int[] location = new int[2];
+        edTextEn.getLocationOnScreen(location);
+        return location;
     }
 }

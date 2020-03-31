@@ -12,8 +12,11 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.msc.mscdictionary.base.BaseActivity;
+import com.msc.mscdictionary.util.Constant;
+import com.msc.mscdictionary.util.SharePreferenceUtil;
 
 public class SplashActivity extends BaseActivity {
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -30,9 +33,20 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     public void intView() {
-        TextView textView = findViewById(R.id.tv);
-        textView.setPadding(0 , 0, 0, getHeightNavi());
-        new Handler().postDelayed(() -> goToMain(), 0);
+        boolean hadRan = SharePreferenceUtil.getBooleanPerferences(this, Constant.HAS_RAN_APP, false);
+        if(hadRan){
+            TextView textView = findViewById(R.id.tv);
+            textView.setPadding(0 , 0, 0, getHeightNavi());
+            new Handler().postDelayed(() -> goToMain(), 1000);
+        }else {
+            TextView textView = findViewById(R.id.tv);
+            textView.setPadding(0 , 0, 0, getHeightNavi());
+            SharePreferenceUtil.saveBooleanPereferences(this, Constant.HAS_RAN_APP, true);
+            new Handler().postDelayed(() -> textView.setText("Wait a moment while we preparing setup for your device"), 2000);
+            new Handler().postDelayed(() -> textView.setText("Downloading data ..."), 4000);
+            new Handler().postDelayed(() -> textView.setText("Finish"), 8000);
+            new Handler().postDelayed(() -> goToMain(), 9000);
+        }
     }
 
     private void goToMain() {

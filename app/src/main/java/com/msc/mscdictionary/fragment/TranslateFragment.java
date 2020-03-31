@@ -4,6 +4,8 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebView;
@@ -72,7 +74,27 @@ public class TranslateFragment extends BaseFragment {
 
             webViewMean.loadDataWithBaseURL(null, Constant.header + word.getHtmlFullMean() + Constant.endTag, "text/html", "utf-8", null);
             showWebview();
+
+            setUpPosition();
         });
+    }
+
+    private void setUpPosition() {
+        MainActivity activity = (MainActivity) getActivity();
+        if(activity != null){
+            int[] location = activity.getLocationHeader();
+            float statusBarHeight = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, getContext().getResources().getDisplayMetrics());
+            float headHeight = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 56, getContext().getResources().getDisplayMetrics());
+            float spacingTop = statusBarHeight + headHeight;
+
+            float mid = (statusBarHeight + spacingTop)/2;
+
+            if(location[1] > mid){
+                webViewMean.scrollBy(0, 0);
+            }else {
+                webViewMean.scrollBy(0, (int) headHeight);
+            }
+        }
     }
 
     private void showWebview() {
