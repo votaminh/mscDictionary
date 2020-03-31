@@ -3,6 +3,8 @@
     package="com.msc.mscdictionary">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY "/>
 
     <application
         android:allowBackup="true"

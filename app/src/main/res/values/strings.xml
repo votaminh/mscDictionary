@@ -12,5 +12,8 @@
     <string name="rate_lable">Rate app</string>
     <string name="login_lable">Login</string>
     <string name="tap_to_login_lable">Tap to login</string>
-    <string name="run_service">Translate text running in device</string>
+    <string name="run_service">Msc service running in device</string>
+    <string name="title_qick_translate">MSC Quickly Translate</string>
+    <string name="error_quick_translate">No result was found</string>
+    <string name="tap_to_close">Tag to close</string>
 </resources>

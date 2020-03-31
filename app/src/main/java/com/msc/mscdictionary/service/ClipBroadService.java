@@ -1,23 +1,18 @@
 package com.msc.mscdictionary.service;
 
 import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.os.IBinder;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.msc.mscdictionary.R;
+import com.msc.mscdictionary.custom.FloatWidgetBuilder;
 import com.msc.mscdictionary.util.AppUtil;
 
 public class ClipBroadService extends Service {
@@ -37,7 +32,9 @@ public class ClipBroadService extends Service {
             public void onPrimaryClipChanged() {
                 String a = clipboard.getText().toString();
                 if(!a.isEmpty()){
-
+                    FloatWidgetBuilder builder = new FloatWidgetBuilder();
+                    builder.prepare(getApplicationContext());
+                    builder.showButtonFloat(a);
                 }
             }
         });

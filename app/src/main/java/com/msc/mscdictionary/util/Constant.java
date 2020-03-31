@@ -9,5 +9,9 @@ public class Constant {
             "        </header>\n" +
             "        <body>";
     final static public String endTag = "</body>";
+    public static final String SHAREPREFERENCES = "share";
+    public static final String X_FLOAT = "xFloat";
+    public static final String Y_FLOAT = "yFloat";
 
+    public static String ip = "http://192.168.43.13/";
 }

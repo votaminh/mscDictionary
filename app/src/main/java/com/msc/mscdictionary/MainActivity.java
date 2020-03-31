@@ -3,8 +3,11 @@ package com.msc.mscdictionary;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.Settings;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -25,6 +28,7 @@ import com.msc.mscdictionary.service.ClipBroadService;
 import com.msc.mscdictionary.util.AppUtil;
 
 public class MainActivity extends BaseActivity {
+    private static final int DRAW_OVER_OTHER_APP_PERMISSION = 33;
     EditText edTextEn;
     TextView btnSearch;
     ProgressBar progress;
@@ -50,6 +54,7 @@ public class MainActivity extends BaseActivity {
 
         openTranslateFragment();
         onClick();
+        askForSystemOverlayPermission();
     }
 
     @Override
@@ -148,6 +153,13 @@ public class MainActivity extends BaseActivity {
         replaceFragment(translateFragment, R.id.container, TranslateFragment.TAG);
     }
 
+    private void askForSystemOverlayPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
+            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
+            startActivityForResult(intent, DRAW_OVER_OTHER_APP_PERMISSION);
+        }
+    }
+    
     @Override
     public void onBackPressed() {
         moveTaskToBack(true);

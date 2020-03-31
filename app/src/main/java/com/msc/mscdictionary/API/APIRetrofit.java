@@ -2,13 +2,14 @@ package com.msc.mscdictionary.API;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.msc.mscdictionary.util.Constant;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class APIRetrofit {
     private static Retrofit apiRetrofit = null;
-    private static String urlRoot = "http://192.168.43.13/server/";
+    private static String urlRoot = Constant.ip + "server/";
 
     public static Retrofit getAPI(){
         if(apiRetrofit == null){
