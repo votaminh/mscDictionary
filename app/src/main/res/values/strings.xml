@@ -24,4 +24,5 @@
     <string name="title_download_notifi">Downloading</string>
     <string name="complete_download">download completed</string>
     <string name="error_download">Download error</string>
+    <string name="unzipping">Extracting</string>
 </resources>

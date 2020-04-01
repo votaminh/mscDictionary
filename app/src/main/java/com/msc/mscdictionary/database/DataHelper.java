@@ -50,7 +50,7 @@ public class DataHelper extends SQLiteOpenHelper {
 
     // Copy the database from assets
     private void copyDataBase() throws IOException {
-        InputStream mInput = mContext.getAssets().open(DB_NAME);
+        InputStream mInput = mContext.openFileInput(DB_NAME);
         OutputStream mOutput = new FileOutputStream(DB_FILE);
         byte[] mBuffer = new byte[1024];
         int mLength;

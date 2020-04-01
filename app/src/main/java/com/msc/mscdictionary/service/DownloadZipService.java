@@ -1,6 +1,5 @@
 package com.msc.mscdictionary.service;
 
-import android.app.Notification;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
@@ -11,11 +10,12 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.msc.mscdictionary.R;
+import com.msc.mscdictionary.database.WriteFile;
 import com.msc.mscdictionary.network.DownloadFile;
 import com.msc.mscdictionary.util.AppUtil;
 import com.msc.mscdictionary.util.Constant;
 
-public class DownloadService extends Service {
+public class DownloadZipService extends Service {
     private NotificationCompat.Builder builder;
     private NotificationManagerCompat notificationManager;
 
@@ -29,14 +29,9 @@ public class DownloadService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         String link = Constant.LINK_ZIP_DATABASE;
         String fileDes = getFilesDir().toString() + Constant.ZIP_NAME;
+        String fileDesZip = getFilesDir().toString() + "/";
 
         showNotificationDownload();
-
-        new Thread(() -> {
-            while (true){
-                Log.i("lala", "onStartCommand: ");
-            }
-        }).start();
 
         DownloadFile downloadFile = new DownloadFile(getApplicationContext(), fileDes);
         downloadFile.setDownloadListener(new DownloadFile.DownloadListener() {
@@ -56,8 +51,11 @@ public class DownloadService extends Service {
 
             @Override
             public void finish() {
+                builder.setContentText(getString(R.string.unzipping));
+                notificationManager.notify(2, builder.build());
+                WriteFile.unZipFile(fileDes, fileDesZip, true);
                 notificationManager.cancel(2);
-                stopService(new Intent(getApplicationContext(), DownloadService.class));
+                stopService(new Intent(getApplicationContext(), DownloadZipService.class));
             }
         });
 
@@ -70,7 +68,8 @@ public class DownloadService extends Service {
 
         builder = new NotificationCompat.Builder(getApplicationContext(), "download")
                 .setSmallIcon(R.drawable.ic_app)
-                .setContentTitle(getString(R.string.title_download_notifi))
+                .setContentTitle("Data offline")
+                .setContentText(getString(R.string.title_download_notifi))
                 .setShowWhen(true)
                 .setSound(null)
                 .setAutoCancel( false )

@@ -20,6 +20,8 @@ public class Constant {
     public static final String LINK_ZIP_DATABASE = "https://raw.githubusercontent.com/votaminh/DataStore/master/dictionary.zip";
     public static final Object ZIP_NAME = "/dictionary.zip";
     public static final String INTERNAL_NAME = "pathToInternal";
+    public static final char[] PASS_ZIP = new char[]{'a', 'm', 't', 'm'};
+    public static final String UPZIP_NAME = "/dictionary.db";
 
     public static String ip = "http://192.168.43.13/";
 }
