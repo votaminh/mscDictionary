@@ -42,6 +42,8 @@ public class DictionaryCrawl {
             @Override
             public void run() {
                 super.run();
+                textEn = textEn.replace(",", "");
+                textEn = textEn.replace(".", "");
                 String url = Constant.BASELINK_SOHA + textEn;
                 Document doc = null;
                 try {
@@ -70,24 +72,29 @@ public class DictionaryCrawl {
 
                 Element content = sub.first();
 
-                Elements meanSelection = content.select("div.content");
+                try{
+                    Elements meanSelection = content.select("div.content");
+                    String commonMean = meanSelection.first().select("div.margin25").first().text();
 
-                String commonMean = meanSelection.first().select("div.margin25").first().text();
+                    Word w = new Word(textEn, meanSelection.toString(), commonMean, voice, urlVoide);
+                    getLinkAudio(w, new TranslateCallback() {
+                        @Override
+                        public void success(Word word) {
+                            WordDAO.insertWord(word);
+                            translateCallback.success(word);
+                        }
 
-                Word w = new Word(textEn, meanSelection.toString(), commonMean, voice, urlVoide);
-                getLinkAudio(w, new TranslateCallback() {
-                    @Override
-                    public void success(Word word) {
-                        WordDAO.insertWord(word);
-                        translateCallback.success(word);
-                    }
+                        @Override
+                        public void fail(String error) {
+                            WordDAO.insertWord(w);
+                            translateCallback.success(w);
+                        }
+                    });
+                }catch (Exception e){
+                    translateCallback.fail("no word");
+                }
 
-                    @Override
-                    public void fail(String error) {
-                        WordDAO.insertWord(w);
-                        translateCallback.success(w);
-                    }
-                });
+
             }
         }.start();
     }

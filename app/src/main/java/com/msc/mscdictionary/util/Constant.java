@@ -1,5 +1,7 @@
 package com.msc.mscdictionary.util;
 
+import com.msc.mscdictionary.BuildConfig;
+
 public class Constant {
     final static public String header = "<html>\n" +
             "        <header>\n" +
@@ -15,6 +17,7 @@ public class Constant {
     public static final String TAG_BR = "</br>";
     public static final String BASELINK_SOHA = "https://dict.laban.vn/find?type=1&query=";
     public static final String HAS_RAN_APP = "hasran";
+    public static final String LINK_ZIP_DATABASE = "https://raw.githubusercontent.com/votaminh/DataStore/master/dictionary.zip";
 
     public static String ip = "http://192.168.43.13/";
 }
