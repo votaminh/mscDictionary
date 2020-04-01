@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -27,6 +28,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.msc.mscdictionary.base.BaseActivity;
+import com.msc.mscdictionary.database.OffWordDAO;
 import com.msc.mscdictionary.fragment.TranslateFragment;
 import com.msc.mscdictionary.media.MediaBuilder;
 import com.msc.mscdictionary.model.Word;
@@ -34,8 +36,6 @@ import com.msc.mscdictionary.network.WordDAO;
 import com.msc.mscdictionary.network.DictionaryCrawl;
 import com.msc.mscdictionary.service.ClipBroadService;
 import com.msc.mscdictionary.service.DownloadZipService;
-import com.msc.mscdictionary.util.Constant;
-import com.msc.mscdictionary.util.SharePreferenceUtil;
 
 public class MainActivity extends BaseActivity {
     private static final int DRAW_OVER_OTHER_APP_PERMISSION = 33;
@@ -54,6 +54,8 @@ public class MainActivity extends BaseActivity {
     private TranslateFragment translateFragment;
 
     DrawerLayout drawerLayout;
+    private OffWordDAO wordDAO;
+
     @Override
     public int resLayoutId() {
         return R.layout.activity_main;
@@ -82,7 +84,7 @@ public class MainActivity extends BaseActivity {
         askForSystemOverlayPermission();
 //        showDialogDownloadData();
 
-        SharePreferenceUtil.saveStringPereferences(this, Constant.INTERNAL_NAME, "");
+        wordDAO = new OffWordDAO(this);
     }
 
     private void showDialogDownloadData() {
@@ -249,7 +251,7 @@ public class MainActivity extends BaseActivity {
         hideKeyboard(this);
         llHeaderWord.setVisibility(View.INVISIBLE);
         edTextEn.setText(en);
-        WordDAO.checkHasWord(new Word(en, "", "", "", ""), new DictionaryCrawl.TranslateCallback() {
+        wordDAO.getWordByEn("home", new DictionaryCrawl.TranslateCallback() {
             @Override
             public void success(Word word) {
                 setResultSearch(word);

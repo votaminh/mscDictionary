@@ -60,4 +60,25 @@ public class WordDAO {
         });
         return true;
     }
+
+    public static boolean checkHasWordOff(Word word, DictionaryCrawl.TranslateCallback callback){
+        Call<List<Word>> response = dataService.checkHasWord(word.getEnWord());
+        response.enqueue(new Callback<List<Word>>() {
+            @Override
+            public void onResponse(Call<List<Word>> call, Response<List<Word>> response) {
+                List<Word> list = response.body();
+                if(list.size() > 0){
+                    callback.success(list.get(0));
+                }else {
+                    callback.fail("");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Word>> call, Throwable t) {
+                callback.fail(t.toString());
+            }
+        });
+        return true;
+    }
 }
