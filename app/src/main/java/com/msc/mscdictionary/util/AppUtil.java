@@ -17,7 +17,7 @@ public class AppUtil {
 
     public static void createNotificationChannel(Context context, String id) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            int importance = NotificationManager.IMPORTANCE_LOW;
+            int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel channel = new NotificationChannel(id, id, importance);
 
             NotificationManager notificationManager = context.getSystemService(NotificationManager.class);

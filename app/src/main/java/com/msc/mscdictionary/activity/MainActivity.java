@@ -1,4 +1,4 @@
-package com.msc.mscdictionary;
+package com.msc.mscdictionary.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -10,7 +10,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -27,18 +26,19 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.appbar.AppBarLayout;
+import com.msc.mscdictionary.R;
 import com.msc.mscdictionary.base.BaseActivity;
 import com.msc.mscdictionary.database.OffWordDAO;
 import com.msc.mscdictionary.fragment.TranslateFragment;
 import com.msc.mscdictionary.media.MediaBuilder;
 import com.msc.mscdictionary.model.Word;
-import com.msc.mscdictionary.network.WordDAO;
 import com.msc.mscdictionary.network.DictionaryCrawl;
 import com.msc.mscdictionary.service.ClipBroadService;
 import com.msc.mscdictionary.service.DownloadZipService;
 
 public class MainActivity extends BaseActivity {
     private static final int DRAW_OVER_OTHER_APP_PERMISSION = 33;
+    public static final int MAIN_REQUEST = 818;
     EditText edTextEn;
     TextView btnSearch;
     ProgressBar progress;
@@ -56,6 +56,9 @@ public class MainActivity extends BaseActivity {
     DrawerLayout drawerLayout;
     private OffWordDAO wordDAO;
 
+    TextView tvHistory, tvFavourite, tvPractice;
+    ImageButton btnFavourite;
+
     @Override
     public int resLayoutId() {
         return R.layout.activity_main;
@@ -65,6 +68,7 @@ public class MainActivity extends BaseActivity {
     public void intView() {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
+        btnFavourite = findViewById(R.id.btnFavourite);
         edTextEn = findViewById(R.id.edTextEn);
         btnSearch = findViewById(R.id.btnSearch);
         progress = findViewById(R.id.progress);
@@ -78,6 +82,10 @@ public class MainActivity extends BaseActivity {
 
         llHeaderWord = findViewById(R.id.llHeader);
 
+        tvHistory = findViewById(R.id.tvHistory);
+        tvFavourite = findViewById(R.id.tvFavourite);
+        tvPractice = findViewById(R.id.tvPractice);
+
         disableScrollAppbar();
         openTranslateFragment();
         onClick();
@@ -87,47 +95,6 @@ public class MainActivity extends BaseActivity {
         wordDAO = new OffWordDAO(this);
     }
 
-    private void showDialogDownloadData() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(getString(R.string.title_dialog_ask_download));
-        builder.setMessage(getString(R.string.message_dialog_ask_download));
-        builder.setNegativeButton(getString(R.string.cancel_lable), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-        builder.setPositiveButton(getString(R.string.download_lable), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                downloadDataService();
-            }
-        });
-        builder.show();
-    }
-
-    private void downloadDataService() {
-        Intent intent = new Intent(MainActivity.this, DownloadZipService.class);
-        startService(intent);
-    }
-
-    private void disableScrollAppbar() {
-        AppBarLayout appBarLayout = findViewById(R.id.appBarLayout);
-        appBarLayout.getViewTreeObserver().addOnGlobalFocusChangeListener(new ViewTreeObserver.OnGlobalFocusChangeListener() {
-            @Override
-            public void onGlobalFocusChanged(View oldFocus, View newFocus) {
-                CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
-                AppBarLayout.Behavior behavior = (AppBarLayout.Behavior) params.getBehavior();
-                behavior.setDragCallback(new AppBarLayout.Behavior.DragCallback() {
-                    @Override
-                    public boolean canDrag(@NonNull AppBarLayout appBarLayout) {
-                        return false;
-                    }
-                });
-            }
-        });
-
-    }
 
     @Override
     protected void onStart() {
@@ -156,6 +123,21 @@ public class MainActivity extends BaseActivity {
             hideKeyboard(this);
         });
 
+        btnFavourite.setOnClickListener(v -> {
+            showDialogAskLogin();
+        });
+
+        tvHistory.setOnClickListener(v -> {
+            showDialogAskLogin();
+        });
+
+        tvFavourite.setOnClickListener(v -> {
+            showDialogAskLogin();
+        });
+
+        tvPractice.setOnClickListener(v -> {
+            showDialogAskLogin();
+        });
     }
 
     private void playAudio(String urlSpeak) {
@@ -176,6 +158,30 @@ public class MainActivity extends BaseActivity {
                 });
             }
         });
+    }
+
+    private void showDialogAskLogin() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.title_dialog_ask_login));
+        builder.setMessage(getString(R.string.message_dialog_ask_login));
+        builder.setNegativeButton(getString(R.string.later_lable), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.setPositiveButton(getString(R.string.login_now_lable), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                openLogin();
+            }
+        });
+        builder.show();
+    }
+
+    private void openLogin() {
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivityForResult(intent, MAIN_REQUEST);
     }
 
     private void showLoad() {
@@ -251,7 +257,7 @@ public class MainActivity extends BaseActivity {
         hideKeyboard(this);
         llHeaderWord.setVisibility(View.INVISIBLE);
         edTextEn.setText(en);
-        wordDAO.getWordByEn("home", new DictionaryCrawl.TranslateCallback() {
+        wordDAO.getWordByEn(en, new DictionaryCrawl.TranslateCallback() {
             @Override
             public void success(Word word) {
                 setResultSearch(word);
@@ -282,4 +288,47 @@ public class MainActivity extends BaseActivity {
         edTextEn.getLocationOnScreen(location);
         return location;
     }
+
+    private void showDialogDownloadData() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.title_dialog_ask_download));
+        builder.setMessage(getString(R.string.message_dialog_ask_download));
+        builder.setNegativeButton(getString(R.string.cancel_lable), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.setPositiveButton(getString(R.string.download_lable), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                downloadDataService();
+            }
+        });
+        builder.show();
+    }
+
+    private void downloadDataService() {
+        Intent intent = new Intent(MainActivity.this, DownloadZipService.class);
+        startService(intent);
+    }
+
+    private void disableScrollAppbar() {
+        AppBarLayout appBarLayout = findViewById(R.id.appBarLayout);
+        appBarLayout.getViewTreeObserver().addOnGlobalFocusChangeListener(new ViewTreeObserver.OnGlobalFocusChangeListener() {
+            @Override
+            public void onGlobalFocusChanged(View oldFocus, View newFocus) {
+                CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
+                AppBarLayout.Behavior behavior = (AppBarLayout.Behavior) params.getBehavior();
+                behavior.setDragCallback(new AppBarLayout.Behavior.DragCallback() {
+                    @Override
+                    public boolean canDrag(@NonNull AppBarLayout appBarLayout) {
+                        return false;
+                    }
+                });
+            }
+        });
+
+    }
+
 }

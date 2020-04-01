@@ -13,14 +13,17 @@ import java.util.ArrayList;
 public class OffWordDAO {
     DataHelper dataHelper;
     private SQLiteDatabase db;
+    String en;
 
     public OffWordDAO(Context context){
         dataHelper = new DataHelper(context);
     }
+
     public void getWordByEn(String en, DictionaryCrawl.TranslateCallback callback){
+        this.en = en.toLowerCase();
         new Thread(() -> {
             db = dataHelper.getReadableDatabase();
-            Cursor cursor = db.rawQuery("select*from word where en = '" + en + "'",null);
+            Cursor cursor = db.rawQuery("select*from word where en = '" + this.en + "'",null);
             if(cursor.moveToFirst()){
                 int id = cursor.getInt(0);
                 String enText = URLDecoder.decode(cursor.getString(1));

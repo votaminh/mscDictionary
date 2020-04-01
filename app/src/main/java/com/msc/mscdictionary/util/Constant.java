@@ -22,6 +22,8 @@ public class Constant {
     public static final String INTERNAL_NAME = "pathToInternal";
     public static final char[] PASS_ZIP = new char[]{'a', 'm', 't', 'm'};
     public static final String UPZIP_NAME = "/dictionary.db";
+    public static final String DICTION_NODE = "dictionary";
+    public static final String USER_TITLE = "user";
 
     public static String ip = "http://192.168.43.13/";
 }

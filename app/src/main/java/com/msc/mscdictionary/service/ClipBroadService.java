@@ -52,7 +52,7 @@ public class ClipBroadService extends Service {
                 .setAutoCancel( false )
                 .setOngoing( true )
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setPriority(NotificationCompat.PRIORITY_LOW)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .build();
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());

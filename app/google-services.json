@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "669401055338",
+    "firebase_url": "https://msc-storage.firebaseio.com",
+    "project_id": "msc-storage",
+    "storage_bucket": "msc-storage.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:669401055338:android:4cb8c85694908bd7a10a13",
+        "android_client_info": {
+          "package_name": "com.msc.mscdictionary"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "669401055338-04php3hk4fil9i34qvert9onbqpa4tau.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHYBK6MMZSw3Pc6V00w-mU4z3h4z9V9S0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "669401055338-04php3hk4fil9i34qvert9onbqpa4tau.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

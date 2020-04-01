@@ -5,4 +5,7 @@
     <dimen name="big_size_text">23sp</dimen>
     <dimen name="margin_small">10dp</dimen>
     <dimen name="size_progress">20dp</dimen>
+    <dimen name="margin_large_login">40dp</dimen>
+    <dimen name="height_textinput">56dp</dimen>
+    <dimen name="size_textinput">17sp</dimen>
 </resources>

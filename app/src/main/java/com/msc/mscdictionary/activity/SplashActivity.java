@@ -1,4 +1,4 @@
-package com.msc.mscdictionary;
+package com.msc.mscdictionary.activity;
 
 import android.content.Intent;
 import android.content.res.Resources;
@@ -6,7 +6,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -15,11 +14,11 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.msc.mscdictionary.R;
 import com.msc.mscdictionary.base.BaseActivity;
 import com.msc.mscdictionary.database.DataHelper;
 import com.msc.mscdictionary.database.WriteFile;
 import com.msc.mscdictionary.network.DownloadFile;
-import com.msc.mscdictionary.service.DownloadZipService;
 import com.msc.mscdictionary.util.AppUtil;
 import com.msc.mscdictionary.util.Constant;
 import com.msc.mscdictionary.util.SharePreferenceUtil;
@@ -80,10 +79,12 @@ public class SplashActivity extends BaseActivity {
                 public void finish() {
                     builder.setContentText(getString(R.string.unzipping));
                     notificationManager.notify(2, builder.build());
-                    WriteFile.unZipFile(fileDes, fileDesZip, true);
-                    notificationManager.cancel(2);
+                    new Thread(() -> {
+                        WriteFile.unZipFile(fileDes, fileDesZip, true);
+                        notificationManager.cancel(2);
 
-                    new Handler(Looper.getMainLooper()).postDelayed(() -> goToMain(), 0);
+                        new Handler(Looper.getMainLooper()).postDelayed(() -> goToMain(), 0);
+                    }).start();
                 }
             });
 

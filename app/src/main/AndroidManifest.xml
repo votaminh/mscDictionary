@@ -13,9 +13,11 @@
         android:roundIcon="@drawable/ic_round_app"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".activity.MainActivity">
         </activity>
-        <activity android:name=".SplashActivity">
+        <activity android:name=".activity.SplashActivity">
+        </activity>
+        <activity android:name=".activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

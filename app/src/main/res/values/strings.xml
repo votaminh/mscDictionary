@@ -25,4 +25,12 @@
     <string name="complete_download">download completed</string>
     <string name="error_download">Download error</string>
     <string name="unzipping">Extracting</string>
+    <string name="title_dialog_ask_login">Login now ?</string>
+    <string name="message_dialog_ask_login">To use this feature you have to login, please login now</string>
+    <string name="login_now_lable">Login</string>
+    <string name="later_lable">Later</string>
+    <string name="create_account">Register</string>
+    <string name="username_input_emty">User name can not empty</string>
+    <string name="pass_input_emty">Password can not empty</string>
+    <string name="register_lable">Register</string>
 </resources>

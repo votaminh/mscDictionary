@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.msc.mscdictionary.R;
+import com.msc.mscdictionary.database.OffWordDAO;
 import com.msc.mscdictionary.model.Word;
 import com.msc.mscdictionary.network.DictionaryCrawl;
 import com.msc.mscdictionary.network.WordDAO;
@@ -211,7 +212,8 @@ public class FloatWidgetBuilder {
         edEn.setText(s);
 
         tvClose.setOnClickListener(v -> removeTranslate());
-        WordDAO.checkHasWord(new Word(s, "", "", "", ""), new DictionaryCrawl.TranslateCallback() {
+        OffWordDAO offWordDAO = new OffWordDAO(context);
+        offWordDAO.getWordByEn(s, new DictionaryCrawl.TranslateCallback() {
             @Override
             public void success(Word word) {
                 String encoding = word.getHtmlFullMean();

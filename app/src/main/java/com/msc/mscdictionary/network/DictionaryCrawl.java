@@ -44,6 +44,7 @@ public class DictionaryCrawl {
                 super.run();
                 textEn = textEn.replace(",", "");
                 textEn = textEn.replace(".", "");
+                textEn = textEn.toLowerCase();
                 String url = Constant.BASELINK_SOHA + textEn;
                 Document doc = null;
                 try {

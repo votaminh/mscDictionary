@@ -166,6 +166,7 @@
 
 
                     <ImageButton
+                        android:id="@+id/btnFavourite"
                         android:layout_width="@dimen/height_header"
                         android:layout_height="@dimen/height_header"
                         android:layout_toLeftOf="@id/llAudio"
