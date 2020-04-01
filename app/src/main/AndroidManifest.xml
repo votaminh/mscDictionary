@@ -23,6 +23,7 @@
             </intent-filter>
         </activity>
         <service android:name=".service.ClipBroadService"/>
+        <service android:name=".service.DownloadService"/>
     </application>
 
 </manifest>

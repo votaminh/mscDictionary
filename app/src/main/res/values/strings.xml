@@ -16,4 +16,12 @@
     <string name="title_qick_translate">MSC Quickly Translate</string>
     <string name="error_quick_translate">No result was found</string>
     <string name="tap_to_close">Tag to close</string>
+    <string name="title_dialog_ask_download">Download data ?</string>
+    <string name="message_dialog_ask_download">For a better experience we prepare the necessary data for your application. To use please download.</string>
+    <string name="download_lable">Download</string>
+    <string name="cancel_lable">Cancel</string>
+    <string name="dont_ask_again_lable">Don\'t ask again</string>
+    <string name="title_download_notifi">Downloading</string>
+    <string name="complete_download">download completed</string>
+    <string name="error_download">Download error</string>
 </resources>

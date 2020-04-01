@@ -37,7 +37,7 @@ public class SplashActivity extends BaseActivity {
         if(hadRan){
             TextView textView = findViewById(R.id.tv);
             textView.setPadding(0 , 0, 0, getHeightNavi());
-            new Handler().postDelayed(() -> goToMain(), 1000);
+            new Handler().postDelayed(() -> goToMain(), 500);
         }else {
             TextView textView = findViewById(R.id.tv);
             textView.setPadding(0 , 0, 0, getHeightNavi());

@@ -1,7 +1,10 @@
 package com.msc.mscdictionary;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -10,6 +13,7 @@ import android.os.Looper;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -33,6 +37,9 @@ import com.msc.mscdictionary.model.Word;
 import com.msc.mscdictionary.network.WordDAO;
 import com.msc.mscdictionary.network.DictionaryCrawl;
 import com.msc.mscdictionary.service.ClipBroadService;
+import com.msc.mscdictionary.service.DownloadService;
+import com.msc.mscdictionary.util.Constant;
+import com.msc.mscdictionary.util.SharePreferenceUtil;
 
 public class MainActivity extends BaseActivity {
     private static final int DRAW_OVER_OTHER_APP_PERMISSION = 33;
@@ -47,9 +54,7 @@ public class MainActivity extends BaseActivity {
     ProgressBar progressBar;
 
     Word currentWord;
-
     RelativeLayout llHeaderWord;
-
     private TranslateFragment translateFragment;
 
     DrawerLayout drawerLayout;
@@ -79,6 +84,33 @@ public class MainActivity extends BaseActivity {
         openTranslateFragment();
         onClick();
         askForSystemOverlayPermission();
+        showDialogDownloadData();
+
+        SharePreferenceUtil.saveStringPereferences(this, Constant.INTERNAL_NAME, "");
+    }
+
+    private void showDialogDownloadData() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.title_dialog_ask_download));
+        builder.setMessage(getString(R.string.message_dialog_ask_download));
+        builder.setNegativeButton(getString(R.string.cancel_lable), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.setPositiveButton(getString(R.string.download_lable), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                downloadDataService();
+            }
+        });
+        builder.show();
+    }
+
+    private void downloadDataService() {
+        Intent intent = new Intent(MainActivity.this, DownloadService.class);
+        startService(intent);
     }
 
     private void disableScrollAppbar() {

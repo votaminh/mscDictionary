@@ -3,6 +3,9 @@ package com.msc.mscdictionary.network;
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
+
+import com.msc.mscdictionary.util.Constant;
 
 import java.io.BufferedInputStream;
 import java.io.FileOutputStream;
@@ -13,13 +16,17 @@ import java.net.URL;
 import java.net.URLConnection;
 
 public class DownloadFile extends AsyncTask<String, Void, Void> {
-    WeakReference<Activity> contextWeakReference;
+    WeakReference<Context> contextWeakReference;
     DownloadListener downloadListener;
     String out;
+    boolean isError = false;
 
-    public DownloadFile(Activity context, String out, DownloadListener downloadListener){
+    public DownloadFile(Context context, String out){
         contextWeakReference = new WeakReference<>(context);
         this.out = out;
+    }
+
+    public void setDownloadListener(DownloadListener downloadListener){
         this.downloadListener = downloadListener;
     }
 
@@ -49,6 +56,7 @@ public class DownloadFile extends AsyncTask<String, Void, Void> {
         } catch (Exception e) {
             if(contextWeakReference.get() != null){
                 downloadListener.fail(e.toString());
+                isError = true;
             }
         }
         return null;
@@ -57,7 +65,7 @@ public class DownloadFile extends AsyncTask<String, Void, Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-        if(contextWeakReference.get() != null){
+        if(contextWeakReference.get() != null && !isError){
             downloadListener.finish();
         }
     }
