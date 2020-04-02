@@ -1,6 +1,8 @@
 package com.msc.mscdictionary.activity;
 
+import android.app.AlertDialog;
 import android.app.NotificationManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Build;
@@ -34,6 +36,7 @@ public class SplashActivity extends BaseActivity {
     private TextView textView;
     private boolean hadRan;
 
+    TextView tvProgress;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -50,6 +53,8 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     public void intView() {
+        tvProgress = findViewById(R.id.tvProgress);
+
         hadRan = SharePreferenceUtil.getBooleanPerferences(this, Constant.HAS_RAN_APP, false);
         if(hadRan){
             textView = findViewById(R.id.tv);
@@ -69,6 +74,7 @@ public class SplashActivity extends BaseActivity {
                 public void progress(int progress) {
                     builder.setProgress(100, progress, false);
                     notificationManager.notify(2, builder.build());
+                    new Handler(Looper.getMainLooper()).post(() -> tvProgress.setText(progress + " %"));
                 }
 
                 @Override
@@ -77,6 +83,7 @@ public class SplashActivity extends BaseActivity {
                     builder.setAutoCancel( true )
                             .setOngoing( false );
                     notificationManager.notify(2, builder.build());
+                    new Handler(Looper.getMainLooper()).post(() -> showDialogError());
                 }
 
                 @Override
@@ -96,10 +103,22 @@ public class SplashActivity extends BaseActivity {
 
             TextView textView = findViewById(R.id.tv);
             textView.setPadding(0 , 0, 0, getHeightNavi());
-            SharePreferenceUtil.saveBooleanPereferences(this, Constant.HAS_RAN_APP, true);
             new Handler().postDelayed(() -> textView.setText("Wait a moment while we preparing setup for your device"), 2000);
             new Handler().postDelayed(() -> textView.setText("Downloading data ..."), 4000);
         }
+    }
+
+    private void showDialogError() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.title_dialog_error_download));
+        builder.setMessage(getString(R.string.message_dialog_error_download));
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        builder.show();
     }
 
     private void showNotificationDownload() {
@@ -124,6 +143,7 @@ public class SplashActivity extends BaseActivity {
     private void goToMain() {
         if(!hadRan){
            createDataBase();
+           SharePreferenceUtil.saveBooleanPereferences(this, Constant.HAS_RAN_APP, true);
         }
         Intent intent = new Intent(SplashActivity.this, MainActivity.class);
         startActivity(intent);
@@ -131,6 +151,7 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void createDataBase() {
+        tvProgress.setText(getString(R.string.extrac_zip_lable));
         DataHelper dataHelper = new DataHelper(this);
         dataHelper.createDatabase();
     }

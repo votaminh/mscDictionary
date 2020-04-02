@@ -36,4 +36,7 @@
     <string name="tap_to_select_lable">Tap to select</string>
     <string name="favourite_lable_upper">FAVOURITE</string>
     <string name="history_lable_upper">HISTORY</string>
+    <string name="title_dialog_error_download">Download error</string>
+    <string name="message_dialog_error_download">A error while download, let check your conection and try again.</string>
+    <string name="extrac_zip_lable">Extracing data</string>
 </resources>
