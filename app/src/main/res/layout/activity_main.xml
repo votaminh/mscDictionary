@@ -51,7 +51,7 @@
                         android:textColor="@color/white"
                         android:layout_centerInParent="true"
                         android:fontFamily="@font/poppins_bold"
-                        android:textSize="15sp"
+                        android:textSize="@dimen/size_text_title"
                         />
 
                 </RelativeLayout>
@@ -194,7 +194,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="84dp"
                 android:background="@color/colorPrimary"
-                android:text="@string/tap_to_login_lable"
+                android:text="@string/tap_to_select_lable"
                 android:textColor="@color/white"
                 android:fontFamily="@font/poppins_bold"
                 android:textSize="15dp"
@@ -228,6 +228,7 @@
                 android:text="@string/practice_lable"
                 android:drawableLeft="@drawable/ic_practice"
                 style="@style/item_menu_drawer"
+                android:visibility="gone"
                 />
 
             <View

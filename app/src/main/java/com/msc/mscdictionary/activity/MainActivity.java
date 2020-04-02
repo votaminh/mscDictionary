@@ -14,20 +14,26 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
+import android.view.animation.AnticipateInterpolator;
+import android.view.animation.ScaleAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.msc.mscdictionary.R;
 import com.msc.mscdictionary.base.BaseActivity;
+import com.msc.mscdictionary.database.OffFavouriteDAO;
+import com.msc.mscdictionary.database.OffHistoryDAO;
 import com.msc.mscdictionary.database.OffWordDAO;
 import com.msc.mscdictionary.fragment.TranslateFragment;
 import com.msc.mscdictionary.media.MediaBuilder;
@@ -39,6 +45,7 @@ import com.msc.mscdictionary.service.DownloadZipService;
 public class MainActivity extends BaseActivity {
     private static final int DRAW_OVER_OTHER_APP_PERMISSION = 33;
     public static final int MAIN_REQUEST = 818;
+    private static final int MAIN_TO_FAVOURITE = 34;
     EditText edTextEn;
     TextView btnSearch;
     ProgressBar progress;
@@ -58,6 +65,9 @@ public class MainActivity extends BaseActivity {
 
     TextView tvHistory, tvFavourite, tvPractice;
     ImageButton btnFavourite;
+
+    OffFavouriteDAO favouriteDAO;
+    OffHistoryDAO historyDAO;
 
     @Override
     public int resLayoutId() {
@@ -93,6 +103,8 @@ public class MainActivity extends BaseActivity {
 //        showDialogDownloadData();
 
         wordDAO = new OffWordDAO(this);
+        favouriteDAO = new OffFavouriteDAO(this);
+        historyDAO = new OffHistoryDAO(this);
     }
 
 
@@ -124,7 +136,11 @@ public class MainActivity extends BaseActivity {
         });
 
         btnFavourite.setOnClickListener(v -> {
-            showDialogAskLogin();
+            if(favouriteDAO.checkHas(currentWord)){
+                removeFavourite(currentWord);
+            }else {
+                addFavourite(currentWord);
+            }
         });
 
         tvHistory.setOnClickListener(v -> {
@@ -132,12 +148,47 @@ public class MainActivity extends BaseActivity {
         });
 
         tvFavourite.setOnClickListener(v -> {
-            showDialogAskLogin();
+            goToFavourite();
         });
 
         tvPractice.setOnClickListener(v -> {
             showDialogAskLogin();
         });
+    }
+
+    private void goToFavourite() {
+        Intent intent = new Intent(MainActivity.this, FavouriteActivity.class);
+        startActivityForResult(intent, MAIN_TO_FAVOURITE);
+    }
+
+    private void addFavourite(Word currentWord) {
+        animationLike();
+        favouriteDAO.add(currentWord);
+    }
+
+    private void removeFavourite(Word currentWord) {
+        animationUnLike();
+        favouriteDAO.remove(currentWord);
+    }
+
+    private void animationLike() {
+        ScaleAnimation scaleAnimation = new ScaleAnimation(0.5f, 1f, 0.5f, 1f, ScaleAnimation.RELATIVE_TO_SELF, 0.5f,
+                ScaleAnimation.RELATIVE_TO_SELF, 0.5f);
+        scaleAnimation.setDuration(500);
+        scaleAnimation.setInterpolator(new AnticipateInterpolator());
+        btnFavourite.startAnimation(scaleAnimation);
+
+        new Handler().postDelayed(() -> btnFavourite.setImageResource(R.drawable.ic_favourite_select), 500);
+    }
+
+    private void animationUnLike() {
+        ScaleAnimation scaleAnimation = new ScaleAnimation(0.5f, 1f, 0.5f, 1f, ScaleAnimation.RELATIVE_TO_SELF, 0.5f,
+                ScaleAnimation.RELATIVE_TO_SELF, 0.5f);
+        scaleAnimation.setDuration(500);
+        scaleAnimation.setInterpolator(new AnticipateInterpolator());
+        btnFavourite.startAnimation(scaleAnimation);
+
+        new Handler().postDelayed(() -> btnFavourite.setImageResource(R.drawable.ic_favourite), 500);
     }
 
     private void playAudio(String urlSpeak) {
@@ -221,6 +272,8 @@ public class MainActivity extends BaseActivity {
 
     private void setResultSearch(Word word) {
         currentWord = word;
+        historyDAO.add(word);
+        setFavourite();
         new Handler(Looper.getMainLooper()).post(() -> {
             tvVoice.setText(word.getVoice());
             tvMean.setText(word.getEnWord().substring(0, 1).toUpperCase() + word.getEnWord().substring(1).toLowerCase());
@@ -228,6 +281,14 @@ public class MainActivity extends BaseActivity {
         });
         if(translateFragment != null && translateFragment.isVisible()){
             translateFragment.showResult(word);
+        }
+    }
+
+    private void setFavourite() {
+        if(favouriteDAO.checkHas(currentWord)){
+            btnFavourite.setImageResource(R.drawable.ic_favourite_select);
+        }else {
+            btnFavourite.setImageResource(R.drawable.ic_favourite);
         }
     }
 
@@ -281,6 +342,18 @@ public class MainActivity extends BaseActivity {
                 }).translate();
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK){
+            if(requestCode == MAIN_TO_FAVOURITE){
+                String en = data.getExtras().getString("en");
+                search(en);
+                drawerLayout.closeDrawer(Gravity.LEFT);
+            }
+        }
     }
 
     public int[] getLocationHeader(){

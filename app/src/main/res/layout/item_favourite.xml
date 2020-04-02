@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="@dimen/margin_medium"
+    app:cardCornerRadius="@dimen/cardview_radius"
+    app:cardBackgroundColor="@color/white"
+    android:layout_marginLeft="@dimen/margin_small"
+    android:layout_marginRight="@dimen/margin_small"
+    >
+
+    <RelativeLayout
+        android:id="@+id/llHeader"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toBottomOf="@id/edTextEn"
+        >
+        <TextView
+            android:id="@+id/tvMean"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="mine"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="#454444"
+            android:textSize="@dimen/big_size_text"
+            android:layout_marginLeft="@dimen/margin_medium"
+            android:layout_centerVertical="true"
+            />
+
+        <TextView
+            android:id="@+id/tvVoice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/tvMean"
+            android:layout_marginLeft="@dimen/margin_small"
+            android:text="/hei/"
+            android:fontFamily="@font/poppins_medium"
+            android:textSize="12sp"
+            android:layout_centerVertical="true"
+            />
+
+        <RelativeLayout
+            android:id="@+id/llAudio"
+            android:layout_width="@dimen/height_header"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/margin_small"
+            >
+            <ImageButton
+                android:id="@+id/tvAudio"
+                android:layout_width="@dimen/height_header"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_speaker"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                />
+
+            <ProgressBar
+                android:id="@+id/progressVoice"
+                android:layout_centerInParent="true"
+                android:layout_width="@dimen/size_progress"
+                android:layout_height="@dimen/size_progress"
+                android:visibility="invisible"
+                />
+        </RelativeLayout>
+
+
+        <ImageButton
+            android:id="@+id/btnFavourite"
+            android:layout_width="@dimen/height_header"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@id/llAudio"
+            android:src="@drawable/ic_favourite_select"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            />
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

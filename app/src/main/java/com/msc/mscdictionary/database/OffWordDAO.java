@@ -38,4 +38,20 @@ public class OffWordDAO {
             }
         }).start();
     }
+
+    public Word getWordById(int id) {
+        db = dataHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select*from word where idWord = '" + id + "'",null);
+        if(cursor.moveToFirst()){
+            String enText = URLDecoder.decode(cursor.getString(1));
+            String html = URLDecoder.decode(cursor.getString(2));
+            String vi = URLDecoder.decode(cursor.getString(3));
+            String voice = URLDecoder.decode(cursor.getString(4));
+            String audio = URLDecoder.decode(cursor.getString(5));
+            Word word = new Word(id, enText, html, vi, voice, audio);
+            return word;
+        }else {
+            return null;
+        }
+    }
 }

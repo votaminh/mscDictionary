@@ -8,4 +8,6 @@
     <dimen name="margin_large_login">40dp</dimen>
     <dimen name="height_textinput">56dp</dimen>
     <dimen name="size_textinput">17sp</dimen>
+    <dimen name="size_text_title">15sp</dimen>
+    <dimen name="cardview_radius">10dp</dimen>
 </resources>

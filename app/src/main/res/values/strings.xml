@@ -33,4 +33,6 @@
     <string name="username_input_emty">User name can not empty</string>
     <string name="pass_input_emty">Password can not empty</string>
     <string name="register_lable">Register</string>
+    <string name="tap_to_select_lable">Tap to select</string>
+    <string name="favourite_lable_upper">FAVOURITE</string>
 </resources>
