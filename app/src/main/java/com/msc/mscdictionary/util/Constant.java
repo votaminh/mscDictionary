@@ -10,7 +10,18 @@ public class Constant {
             "                </style>\n" +
             "        </header>\n" +
             "        <body>";
-    final static public String endTag = "</body>";
+    final static public String endTag = "<script>\n" +
+            "        var elems = document.querySelectorAll('.find_word');\n" +
+            "\n" +
+            "        for (var i = elems.length; i--;) {\n" +
+            "            elems[i].addEventListener('click', fn, false);\n" +
+            "        }\n" +
+            "\n" +
+            "        function fn() {\n" +
+            "            window.open( \n" +
+            "              \"https://dict.laban.vn/find?type=1&query=\" + this.rel, \"_top\"); \n" +
+            "        }\n" +
+            "    </script> </body>";
     public static final String SHAREPREFERENCES = "share";
     public static final String X_FLOAT = "xFloat";
     public static final String Y_FLOAT = "yFloat";

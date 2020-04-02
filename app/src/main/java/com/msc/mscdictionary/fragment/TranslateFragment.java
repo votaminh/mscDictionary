@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.TypedValue;
 import android.view.View;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
@@ -29,8 +30,9 @@ public class TranslateFragment extends BaseFragment {
 
     @Override
     public void initView(View view) {
-
         webViewMean = view.findViewById(R.id.webviewMean);
+        WebSettings webSettings = webViewMean.getSettings();
+        webSettings.setJavaScriptEnabled(true);
         webViewMean.setHorizontalScrollBarEnabled(false);
         webViewMean.setWebViewClient(new WebViewClient(){
             @Override
