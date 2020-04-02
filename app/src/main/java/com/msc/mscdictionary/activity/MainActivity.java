@@ -1,5 +1,6 @@
 package com.msc.mscdictionary.activity;
 
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -10,6 +11,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -299,6 +301,7 @@ public class MainActivity extends BaseActivity {
         if(translateFragment != null && translateFragment.isVisible()){
             translateFragment.showResult(word);
         }
+
     }
 
     private void setFavourite() {
