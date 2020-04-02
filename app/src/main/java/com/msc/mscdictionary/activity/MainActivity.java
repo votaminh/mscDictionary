@@ -35,6 +35,7 @@ import com.msc.mscdictionary.base.BaseActivity;
 import com.msc.mscdictionary.database.OffFavouriteDAO;
 import com.msc.mscdictionary.database.OffHistoryDAO;
 import com.msc.mscdictionary.database.OffWordDAO;
+import com.msc.mscdictionary.firebase.MyFirebase;
 import com.msc.mscdictionary.fragment.TranslateFragment;
 import com.msc.mscdictionary.media.MediaBuilder;
 import com.msc.mscdictionary.model.Word;
@@ -341,6 +342,7 @@ public class MainActivity extends BaseActivity {
                     public void success(Word word) {
                         new Handler(Looper.getMainLooper()).post(() -> {
                             saveWordOffline(word);
+                            upLoadFirebase(word);
                             setResultSearch(word);
                             hideLoad();
                         });
@@ -354,6 +356,10 @@ public class MainActivity extends BaseActivity {
                 }).translate();
             }
         });
+    }
+
+    private void upLoadFirebase(Word word) {
+        MyFirebase.uploadWord(word);
     }
 
     private void saveWordOffline(Word word) {

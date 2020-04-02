@@ -11,6 +11,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.msc.mscdictionary.model.User;
+import com.msc.mscdictionary.model.Word;
 import com.msc.mscdictionary.util.Constant;
 
 
@@ -56,8 +57,51 @@ public class MyFirebase {
         return userLog;
     }
 
+    public static void uploadWord(Word word) {
+        checkWordLog(word, new TaskListener() {
+            @Override
+            public void fail(String error) {
+                WordLog wordLog = new WordLog(word.getId(), word.getEnWord());
+                data.child(Constant.DICTION_NODE).child(Constant.WORD_NOT_HAVE_TITLE).setValue(wordLog);
+            }
+
+            @Override
+            public void success() {
+                Log.i(TAG, "success: ");
+            }
+        });
+    }
+
+    public static void checkWordLog(Word word, TaskListener listener){
+        data.child(Constant.DICTION_NODE).child(Constant.WORD_NOT_HAVE_TITLE).orderByChild("en").equalTo(word.getEnWord()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue() == null){
+                    listener.fail("this word was had ");
+                }else {
+                    listener.success();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     public interface TaskListener {
         void fail(String error);
         void success();
+    }
+
+    public static class WordLog{
+        public int id;
+        public String en;
+
+        public WordLog(int id, String en){
+            this.id = id;
+            this.en = en;
+        }
     }
 }

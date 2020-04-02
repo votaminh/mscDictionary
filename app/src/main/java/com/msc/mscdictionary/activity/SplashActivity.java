@@ -154,11 +154,14 @@ public class SplashActivity extends BaseActivity {
     private void createDataBase() {
         tvProgress.setText(getString(R.string.extrac_zip_lable));
         DataHelper dataHelper = new DataHelper(this);
-        dataHelper.createDatabase();
-
-        OffWordDAO wordDAO = new OffWordDAO(this);
-        int biggestId = wordDAO.getBiggestId();
-        SharePreferenceUtil.saveIntPereferences(this, Constant.CURRENT_ID_WORD, biggestId);
+        new Thread(() -> {
+            dataHelper.createDatabase();
+            new Handler(Looper.getMainLooper()).post(() -> {
+                OffWordDAO wordDAO = new OffWordDAO(this);
+                int biggestId = wordDAO.getBiggestId();
+                SharePreferenceUtil.saveIntPereferences(this, Constant.CURRENT_ID_WORD, biggestId);
+            });
+        }).start();
     }
 
     public int getHeightNavi(){
