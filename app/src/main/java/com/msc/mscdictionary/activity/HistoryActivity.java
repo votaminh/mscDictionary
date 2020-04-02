@@ -42,7 +42,11 @@ public class HistoryActivity extends BaseActivity {
         historyAdapter.setCallback((i) -> {
             goToMainWithWord(wordList.get(i));
         });
-        reHistory.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, true);
+        linearLayoutManager.setStackFromEnd(true);
+        reHistory.setLayoutManager(linearLayoutManager);
+
         reHistory.setAdapter(historyAdapter);
         findViewById(R.id.progress).setVisibility(View.INVISIBLE);
         if(wordList.size() == 0){

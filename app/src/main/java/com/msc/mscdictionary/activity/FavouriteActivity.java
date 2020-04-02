@@ -46,7 +46,10 @@ public class FavouriteActivity extends BaseActivity {
         favouriteAdapter.setRemoveCallback((i) -> {
             checkData();
         });
-        reFavourite.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, true);
+        linearLayoutManager.setStackFromEnd(true);
+        reFavourite.setLayoutManager(linearLayoutManager);
         reFavourite.setAdapter(favouriteAdapter);
         findViewById(R.id.progress).setVisibility(View.INVISIBLE);
 
