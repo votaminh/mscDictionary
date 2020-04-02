@@ -1,5 +1,6 @@
 package com.msc.mscdictionary.activity;
 
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Build;
@@ -17,6 +18,8 @@ import androidx.core.app.NotificationManagerCompat;
 import com.msc.mscdictionary.R;
 import com.msc.mscdictionary.base.BaseActivity;
 import com.msc.mscdictionary.database.DataHelper;
+import com.msc.mscdictionary.database.OffFavouriteDAO;
+import com.msc.mscdictionary.database.OffHistoryDAO;
 import com.msc.mscdictionary.database.WriteFile;
 import com.msc.mscdictionary.network.DownloadFile;
 import com.msc.mscdictionary.util.AppUtil;
@@ -29,6 +32,7 @@ public class SplashActivity extends BaseActivity {
     private NotificationCompat.Builder builder;
     private NotificationManagerCompat notificationManager;
     private TextView textView;
+    private boolean hadRan;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,7 +50,7 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     public void intView() {
-        boolean hadRan = SharePreferenceUtil.getBooleanPerferences(this, Constant.HAS_RAN_APP, false);
+        hadRan = SharePreferenceUtil.getBooleanPerferences(this, Constant.HAS_RAN_APP, false);
         if(hadRan){
             textView = findViewById(R.id.tv);
             textView.setPadding(0 , 0, 0, getHeightNavi());
@@ -99,7 +103,7 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void showNotificationDownload() {
-        AppUtil.createNotificationChannel(this, "download");
+        AppUtil.createNotificationChannel(this, "download", NotificationManager.IMPORTANCE_LOW);
 
         builder = new NotificationCompat.Builder(getApplicationContext(), "download")
                 .setSmallIcon(R.drawable.ic_notification)
@@ -118,17 +122,17 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void goToMain() {
-
-        DataHelper dataHelper = new DataHelper(this);
-        try {
-            dataHelper.createDataBase();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(!hadRan){
+           createDataBase();
         }
-
         Intent intent = new Intent(SplashActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    private void createDataBase() {
+        DataHelper dataHelper = new DataHelper(this);
+        dataHelper.createDatabase();
     }
 
     public int getHeightNavi(){

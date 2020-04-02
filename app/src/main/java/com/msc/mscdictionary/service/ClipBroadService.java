@@ -1,6 +1,7 @@
 package com.msc.mscdictionary.service;
 
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -42,7 +43,7 @@ public class ClipBroadService extends Service {
     }
 
     private void showNotification() {
-        AppUtil.createNotificationChannel(this, "translateCopyText");
+        AppUtil.createNotificationChannel(this, "translateCopyText", NotificationManager.IMPORTANCE_LOW);
 
         status = new NotificationCompat.Builder(getApplicationContext(), "translateCopyText")
                 .setSmallIcon(R.drawable.ic_notification)

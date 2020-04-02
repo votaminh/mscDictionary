@@ -27,8 +27,7 @@ public class DataHelper extends SQLiteOpenHelper {
         this.mContext = context;
     }
 
-    public void createDataBase() throws IOException {
-        // If the database does not exist, copy it from the assets.
+    public void createDatabase(){
         boolean mDataBaseExist = checkDataBase();
         if(!mDataBaseExist) {
             this.getReadableDatabase();
@@ -39,6 +38,18 @@ public class DataHelper extends SQLiteOpenHelper {
                 Log.e(TAG, "createDatabase database created");
             } catch (IOException mIOException) {
                 throw new Error("ErrorCopyingDataBase");
+            }
+
+            if(openDataBase()){
+                String f = "create table " + OffFavouriteDAO.FAVOURITE_TABLE +"(" +
+                        "_id integer PRIMARY KEY," +
+                        "en text)";
+
+                String h = "create table " + OffHistoryDAO.HISTORY_TABLE +"(" +
+                        "_id integer PRIMARY KEY," +
+                        "en text)";
+                mDataBase.execSQL(h);
+                mDataBase.execSQL(f);
             }
         }
     }

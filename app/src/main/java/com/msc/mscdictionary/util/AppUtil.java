@@ -15,9 +15,9 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class AppUtil {
 
-    public static void createNotificationChannel(Context context, String id) {
+    public static void createNotificationChannel(Context context, String id, int important) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            int importance = NotificationManager.IMPORTANCE_HIGH;
+            int importance = important;
             NotificationChannel channel = new NotificationChannel(id, id, importance);
 
             NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
