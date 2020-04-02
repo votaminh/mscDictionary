@@ -46,6 +46,7 @@ public class MainActivity extends BaseActivity {
     private static final int DRAW_OVER_OTHER_APP_PERMISSION = 33;
     public static final int MAIN_REQUEST = 818;
     private static final int MAIN_TO_FAVOURITE = 34;
+    private static final int MAIN_TO_HISTORY = 35;
     EditText edTextEn;
     TextView btnSearch;
     ProgressBar progress;
@@ -144,7 +145,7 @@ public class MainActivity extends BaseActivity {
         });
 
         tvHistory.setOnClickListener(v -> {
-            showDialogAskLogin();
+            goToHistory();
         });
 
         tvFavourite.setOnClickListener(v -> {
@@ -154,6 +155,11 @@ public class MainActivity extends BaseActivity {
         tvPractice.setOnClickListener(v -> {
             showDialogAskLogin();
         });
+    }
+
+    private void goToHistory() {
+        Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
+        startActivityForResult(intent, MAIN_TO_HISTORY);
     }
 
     private void goToFavourite() {
@@ -349,6 +355,10 @@ public class MainActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK){
             if(requestCode == MAIN_TO_FAVOURITE){
+                String en = data.getExtras().getString("en");
+                search(en);
+                drawerLayout.closeDrawer(Gravity.LEFT);
+            }else if(requestCode == MAIN_TO_HISTORY){
                 String en = data.getExtras().getString("en");
                 search(en);
                 drawerLayout.closeDrawer(Gravity.LEFT);

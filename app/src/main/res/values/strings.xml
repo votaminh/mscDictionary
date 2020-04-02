@@ -35,4 +35,5 @@
     <string name="register_lable">Register</string>
     <string name="tap_to_select_lable">Tap to select</string>
     <string name="favourite_lable_upper">FAVOURITE</string>
+    <string name="history_lable_upper">HISTORY</string>
 </resources>
