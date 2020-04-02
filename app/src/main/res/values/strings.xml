@@ -40,4 +40,5 @@
     <string name="message_dialog_error_download">A error while download, let check your conection and try again.</string>
     <string name="extrac_zip_lable">Extracing data</string>
     <string name="copyright">This app is owned by the company MSC Solution \n any copying is illegal</string>
+    <string name="error_no_found">no found, please try another. If this word have mine we will update soon</string>
 </resources>

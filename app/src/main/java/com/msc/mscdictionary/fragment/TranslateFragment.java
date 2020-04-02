@@ -14,11 +14,14 @@ import com.msc.mscdictionary.base.BaseFragment;
 import com.msc.mscdictionary.model.Word;
 import com.msc.mscdictionary.util.Constant;
 
+import org.w3c.dom.Text;
+
 public class TranslateFragment extends BaseFragment {
     public static final String TAG = "TranslateFragment";
     WebView webViewMean;
     Word currentWord;
     TextView tvNoData, tvNoHistory;
+    TextView tvError;
     @Override
     public int resLayoutId() {
         return R.layout.translate_fragment;
@@ -40,6 +43,7 @@ public class TranslateFragment extends BaseFragment {
 
         tvNoData = view.findViewById(R.id.tvNodata);
         tvNoHistory = view.findViewById(R.id.tvNoHistory);
+        tvError = view.findViewById(R.id.tvError);
     }
 
     private void translateEn(String en) {
@@ -51,6 +55,7 @@ public class TranslateFragment extends BaseFragment {
     }
 
     public void showResult(Word word){
+        tvNoHistory.setVisibility(View.INVISIBLE);
         currentWord = word;
         new Handler(Looper.getMainLooper()).post(() -> {
             String content = "";
@@ -90,5 +95,15 @@ public class TranslateFragment extends BaseFragment {
 
         tvNoData.setVisibility(View.INVISIBLE);
         tvNoHistory.setVisibility(View.INVISIBLE);
+        tvError.setVisibility(View.INVISIBLE);
+    }
+
+    public void setError(String error) {
+        new Handler(Looper.getMainLooper()).post(() -> {
+            tvNoHistory.setVisibility(View.INVISIBLE);
+            tvError.setVisibility(View.VISIBLE);
+            tvError.setText(error);
+            webViewMean.setVisibility(View.INVISIBLE);
+        });
     }
 }

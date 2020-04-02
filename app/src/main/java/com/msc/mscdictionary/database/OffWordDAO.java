@@ -25,7 +25,7 @@ public class OffWordDAO {
         this.en = en.toLowerCase();
         new Thread(() -> {
             db = dataHelper.getReadableDatabase();
-            Cursor cursor = db.rawQuery("select*from word where en = '" + this.en + "'",null);
+            Cursor cursor = db.rawQuery("select*from " + WORD_TABLE + " where en = '" + this.en + "'",null);
             if(cursor.moveToFirst()){
                 int id = cursor.getInt(0);
                 String enText = URLDecoder.decode(cursor.getString(1));

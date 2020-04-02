@@ -49,9 +49,6 @@ public class MyFirebase {
         });
     }
 
-//    public static void addUser(User user, DatabaseReference.CompletionListener listner){
-//        data.child(Constant.TITLE_USER_NODE).push().setValue(user, listner);
-//    }
 
     public static User getUserLogin(){
         return userLog;
@@ -62,7 +59,7 @@ public class MyFirebase {
             @Override
             public void fail(String error) {
                 WordLog wordLog = new WordLog(word.getId(), word.getEnWord());
-                data.child(Constant.DICTION_NODE).child(Constant.WORD_NOT_HAVE_TITLE).setValue(wordLog);
+                data.child(Constant.DICTION_NODE).child(Constant.WORD_NOT_HAVE_TITLE).push().setValue(wordLog);
             }
 
             @Override

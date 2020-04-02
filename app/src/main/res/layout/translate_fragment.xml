@@ -36,4 +36,17 @@
         android:fontFamily="@font/poppins_medium"
         android:textColor="#ECE9E9"
         />
+
+    <TextView
+        android:id="@+id/tvError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="sga no found"
+        android:fontFamily="@font/poppins_medium"
+        android:layout_marginLeft="@dimen/margin_medium"
+        android:layout_marginRight="@dimen/margin_medium"
+        android:layout_centerInParent="true"
+        android:textSize="23sp"
+        android:visibility="invisible"
+        />
 </RelativeLayout>

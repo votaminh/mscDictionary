@@ -72,6 +72,7 @@ public class MainActivity extends BaseActivity {
 
     OffFavouriteDAO favouriteDAO;
     OffHistoryDAO historyDAO;
+    private String enInput = "";
 
     @Override
     public int resLayoutId() {
@@ -261,7 +262,14 @@ public class MainActivity extends BaseActivity {
         }, 1000);
     }
 
-    private void setError(String error) {
+    private void setError(String s) {
+        runOnUiThread(() -> {
+            llHeaderWord.setVisibility(View.INVISIBLE);
+            if(translateFragment != null && translateFragment.isVisible()){
+                String error = enInput + "  " + getString(R.string.error_no_found);
+                translateFragment.setError(error);
+            }
+        });
     }
 
     public void hideKeyboard(Activity activity) {
@@ -325,6 +333,7 @@ public class MainActivity extends BaseActivity {
     }
 
     public void search(String en) {
+        this.enInput = validateInput(en);
         showLoad();
         hideKeyboard(this);
         edTextEn.setText(en);
@@ -337,7 +346,7 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void fail(String error) {
-                DictionaryCrawl.instance(en, new DictionaryCrawl.TranslateCallback() {
+                DictionaryCrawl.instance(enInput, new DictionaryCrawl.TranslateCallback() {
                     @Override
                     public void success(Word word) {
                         new Handler(Looper.getMainLooper()).post(() -> {
@@ -350,12 +359,25 @@ public class MainActivity extends BaseActivity {
 
                     @Override
                     public void fail(final String error) {
+                        Word word = new Word(0, enInput, "", "", "", "");
+                        upLoadFirebase(word);
                         setError(error);
                         hideLoad();
                     }
                 }).translate();
             }
         });
+    }
+
+    private String validateInput(String en) {
+        int lenght = en.length();
+        char c = en.charAt(lenght - 1);
+        if(c == ' '){
+            en = en.substring(0, lenght-1);
+            return validateInput(en);
+        }else {
+            return en;
+        }
     }
 
     private void upLoadFirebase(Word word) {

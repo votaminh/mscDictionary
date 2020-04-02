@@ -35,7 +35,7 @@ public class SplashActivity extends BaseActivity {
     private NotificationCompat.Builder builder;
     private NotificationManagerCompat notificationManager;
     private TextView textView;
-    private boolean hadRan;
+    private boolean hadRan = false;
 
     TextView tvProgress;
     @Override
