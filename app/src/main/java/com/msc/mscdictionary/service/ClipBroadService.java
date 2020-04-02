@@ -2,6 +2,7 @@ package com.msc.mscdictionary.service;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -13,8 +14,10 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.msc.mscdictionary.R;
+import com.msc.mscdictionary.activity.MainActivity;
 import com.msc.mscdictionary.custom.FloatWidgetBuilder;
 import com.msc.mscdictionary.util.AppUtil;
+import com.msc.mscdictionary.util.Constant;
 
 public class ClipBroadService extends Service {
     private Notification status;
@@ -45,6 +48,10 @@ public class ClipBroadService extends Service {
     private void showNotification() {
         AppUtil.createNotificationChannel(this, "translateCopyText", NotificationManager.IMPORTANCE_LOW);
 
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
         status = new NotificationCompat.Builder(getApplicationContext(), "translateCopyText")
                 .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle(getString(R.string.run_service))
@@ -52,6 +59,7 @@ public class ClipBroadService extends Service {
                 .setSound(null)
                 .setAutoCancel( false )
                 .setOngoing( true )
+                .setContentIntent(pendingIntent)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .build();

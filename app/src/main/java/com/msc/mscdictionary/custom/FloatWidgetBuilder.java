@@ -2,6 +2,7 @@ package com.msc.mscdictionary.custom;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.os.Handler;
@@ -18,6 +19,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.msc.mscdictionary.R;
+import com.msc.mscdictionary.activity.MainActivity;
 import com.msc.mscdictionary.database.OffWordDAO;
 import com.msc.mscdictionary.model.Word;
 import com.msc.mscdictionary.network.DictionaryCrawl;
@@ -79,7 +81,7 @@ public class FloatWidgetBuilder {
                         currentTime = System.currentTimeMillis();
                         int middle = mWidth / 2;
 
-                        if(currentTime - oldTime < 200){
+                        if(currentTime - oldTime < 300){
                             removeFloat();
                             showQuickly(en);
                         }else {
@@ -206,10 +208,15 @@ public class FloatWidgetBuilder {
         TextView tvClose = quickTranslate.findViewById(R.id.tvClose);
         ProgressBar progressBar = quickTranslate.findViewById(R.id.progress);
         TextView tvResult = quickTranslate.findViewById(R.id.tvResult);
+        TextView tvSearch = quickTranslate.findViewById(R.id.btnSearch);
         tvResult.setText("");
         progressBar.setVisibility(View.VISIBLE);
 
         edEn.setText(s);
+
+        edEn.setOnClickListener(v -> openApp());
+        tvResult.setOnClickListener(v -> openApp());
+        tvSearch.setOnClickListener(v -> openApp());
 
         tvClose.setOnClickListener(v -> removeTranslate());
         OffWordDAO offWordDAO = new OffWordDAO(context);
@@ -245,6 +252,13 @@ public class FloatWidgetBuilder {
                 }).translate();
             }
         });
+    }
+
+    private void openApp() {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        removeTranslate();
+        context.startActivity(intent);
     }
 
     public void removeTranslate(){
