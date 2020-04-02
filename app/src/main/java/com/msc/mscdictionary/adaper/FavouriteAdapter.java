@@ -23,6 +23,7 @@ import com.msc.mscdictionary.callback.AdapterCallback;
 import com.msc.mscdictionary.database.OffFavouriteDAO;
 import com.msc.mscdictionary.media.MediaBuilder;
 import com.msc.mscdictionary.model.Word;
+import com.msc.mscdictionary.util.Constant;
 
 import java.util.List;
 
@@ -30,6 +31,7 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
     List<Word> wordList;
     Context context;
     AdapterCallback callback;
+    RemoveCallback removeCallback;
 
     public FavouriteAdapter(List<Word> list){
         this.wordList = list;
@@ -46,8 +48,14 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
         this.callback = callback;
     }
 
+    public void setRemoveCallback(RemoveCallback removeCallback){
+        this.removeCallback = removeCallback;
+    }
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        if(holder == null){
+            return;
+        }
         Word word = wordList.get(position);
         holder.tvVoice.setText(word.getVoice());
         holder.tvMean.setText(word.getEnWord().substring(0, 1).toUpperCase() + word.getEnWord().substring(1).toLowerCase());
@@ -58,7 +66,10 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
                 wordList.remove(position);
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position, wordList.size());
-            }, 500);
+                if(removeCallback != null){
+                    removeCallback.removeItem(position);
+                }
+            }, Constant.DURATION_SCALE_FAVOURITE);
         });
 
         holder.btnSpeaker.setOnClickListener(v -> {
@@ -91,11 +102,11 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
     private void animationUnLike(View view) {
         ScaleAnimation scaleAnimation = new ScaleAnimation(0.5f, 1f, 0.5f, 1f, ScaleAnimation.RELATIVE_TO_SELF, 0.5f,
                 ScaleAnimation.RELATIVE_TO_SELF, 0.5f);
-        scaleAnimation.setDuration(500);
+        scaleAnimation.setDuration(Constant.DURATION_SCALE_FAVOURITE);
         scaleAnimation.setInterpolator(new AnticipateInterpolator());
         view.startAnimation(scaleAnimation);
 
-        new Handler().postDelayed(() -> ((ImageButton)view).setImageResource(R.drawable.ic_favourite), 500);
+        new Handler().postDelayed(() -> ((ImageButton)view).setImageResource(R.drawable.ic_favourite), Constant.DURATION_SCALE_FAVOURITE);
     }
 
     @Override
@@ -123,5 +134,9 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
                 }
             });
         }
+    }
+
+    public interface RemoveCallback{
+        void removeItem(int i);
     }
 }

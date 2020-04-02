@@ -26,6 +26,23 @@ public class Word {
     }
 
     public Word(int id,String enWord, String htmlFullMean, String commonMean, String voice, String urlSpeak) {
+        if(enWord == null || enWord.isEmpty()){
+            enWord = "";
+        }
+
+        if(htmlFullMean == null || htmlFullMean.isEmpty()){
+            htmlFullMean = "";
+        }
+
+        if (commonMean == null || commonMean.isEmpty()){
+            commonMean ="";
+        }
+        if(voice == null || voice.isEmpty()){
+            voice = "";
+        }
+        if(urlSpeak == null || urlSpeak.isEmpty()){
+            urlSpeak = "";
+        }
         this.id = id;
         this.enWord = enWord;
         this.htmlFullMean = htmlFullMean;
@@ -35,6 +52,23 @@ public class Word {
     }
 
     public Word(String enWord, String htmlFullMean, String commonMean, String voice, String urlSpeak) {
+        if(enWord == null || enWord.isEmpty()){
+            enWord = "";
+        }
+
+        if(htmlFullMean == null || htmlFullMean.isEmpty()){
+            htmlFullMean = "";
+        }
+
+        if (commonMean == null || commonMean.isEmpty()){
+            commonMean ="";
+        }
+        if(voice == null || voice.isEmpty()){
+            voice = "";
+        }
+        if(urlSpeak == null || urlSpeak.isEmpty()){
+            urlSpeak = "";
+        }
         this.htmlFullMean = htmlFullMean;
         this.enWord = enWord;
         this.commonMean = commonMean;

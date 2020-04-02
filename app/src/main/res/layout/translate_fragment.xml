@@ -23,14 +23,17 @@
         android:layout_centerHorizontal="true"
         android:textColor="@color/color_text_menu_item"
         android:fontFamily="@font/poppins_medium"
+        android:visibility="invisible"
         />
     <TextView
         android:id="@+id/tvNoHistory"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="50dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="@string/no_history_lable"
+        android:textAlignment="center"
+        android:text="@string/copyright"
         android:fontFamily="@font/poppins_medium"
-        android:textColor="@color/color_text_menu_item"
+        android:textColor="#ECE9E9"
         />
 </RelativeLayout>

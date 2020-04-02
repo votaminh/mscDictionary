@@ -1,5 +1,6 @@
 package com.msc.mscdictionary.database;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -11,6 +12,7 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 
 public class OffWordDAO {
+    private static final String WORD_TABLE = "word";
     DataHelper dataHelper;
     private SQLiteDatabase db;
     String en;
@@ -53,5 +55,27 @@ public class OffWordDAO {
         }else {
             return null;
         }
+    }
+
+    public int getBiggestId() {
+        db = dataHelper.getReadableDatabase();
+        Cursor c = db.query(WORD_TABLE, null, null, null, null, null, "idWord"+" DESC");
+        if(c.moveToFirst()){
+            int id = c.getInt(0);
+            return id;
+        }
+        return 0;
+    }
+
+    public void addWord(Word word) {
+        db = dataHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("idWord",word.getId());
+        values.put("en",word.getEnWord());
+        values.put("htmlMean",word.getHtmlFullMean());
+        values.put("commonMean",word.getCommonMean());
+        values.put("voice",word.getVoice());
+        values.put("urlSpeak",word.getUrlSpeak());
+        db.insert(WORD_TABLE,null,values);
     }
 }

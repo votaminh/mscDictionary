@@ -41,6 +41,8 @@ import com.msc.mscdictionary.model.Word;
 import com.msc.mscdictionary.network.DictionaryCrawl;
 import com.msc.mscdictionary.service.ClipBroadService;
 import com.msc.mscdictionary.service.DownloadZipService;
+import com.msc.mscdictionary.util.Constant;
+import com.msc.mscdictionary.util.SharePreferenceUtil;
 
 public class MainActivity extends BaseActivity {
     private static final int DRAW_OVER_OTHER_APP_PERMISSION = 33;
@@ -180,21 +182,21 @@ public class MainActivity extends BaseActivity {
     private void animationLike() {
         ScaleAnimation scaleAnimation = new ScaleAnimation(0.5f, 1f, 0.5f, 1f, ScaleAnimation.RELATIVE_TO_SELF, 0.5f,
                 ScaleAnimation.RELATIVE_TO_SELF, 0.5f);
-        scaleAnimation.setDuration(500);
+        scaleAnimation.setDuration(Constant.DURATION_SCALE_FAVOURITE);
         scaleAnimation.setInterpolator(new AnticipateInterpolator());
         btnFavourite.startAnimation(scaleAnimation);
 
-        new Handler().postDelayed(() -> btnFavourite.setImageResource(R.drawable.ic_favourite_select), 500);
+        new Handler().postDelayed(() -> btnFavourite.setImageResource(R.drawable.ic_favourite_select), Constant.DURATION_SCALE_FAVOURITE);
     }
 
     private void animationUnLike() {
         ScaleAnimation scaleAnimation = new ScaleAnimation(0.5f, 1f, 0.5f, 1f, ScaleAnimation.RELATIVE_TO_SELF, 0.5f,
                 ScaleAnimation.RELATIVE_TO_SELF, 0.5f);
-        scaleAnimation.setDuration(500);
+        scaleAnimation.setDuration(Constant.DURATION_SCALE_FAVOURITE);
         scaleAnimation.setInterpolator(new AnticipateInterpolator());
         btnFavourite.startAnimation(scaleAnimation);
 
-        new Handler().postDelayed(() -> btnFavourite.setImageResource(R.drawable.ic_favourite), 500);
+        new Handler().postDelayed(() -> btnFavourite.setImageResource(R.drawable.ic_favourite), Constant.DURATION_SCALE_FAVOURITE);
     }
 
     private void playAudio(String urlSpeak) {
@@ -291,11 +293,13 @@ public class MainActivity extends BaseActivity {
     }
 
     private void setFavourite() {
-        if(favouriteDAO.checkHas(currentWord)){
-            btnFavourite.setImageResource(R.drawable.ic_favourite_select);
-        }else {
-            btnFavourite.setImageResource(R.drawable.ic_favourite);
-        }
+        new Handler(Looper.getMainLooper()).post(() -> {
+            if(favouriteDAO.checkHas(currentWord)){
+                btnFavourite.setImageResource(R.drawable.ic_favourite_select);
+            }else {
+                btnFavourite.setImageResource(R.drawable.ic_favourite);
+            }
+        });
     }
 
     private void openTranslateFragment() {
@@ -322,7 +326,6 @@ public class MainActivity extends BaseActivity {
     public void search(String en) {
         showLoad();
         hideKeyboard(this);
-        llHeaderWord.setVisibility(View.INVISIBLE);
         edTextEn.setText(en);
         wordDAO.getWordByEn(en, new DictionaryCrawl.TranslateCallback() {
             @Override
@@ -336,8 +339,11 @@ public class MainActivity extends BaseActivity {
                 DictionaryCrawl.instance(en, new DictionaryCrawl.TranslateCallback() {
                     @Override
                     public void success(Word word) {
-                        setResultSearch(word);
-                        hideLoad();
+                        new Handler(Looper.getMainLooper()).post(() -> {
+                            saveWordOffline(word);
+                            setResultSearch(word);
+                            hideLoad();
+                        });
                     }
 
                     @Override
@@ -348,6 +354,16 @@ public class MainActivity extends BaseActivity {
                 }).translate();
             }
         });
+    }
+
+    private void saveWordOffline(Word word) {
+        int biggestId = SharePreferenceUtil.getIntPereferences(this, Constant.CURRENT_ID_WORD, 0);
+        biggestId++;
+        word.setId(biggestId);
+        SharePreferenceUtil.saveIntPereferences(this, Constant.CURRENT_ID_WORD, biggestId);
+        new Thread(() -> {
+            wordDAO.addWord(word);
+        }).start();
     }
 
     @Override

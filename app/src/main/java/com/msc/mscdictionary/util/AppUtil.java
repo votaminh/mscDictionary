@@ -5,6 +5,13 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.os.Build;
+import android.os.Handler;
+import android.view.View;
+import android.view.animation.AnticipateInterpolator;
+import android.view.animation.ScaleAnimation;
+import android.widget.ImageButton;
+
+import com.msc.mscdictionary.R;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

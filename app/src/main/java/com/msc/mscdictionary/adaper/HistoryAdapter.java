@@ -23,6 +23,7 @@ import com.msc.mscdictionary.callback.AdapterCallback;
 import com.msc.mscdictionary.database.OffFavouriteDAO;
 import com.msc.mscdictionary.media.MediaBuilder;
 import com.msc.mscdictionary.model.Word;
+import com.msc.mscdictionary.util.Constant;
 
 import java.util.List;
 
@@ -103,7 +104,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     private void animationLike(View view) {
         ScaleAnimation scaleAnimation = new ScaleAnimation(0.5f, 1f, 0.5f, 1f, ScaleAnimation.RELATIVE_TO_SELF, 0.5f,
                 ScaleAnimation.RELATIVE_TO_SELF, 0.5f);
-        scaleAnimation.setDuration(500);
+        scaleAnimation.setDuration(Constant.DURATION_SCALE_FAVOURITE);
         scaleAnimation.setInterpolator(new AnticipateInterpolator());
         view.startAnimation(scaleAnimation);
 
@@ -113,7 +114,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     private void animationUnLike(View view) {
         ScaleAnimation scaleAnimation = new ScaleAnimation(0.5f, 1f, 0.5f, 1f, ScaleAnimation.RELATIVE_TO_SELF, 0.5f,
                 ScaleAnimation.RELATIVE_TO_SELF, 0.5f);
-        scaleAnimation.setDuration(500);
+        scaleAnimation.setDuration(Constant.DURATION_SCALE_FAVOURITE);
         scaleAnimation.setInterpolator(new AnticipateInterpolator());
         view.startAnimation(scaleAnimation);
 

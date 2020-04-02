@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,7 +35,6 @@ public class FavouriteActivity extends BaseActivity {
         reFavourite = findViewById(R.id.reFavourite);
         favouriteDAO = new OffFavouriteDAO(this);
         buildReFavourite();
-        continueBuild();
     }
 
     private void buildReFavourite() {
@@ -43,9 +43,24 @@ public class FavouriteActivity extends BaseActivity {
         favouriteAdapter.setCallback((i) -> {
             goToMainWithWord(wordList.get(i));
         });
+        favouriteAdapter.setRemoveCallback((i) -> {
+            checkData();
+        });
         reFavourite.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         reFavourite.setAdapter(favouriteAdapter);
         findViewById(R.id.progress).setVisibility(View.INVISIBLE);
+
+        checkData();
+    }
+
+    private void checkData() {
+        if(wordList.size() == 0){
+            findViewById(R.id.tvNodata).setVisibility(View.VISIBLE);
+            findViewById(R.id.progress).setVisibility(View.INVISIBLE);
+        }else {
+            findViewById(R.id.tvNodata).setVisibility(View.INVISIBLE);
+            findViewById(R.id.progress).setVisibility(View.INVISIBLE);
+        }
     }
 
     private void goToMainWithWord(Word word) {
@@ -54,10 +69,5 @@ public class FavouriteActivity extends BaseActivity {
         setResult(RESULT_OK, intent);
         finish();
     }
-
-    private void continueBuild() {
-
-    }
-
 
 }

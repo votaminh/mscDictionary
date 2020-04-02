@@ -22,6 +22,7 @@ import com.msc.mscdictionary.base.BaseActivity;
 import com.msc.mscdictionary.database.DataHelper;
 import com.msc.mscdictionary.database.OffFavouriteDAO;
 import com.msc.mscdictionary.database.OffHistoryDAO;
+import com.msc.mscdictionary.database.OffWordDAO;
 import com.msc.mscdictionary.database.WriteFile;
 import com.msc.mscdictionary.network.DownloadFile;
 import com.msc.mscdictionary.util.AppUtil;
@@ -154,6 +155,10 @@ public class SplashActivity extends BaseActivity {
         tvProgress.setText(getString(R.string.extrac_zip_lable));
         DataHelper dataHelper = new DataHelper(this);
         dataHelper.createDatabase();
+
+        OffWordDAO wordDAO = new OffWordDAO(this);
+        int biggestId = wordDAO.getBiggestId();
+        SharePreferenceUtil.saveIntPereferences(this, Constant.CURRENT_ID_WORD, biggestId);
     }
 
     public int getHeightNavi(){

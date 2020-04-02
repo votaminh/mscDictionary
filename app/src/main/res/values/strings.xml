@@ -39,4 +39,5 @@
     <string name="title_dialog_error_download">Download error</string>
     <string name="message_dialog_error_download">A error while download, let check your conection and try again.</string>
     <string name="extrac_zip_lable">Extracing data</string>
+    <string name="copyright">This app is owned by the company MSC Solution \n any copying is illegal</string>
 </resources>

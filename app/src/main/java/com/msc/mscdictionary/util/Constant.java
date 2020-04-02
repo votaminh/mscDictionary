@@ -24,6 +24,8 @@ public class Constant {
     public static final String UPZIP_NAME = "/dictionary.db";
     public static final String DICTION_NODE = "dictionary";
     public static final String USER_TITLE = "user";
+    public static final long DURATION_SCALE_FAVOURITE = 200;
+    public static final String CURRENT_ID_WORD = "biggestId";
 
     public static String ip = "http://192.168.43.13/";
 }
