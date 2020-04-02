@@ -55,9 +55,9 @@ public class TranslateFragment extends BaseFragment {
     }
 
     public void showResult(Word word){
-        tvNoHistory.setVisibility(View.INVISIBLE);
-        currentWord = word;
         new Handler(Looper.getMainLooper()).post(() -> {
+            tvNoHistory.setVisibility(View.INVISIBLE);
+            currentWord = word;
             String content = "";
             for (int i = 0; i < 13; i++) {
                 content += Constant.TAG_BR;

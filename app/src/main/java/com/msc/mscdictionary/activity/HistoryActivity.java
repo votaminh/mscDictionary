@@ -45,6 +45,9 @@ public class HistoryActivity extends BaseActivity {
         reHistory.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         reHistory.setAdapter(historyAdapter);
         findViewById(R.id.progress).setVisibility(View.INVISIBLE);
+        if(wordList.size() == 0){
+            findViewById(R.id.tvNodata).setVisibility(View.VISIBLE);
+        }
     }
 
     private void goToMainWithWord(Word word) {
