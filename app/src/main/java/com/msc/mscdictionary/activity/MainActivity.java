@@ -326,11 +326,6 @@ public class MainActivity extends BaseActivity {
             startActivityForResult(intent, DRAW_OVER_OTHER_APP_PERMISSION);
         }
     }
-    
-    @Override
-    public void onBackPressed() {
-        moveTaskToBack(true);
-    }
 
     public void search(String en) {
         this.enInput = validateInput(en);

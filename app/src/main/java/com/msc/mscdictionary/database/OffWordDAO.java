@@ -72,7 +72,7 @@ public class OffWordDAO {
         ContentValues values = new ContentValues();
         values.put("idWord",word.getId());
         values.put("en",word.getEnWord());
-        values.put("htmlMean",word.getHtmlFullMean());
+        values.put("htmtMean",word.getHtmlFullMean());
         values.put("commonMean",word.getCommonMean());
         values.put("voice",word.getVoice());
         values.put("urlSpeak",word.getUrlSpeak());

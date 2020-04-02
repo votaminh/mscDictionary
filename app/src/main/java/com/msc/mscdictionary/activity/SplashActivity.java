@@ -58,9 +58,7 @@ public class SplashActivity extends BaseActivity {
 
         hadRan = SharePreferenceUtil.getBooleanPerferences(this, Constant.HAS_RAN_APP, false);
         if(hadRan){
-            textView = findViewById(R.id.tv);
-            textView.setPadding(0 , 0, 0, getHeightNavi());
-            new Handler().postDelayed(() -> goToMain(), 500);
+            goToMain();
         }else {
 
             String link = Constant.LINK_ZIP_DATABASE;
