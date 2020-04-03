@@ -214,9 +214,9 @@ public class FloatWidgetBuilder {
 
         edEn.setText(s);
 
-        edEn.setOnClickListener(v -> openApp());
-        tvResult.setOnClickListener(v -> openApp());
-        tvSearch.setOnClickListener(v -> openApp());
+        edEn.setOnClickListener(v -> openApp(s));
+        tvResult.setOnClickListener(v -> openApp(s));
+        tvSearch.setOnClickListener(v -> openApp(s));
 
         tvClose.setOnClickListener(v -> removeTranslate());
         OffWordDAO offWordDAO = new OffWordDAO(context);
@@ -254,8 +254,9 @@ public class FloatWidgetBuilder {
         });
     }
 
-    private void openApp() {
+    private void openApp(String s) {
         Intent intent = new Intent(context, MainActivity.class);
+        intent.putExtra(Constant.EN_NAME_PUT, s);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         removeTranslate();
         context.startActivity(intent);

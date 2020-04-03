@@ -21,7 +21,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     @Override
-    public void intView() {
+    public void initView() {
         edPassword = findViewById(R.id.edPassword);
         edUserName = findViewById(R.id.edUserName);
         btnLogin = findViewById(R.id.btnLogin);

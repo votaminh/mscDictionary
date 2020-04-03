@@ -15,7 +15,6 @@ import com.msc.mscdictionary.base.BaseFragment;
 import com.msc.mscdictionary.model.Word;
 import com.msc.mscdictionary.util.Constant;
 
-import org.w3c.dom.Text;
 
 public class TranslateFragment extends BaseFragment {
     public static final String TAG = "TranslateFragment";
@@ -61,7 +60,7 @@ public class TranslateFragment extends BaseFragment {
             tvNoHistory.setVisibility(View.INVISIBLE);
             currentWord = word;
             String content = "";
-            for (int i = 0; i < 13; i++) {
+            for (int i = 0; i < Constant.NUMBER_COUNT_BR; i++) {
                 content += Constant.TAG_BR;
             }
             content += word.getHtmlFullMean();

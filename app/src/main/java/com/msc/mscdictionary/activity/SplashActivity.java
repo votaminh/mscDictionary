@@ -53,7 +53,7 @@ public class SplashActivity extends BaseActivity {
     }
 
     @Override
-    public void intView() {
+    public void initView() {
         tvProgress = findViewById(R.id.tvProgress);
 
         hadRan = SharePreferenceUtil.getBooleanPerferences(this, Constant.HAS_RAN_APP, false);

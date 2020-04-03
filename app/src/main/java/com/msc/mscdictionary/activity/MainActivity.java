@@ -82,7 +82,7 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    public void intView() {
+    public void initView() {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
         btnFavourite = findViewById(R.id.btnFavourite);
@@ -112,6 +112,21 @@ public class MainActivity extends BaseActivity {
         wordDAO = new OffWordDAO(this);
         favouriteDAO = new OffFavouriteDAO(this);
         historyDAO = new OffHistoryDAO(this);
+
+        openDefault();
+    }
+
+    private void openDefault() {
+        if(getIntent().getExtras() != null){
+            String en = getIntent().getExtras().getString(Constant.EN_NAME_PUT, "");
+            search(en);
+            new Handler().postDelayed(() -> hideKeyboard(this), 500);
+        }else {
+            new Handler().postDelayed(() -> {
+                showKeyBroad(edTextEn);
+                edTextEn.setCursorVisible(true);
+            }, 500);
+        }
     }
 
 
@@ -122,6 +137,11 @@ public class MainActivity extends BaseActivity {
         startService(service);
     }
 
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
+    }
+
     private void onClick() {
         btnSpeaker.setOnClickListener(v -> {
             if(currentWord != null){
@@ -129,9 +149,6 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-        edTextEn.setOnClickListener(v -> {
-            edTextEn.setCursorVisible(true);
-        });
         btnSearch.setOnClickListener((v) -> {
             final String en = edTextEn.getText().toString();
             search(en);
@@ -259,8 +276,6 @@ public class MainActivity extends BaseActivity {
             progress.setVisibility(View.INVISIBLE);
             btnSearch.setVisibility(View.VISIBLE);
             edTextEn.setText("");
-            edTextEn.clearFocus();
-            edTextEn.setCursorVisible(false);
         }, 1000);
     }
 
@@ -284,9 +299,9 @@ public class MainActivity extends BaseActivity {
         edTextEn.setCursorVisible(false);
     }
 
-    private void showKeyBroad() {
+    private void showKeyBroad(EditText textEdit) {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+        imm.showSoftInput(textEdit, InputMethodManager.SHOW_IMPLICIT);
     }
 
     private void setResultSearch(Word word) {

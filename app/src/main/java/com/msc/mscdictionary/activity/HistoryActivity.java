@@ -29,7 +29,7 @@ public class HistoryActivity extends BaseActivity {
     }
 
     @Override
-    public void intView() {
+    public void initView() {
         reHistory = findViewById(R.id.reHistory);
         historyDAO = new OffHistoryDAO(this);
         buildReFavourite();

@@ -31,7 +31,7 @@ public class FavouriteActivity extends BaseActivity {
     }
 
     @Override
-    public void intView() {
+    public void initView() {
         reFavourite = findViewById(R.id.reFavourite);
         favouriteDAO = new OffFavouriteDAO(this);
         buildReFavourite();

@@ -41,4 +41,5 @@
     <string name="extrac_zip_lable">Extracing data</string>
     <string name="copyright">This app is owned by the company MSC Solution \n any copying is illegal</string>
     <string name="error_no_found">no found, please try another. If this word have mine we will update soon</string>
+    <string name="see_more_mean">See more</string>
 </resources>

@@ -38,6 +38,8 @@ public class Constant {
     public static final long DURATION_SCALE_FAVOURITE = 200;
     public static final String CURRENT_ID_WORD = "biggestId";
     public static final String WORD_NOT_HAVE_TITLE = "wordNotHave";
+    public static final int NUMBER_COUNT_BR = 14;
+    public static final String EN_NAME_PUT = "englishWord";
 
     public static String ip = "http://192.168.43.13/";
 }
