@@ -112,12 +112,18 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     private void addFavourite(Word word, ImageButton btnFavourite) {
         favouriteDAO.add(word);
         animationLike(btnFavourite);
+        new Handler().postDelayed(() -> {
+            notifyDataSetChanged();
+        }, 500);
     }
 
     private void removeFavourite(Word word, ImageButton imageView) {
         animationUnLike(imageView);
         OffFavouriteDAO favouriteDAO = new OffFavouriteDAO(context);
         favouriteDAO.remove(word);
+        new Handler().postDelayed(() -> {
+            notifyDataSetChanged();
+        }, 500);
     }
 
     private void animationLike(View view) {
