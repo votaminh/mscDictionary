@@ -49,4 +49,26 @@ public class OffHistoryDAO {
         }
         return list;
     }
+
+    public int getIdWord(int id) {
+        db = dataHelper.getReadableDatabase();
+        String s = "select * from " + HISTORY_TABLE + " where en = '" + id + "'";
+        Cursor cursor = db.rawQuery(s, null);
+        if(cursor.moveToFirst()){
+            return cursor.getInt(0);
+        }else {
+            return 0;
+        }
+    }
+
+    public int getEnById(int i) {
+        db = dataHelper.getReadableDatabase();
+        String s = "select * from " + HISTORY_TABLE + " where _id = '" + i + "'";
+        Cursor cursor = db.rawQuery(s, null);
+        if(cursor.moveToFirst()){
+            return cursor.getInt(1);
+        }else {
+            return 0;
+        }
+    }
 }

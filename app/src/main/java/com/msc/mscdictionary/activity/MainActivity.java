@@ -23,6 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -78,6 +79,7 @@ public class MainActivity extends BaseActivity {
     OffHistoryDAO historyDAO;
     private String enInput = "";
     private AlertDialog dialogTutorial;
+    private boolean outOfApp = false;
 
     @Override
     public int resLayoutId() {
@@ -124,7 +126,7 @@ public class MainActivity extends BaseActivity {
     private void openDefault() {
         if(getIntent().getExtras() != null){
             String en = getIntent().getExtras().getString(Constant.EN_NAME_PUT, "");
-            search(en);
+            search(en, true);
             new Handler().postDelayed(() -> hideKeyboard(this), 500);
         }else {
             new Handler().postDelayed(() -> {
@@ -149,8 +151,44 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        SharePreferenceUtil.saveBooleanPereferences(this, Constant.SHOW_TOAST_BACK, true);
+    }
+
+    @Override
     public void onBackPressed() {
-        moveTaskToBack(true);
+        if(currentWord == null){
+            moveTaskToBack(true);
+            return;
+        }
+
+        if(outOfApp){
+            moveTaskToBack(true);
+        }else {
+            outOfApp = true;
+            boolean showToast = SharePreferenceUtil.getBooleanPerferences(this, Constant.SHOW_TOAST_BACK, true);
+            if(showToast){
+                Toast.makeText(this, getString(R.string.tap_again_to_out), Toast.LENGTH_SHORT).show();
+                SharePreferenceUtil.saveBooleanPereferences(this, Constant.SHOW_TOAST_BACK, false);
+            }
+            new Handler().postDelayed(() -> {
+                outOfApp = false;
+            }, 400);
+
+            backHistory();
+        }
+
+    }
+
+    private void backHistory() {
+        int currentIdHistory = historyDAO.getIdWord(currentWord.getId());
+        if(currentIdHistory == 0){
+            moveTaskToBack(true);
+        }
+        int idPreviousWord = historyDAO.getEnById(currentIdHistory - 1);
+        currentWord = wordDAO.getWordById(idPreviousWord);
+        search(currentWord.getEnWord(), false);
     }
 
     private void onClick() {
@@ -174,7 +212,7 @@ public class MainActivity extends BaseActivity {
 
         btnSearch.setOnClickListener((v) -> {
             final String en = edTextEn.getText().toString();
-            search(en);
+            search(en, true);
         });
 
         btnMenuDrawer.setOnClickListener(v -> {
@@ -342,9 +380,11 @@ public class MainActivity extends BaseActivity {
         imm.showSoftInput(textEdit, InputMethodManager.SHOW_IMPLICIT);
     }
 
-    private void setResultSearch(Word word) {
+    private void setResultSearch(Word word, boolean addHistory) {
         currentWord = word;
-        historyDAO.add(word);
+        if(addHistory){
+            historyDAO.add(word);
+        }
         setFavourite();
         new Handler(Looper.getMainLooper()).post(() -> {
             tvVoice.setText(word.getVoice());
@@ -404,7 +444,7 @@ public class MainActivity extends BaseActivity {
         startActivityForResult(intent, DRAW_OVER_OTHER_APP_PERMISSION);
     }
 
-    public void search(String en) {
+    public void search(String en, boolean addHistory) {
         this.enInput = validateInput(en);
         showLoad();
         hideKeyboard(this);
@@ -412,7 +452,7 @@ public class MainActivity extends BaseActivity {
         wordDAO.getWordByEn(en, new DictionaryCrawl.TranslateCallback() {
             @Override
             public void success(Word word) {
-                setResultSearch(word);
+                setResultSearch(word, addHistory);
                 hideLoad();
             }
 
@@ -424,7 +464,7 @@ public class MainActivity extends BaseActivity {
                         new Handler(Looper.getMainLooper()).post(() -> {
                             saveWordOffline(word);
                             upLoadFirebase(word);
-                            setResultSearch(word);
+                            setResultSearch(word, addHistory);
                             hideLoad();
                         });
                     }
@@ -472,11 +512,11 @@ public class MainActivity extends BaseActivity {
         if(resultCode == RESULT_OK){
             if(requestCode == MAIN_TO_FAVOURITE){
                 String en = data.getExtras().getString("en");
-                search(en);
+                search(en, true);
                 drawerLayout.closeDrawer(Gravity.LEFT);
             }else if(requestCode == MAIN_TO_HISTORY){
                 String en = data.getExtras().getString("en");
-                search(en);
+                search(en, true);
                 drawerLayout.closeDrawer(Gravity.LEFT);
             }
         }

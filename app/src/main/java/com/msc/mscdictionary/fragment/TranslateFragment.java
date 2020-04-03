@@ -50,7 +50,7 @@ public class TranslateFragment extends BaseFragment {
     private void translateEn(String en) {
         MainActivity activity = (MainActivity) getActivity();
         if(activity != null){
-            activity.search(en);
+            activity.search(en, true);
             webViewMean.setVisibility(View.INVISIBLE);
         }
     }
