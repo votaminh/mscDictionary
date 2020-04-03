@@ -5,7 +5,6 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <uses-permission android:name="WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY "/>
-
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_app"
@@ -13,6 +12,9 @@
         android:roundIcon="@drawable/ic_round_app"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-9843359112474482~8049361045"/>
         <activity android:name=".activity.MainActivity">
         </activity>
         <activity android:name=".activity.SplashActivity">

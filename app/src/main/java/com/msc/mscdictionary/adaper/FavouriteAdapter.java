@@ -89,6 +89,11 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
                         holder.progressBar.setVisibility(View.INVISIBLE);
                     });
                 }
+
+                @Override
+                public void fail(String error) {
+
+                }
             });
         });
     }

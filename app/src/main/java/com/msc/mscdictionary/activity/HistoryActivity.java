@@ -6,12 +6,15 @@ import android.view.View;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.ads.AdView;
 import com.msc.mscdictionary.R;
 import com.msc.mscdictionary.adaper.FavouriteAdapter;
 import com.msc.mscdictionary.adaper.HistoryAdapter;
+import com.msc.mscdictionary.ads.AdsHelper;
 import com.msc.mscdictionary.base.BaseActivity;
 import com.msc.mscdictionary.database.OffHistoryDAO;
 import com.msc.mscdictionary.model.Word;
+import com.msc.mscdictionary.util.AppUtil;
 import com.msc.mscdictionary.util.Constant;
 
 import java.util.ArrayList;
@@ -23,6 +26,7 @@ public class HistoryActivity extends BaseActivity {
     List<Word> wordList = new ArrayList<>();
 
     OffHistoryDAO historyDAO;
+    private AdView mAdView;
 
     @Override
     public int resLayoutId() {
@@ -35,6 +39,10 @@ public class HistoryActivity extends BaseActivity {
         historyDAO = new OffHistoryDAO(this);
         buildReFavourite();
         continueBuild();
+        mAdView =(AdView)findViewById(R.id.adView);
+        if(AppUtil.isNetworkConnected(this)){
+            AdsHelper.setupAds(mAdView, this);
+        }
     }
 
     private void buildReFavourite() {

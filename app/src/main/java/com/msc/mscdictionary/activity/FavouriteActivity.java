@@ -9,11 +9,18 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.msc.mscdictionary.R;
 import com.msc.mscdictionary.adaper.FavouriteAdapter;
+import com.msc.mscdictionary.ads.AdsHelper;
 import com.msc.mscdictionary.base.BaseActivity;
 import com.msc.mscdictionary.database.OffFavouriteDAO;
 import com.msc.mscdictionary.model.Word;
+import com.msc.mscdictionary.util.AppUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +31,7 @@ public class FavouriteActivity extends BaseActivity {
     List<Word> wordList = new ArrayList<>();
 
     OffFavouriteDAO favouriteDAO;
+    private AdView mAdView;
 
     @Override
     public int resLayoutId() {
@@ -35,6 +43,10 @@ public class FavouriteActivity extends BaseActivity {
         reFavourite = findViewById(R.id.reFavourite);
         favouriteDAO = new OffFavouriteDAO(this);
         buildReFavourite();
+        mAdView =(AdView)findViewById(R.id.adView);
+        if(AppUtil.isNetworkConnected(this)){
+            AdsHelper.setupAds(mAdView, this);
+        }
     }
 
     private void buildReFavourite() {

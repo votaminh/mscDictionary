@@ -102,6 +102,11 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
                             holder.progressBar.setVisibility(View.INVISIBLE);
                         });
                     }
+
+                    @Override
+                    public void fail(String error) {
+
+                    }
                 });
             });
         }else {

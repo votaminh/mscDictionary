@@ -9,10 +9,19 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.msc.mscdictionary.activity.MainActivity;
 import com.msc.mscdictionary.R;
+import com.msc.mscdictionary.ads.AdsHelper;
 import com.msc.mscdictionary.base.BaseFragment;
 import com.msc.mscdictionary.model.Word;
+import com.msc.mscdictionary.util.AppUtil;
 import com.msc.mscdictionary.util.Constant;
 
 
@@ -22,6 +31,8 @@ public class TranslateFragment extends BaseFragment {
     Word currentWord;
     TextView tvNoData, tvNoHistory;
     TextView tvError;
+    private AdView mAdView;
+
     @Override
     public int resLayoutId() {
         return R.layout.translate_fragment;
@@ -45,7 +56,12 @@ public class TranslateFragment extends BaseFragment {
         tvNoData = view.findViewById(R.id.tvNodata);
         tvNoHistory = view.findViewById(R.id.tvNoHistory);
         tvError = view.findViewById(R.id.tvError);
+        mAdView =(AdView)view.findViewById(R.id.adView);
+        if(AppUtil.isNetworkConnected(getContext())){
+            AdsHelper.setupAds(mAdView, getContext());
+        }
     }
+
 
     private void translateEn(String en) {
         MainActivity activity = (MainActivity) getActivity();
@@ -107,4 +123,6 @@ public class TranslateFragment extends BaseFragment {
             webViewMean.setVisibility(View.INVISIBLE);
         });
     }
+
+
 }

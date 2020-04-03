@@ -44,6 +44,7 @@ import com.msc.mscdictionary.model.Word;
 import com.msc.mscdictionary.network.DictionaryCrawl;
 import com.msc.mscdictionary.service.ClipBroadService;
 import com.msc.mscdictionary.service.DownloadZipService;
+import com.msc.mscdictionary.util.AppUtil;
 import com.msc.mscdictionary.util.Constant;
 import com.msc.mscdictionary.util.SharePreferenceUtil;
 
@@ -72,7 +73,7 @@ public class MainActivity extends BaseActivity {
     DrawerLayout drawerLayout;
     private OffWordDAO wordDAO;
 
-    TextView tvHistory, tvFavourite, tvPractice;
+    TextView tvHistory, tvFavourite, tvPractice, tvRate, tvShare;
     ImageButton btnFavourite;
 
     OffFavouriteDAO favouriteDAO;
@@ -107,6 +108,9 @@ public class MainActivity extends BaseActivity {
         tvHistory = findViewById(R.id.tvHistory);
         tvFavourite = findViewById(R.id.tvFavourite);
         tvPractice = findViewById(R.id.tvPractice);
+
+        tvRate = findViewById(R.id.tvRate);
+        tvShare = findViewById(R.id.tvShare);
 
         swFloat = findViewById(R.id.swFloat);
         llFloat = findViewById(R.id.llTurnFloat);
@@ -192,6 +196,8 @@ public class MainActivity extends BaseActivity {
     }
 
     private void onClick() {
+        tvRate.setOnClickListener(v -> AppUtil.rateApp(this));
+        tvShare.setOnClickListener(v -> AppUtil.shareAppLink(this));
         llFloat.setOnClickListener(v -> {
             swFloat.toggle();
             if(swFloat.isChecked()){
@@ -319,6 +325,11 @@ public class MainActivity extends BaseActivity {
                     btnSpeaker.setVisibility(View.VISIBLE);
                     progressBar.setVisibility(View.INVISIBLE);
                 });
+            }
+
+            @Override
+            public void fail(String error) {
+                Toast.makeText(MainActivity.this, "No Speak", Toast.LENGTH_SHORT).show();
             }
         });
     }
