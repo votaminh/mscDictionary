@@ -234,14 +234,17 @@ public class MainActivity extends BaseActivity {
 
         tvHistory.setOnClickListener(v -> {
             goToHistory();
+            drawerLayout.closeDrawer(Gravity.LEFT);
         });
 
         tvFavourite.setOnClickListener(v -> {
             goToFavourite();
+            drawerLayout.closeDrawer(Gravity.LEFT);
         });
 
         tvPractice.setOnClickListener(v -> {
             showDialogAskLogin();
+            drawerLayout.closeDrawer(Gravity.LEFT);
         });
     }
 
