@@ -26,6 +26,7 @@ public class OffHistoryDAO {
         db = dataHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("en",currentWord.getId());
+        values.put("date", System.currentTimeMillis()+"");
         db.insert(HISTORY_TABLE,null,values);
     }
 

@@ -47,7 +47,8 @@ public class DataHelper extends SQLiteOpenHelper {
 
                 String h = "create table " + OffHistoryDAO.HISTORY_TABLE +"(" +
                         "_id integer PRIMARY KEY," +
-                        "en text)";
+                        "en text," +
+                        "date text)";
                 mDataBase.execSQL(h);
                 mDataBase.execSQL(f);
             }
