@@ -80,6 +80,6 @@ public class DownloadZipService extends Service {
                 .setPriority(NotificationCompat.PRIORITY_LOW);
 
         notificationManager = NotificationManagerCompat.from(getApplicationContext());
-        notificationManager.notify(2, builder.build());
+        notificationManager.notify(Constant.ID_NOTIFICATION_DOWNLOAD_ZIP, builder.build());
     }
 }

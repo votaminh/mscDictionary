@@ -23,12 +23,14 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.appbar.AppBarLayout;
@@ -62,6 +64,9 @@ public class MainActivity extends BaseActivity {
     ImageButton btnSpeaker;
     ProgressBar progressBar;
 
+    Switch swFloat;
+    RelativeLayout llFloat;
+    
     Word currentWord;
     RelativeLayout llHeaderWord;
     private TranslateFragment translateFragment;
@@ -103,9 +108,12 @@ public class MainActivity extends BaseActivity {
         tvFavourite = findViewById(R.id.tvFavourite);
         tvPractice = findViewById(R.id.tvPractice);
 
+        swFloat = findViewById(R.id.swFloat);
+        llFloat = findViewById(R.id.llTurnFloat);
+        onClick();
+        
         disableScrollAppbar();
         openTranslateFragment();
-        onClick();
         askForSystemOverlayPermission();
 //        showDialogDownloadData();
 
@@ -127,14 +135,20 @@ public class MainActivity extends BaseActivity {
                 edTextEn.setCursorVisible(true);
             }, 500);
         }
+
+        boolean enableFloat = SharePreferenceUtil.getBooleanPerferences(this, Constant.ENABLE_FLOAT, false);
+        if(enableFloat){
+            enableServiceFloat();
+            swFloat.setChecked(true);
+        }else {
+            swFloat.setChecked(false);
+        }
     }
 
 
     @Override
     protected void onStart() {
         super.onStart();
-        Intent service = new Intent(MainActivity.this, ClipBroadService.class);
-        startService(service);
     }
 
     @Override
@@ -143,6 +157,17 @@ public class MainActivity extends BaseActivity {
     }
 
     private void onClick() {
+        llFloat.setOnClickListener(v -> {
+            swFloat.toggle();
+            if(swFloat.isChecked()){
+                enableServiceFloat();
+                SharePreferenceUtil.saveBooleanPereferences(this,Constant.ENABLE_FLOAT, true);
+            }else {
+                disableServiceFloat();
+                SharePreferenceUtil.saveBooleanPereferences(this,Constant.ENABLE_FLOAT, false);
+            }
+        });
+        
         btnSpeaker.setOnClickListener(v -> {
             if(currentWord != null){
                 playAudio(currentWord.getUrlSpeak());
@@ -178,6 +203,21 @@ public class MainActivity extends BaseActivity {
         tvPractice.setOnClickListener(v -> {
             showDialogAskLogin();
         });
+    }
+
+
+    private void enableServiceFloat() {
+        Intent service = new Intent(MainActivity.this, ClipBroadService.class);
+        service.putExtra(Constant.RUN_SERVICE, true);
+        startService(service);
+    }
+
+    private void disableServiceFloat() {
+        Intent service = new Intent(MainActivity.this, ClipBroadService.class);
+        service.putExtra(Constant.RUN_SERVICE, false);
+        startService(service);
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
+        notificationManager.cancel(Constant.ID_NOTIFICATION_FLOAT);
     }
 
     private void goToHistory() {

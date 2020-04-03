@@ -208,6 +208,7 @@
                 android:layout_below="@id/tvLogin"
                 android:drawableLeft="@drawable/ic_history"
                 style="@style/item_menu_drawer"
+                android:background="?attr/selectableItemBackground"
                 />
 
             <TextView
@@ -218,6 +219,7 @@
                 android:text="@string/favourite_lable"
                 android:drawableLeft="@drawable/ic_favourite"
                 style="@style/item_menu_drawer"
+                android:background="?attr/selectableItemBackground"
                 />
 
             <TextView
@@ -229,6 +231,7 @@
                 android:drawableLeft="@drawable/ic_practice"
                 style="@style/item_menu_drawer"
                 android:visibility="gone"
+                android:background="?attr/selectableItemBackground"
                 />
 
             <View
@@ -241,14 +244,40 @@
                 android:layout_marginRight="@dimen/margin_medium"
                 />
 
+            <RelativeLayout
+                android:id="@+id/llTurnFloat"
+                android:layout_below="@id/diliver"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_header">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/item_menu_drawer"
+                    android:text="@string/turn_float"
+                    android:layout_centerVertical="true"
+                    />
+
+                <Switch
+                    android:id="@+id/swFloat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/margin_small"
+                    android:clickable="false"
+                    />
+            </RelativeLayout>
+
             <TextView
                 android:id="@+id/tvRate"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/height_header"
-                android:layout_below="@id/diliver"
+                android:layout_below="@id/llTurnFloat"
                 android:text="@string/rate_lable"
                 android:drawableLeft="@drawable/ic_rate"
                 style="@style/item_menu_drawer"
+                android:background="?attr/selectableItemBackground"
                 />
 
             <TextView
@@ -259,6 +288,7 @@
                 android:text="@string/share_lable"
                 android:drawableLeft="@drawable/ic_share"
                 style="@style/item_menu_drawer"
+                android:background="?attr/selectableItemBackground"
                 />
 
             <TextView

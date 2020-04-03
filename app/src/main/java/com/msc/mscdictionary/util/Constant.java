@@ -40,6 +40,10 @@ public class Constant {
     public static final String WORD_NOT_HAVE_TITLE = "wordNotHave";
     public static final int NUMBER_COUNT_BR = 14;
     public static final String EN_NAME_PUT = "englishWord";
+    public static final String ENABLE_FLOAT = "floatTranslate";
+    public static final int ID_NOTIFICATION_FLOAT = 1;
+    public static final int ID_NOTIFICATION_DOWNLOAD_ZIP = 2;
+    public static final String RUN_SERVICE = "runService";
 
     public static String ip = "http://192.168.43.13/";
 }

@@ -21,6 +21,9 @@ import com.msc.mscdictionary.util.Constant;
 
 public class ClipBroadService extends Service {
     private Notification status;
+    private ClipboardManager clipboard;
+    private boolean run = true;
+    private ClipboardManager.OnPrimaryClipChangedListener listener;
 
     @Nullable
     @Override
@@ -30,18 +33,30 @@ public class ClipBroadService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        showNotification();
-        final ClipboardManager clipboard = (ClipboardManager) this.getSystemService(Context.CLIPBOARD_SERVICE);
-        clipboard.addPrimaryClipChangedListener( new ClipboardManager.OnPrimaryClipChangedListener() {
-            public void onPrimaryClipChanged() {
-                String a = clipboard.getText().toString();
-                if(!a.isEmpty()){
-                    FloatWidgetBuilder builder = new FloatWidgetBuilder();
-                    builder.prepare(getApplicationContext());
-                    builder.showButtonFloat(a);
+        if(clipboard == null){
+            clipboard = (ClipboardManager) this.getSystemService(Context.CLIPBOARD_SERVICE);
+
+            listener = new ClipboardManager.OnPrimaryClipChangedListener() {
+                @Override
+                public void onPrimaryClipChanged() {
+                    String a = clipboard.getText().toString();
+                    if(!a.isEmpty()){
+                        FloatWidgetBuilder builder = new FloatWidgetBuilder();
+                        builder.prepare(getApplicationContext());
+                        builder.showButtonFloat(a);
+                    }
                 }
-            }
-        });
+            };
+        }
+
+        run = intent.getExtras().getBoolean(Constant.RUN_SERVICE, true);
+
+        if(run){
+            clipboard.addPrimaryClipChangedListener(listener);
+            showNotification();
+        }else {
+            clipboard.removePrimaryClipChangedListener(listener);
+        }
         return START_STICKY;
     }
 
@@ -65,6 +80,6 @@ public class ClipBroadService extends Service {
                 .build();
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
-        notificationManager.notify(1, status);
+        notificationManager.notify(Constant.ID_NOTIFICATION_FLOAT, status);
     }
 }
