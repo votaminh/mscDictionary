@@ -1,6 +1,5 @@
 package com.msc.mscdictionary.activity;
 
-import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -11,7 +10,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -25,7 +23,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -80,6 +77,7 @@ public class MainActivity extends BaseActivity {
     OffFavouriteDAO favouriteDAO;
     OffHistoryDAO historyDAO;
     private String enInput = "";
+    private AlertDialog dialogTutorial;
 
     @Override
     public int resLayoutId() {
@@ -114,7 +112,6 @@ public class MainActivity extends BaseActivity {
         
         disableScrollAppbar();
         openTranslateFragment();
-        askForSystemOverlayPermission();
 //        showDialogDownloadData();
 
         wordDAO = new OffWordDAO(this);
@@ -160,6 +157,7 @@ public class MainActivity extends BaseActivity {
         llFloat.setOnClickListener(v -> {
             swFloat.toggle();
             if(swFloat.isChecked()){
+                askForSystemOverlayPermission();
                 enableServiceFloat();
                 SharePreferenceUtil.saveBooleanPereferences(this,Constant.ENABLE_FLOAT, true);
             }else {
@@ -380,9 +378,30 @@ public class MainActivity extends BaseActivity {
 
     private void askForSystemOverlayPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
-            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
-            startActivityForResult(intent, DRAW_OVER_OTHER_APP_PERMISSION);
+            showDialogTutorial();
         }
+    }
+
+    private void showDialogTutorial() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = getLayoutInflater().inflate(R.layout.dialog_tutorial, null);
+        builder.setView(view);
+
+        dialogTutorial = builder.create();
+        dialogTutorial.show();
+        dialogTutorial.setCancelable(false);
+
+        TextView tvUnderstand = view.findViewById(R.id.btnUnderstand);
+        tvUnderstand.setOnClickListener(v -> {
+            dialogTutorial.dismiss();
+            goToSettingPermission();
+        });
+
+    }
+
+    private void goToSettingPermission() {
+        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
+        startActivityForResult(intent, DRAW_OVER_OTHER_APP_PERMISSION);
     }
 
     public void search(String en) {

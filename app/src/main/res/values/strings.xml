@@ -43,4 +43,6 @@
     <string name="error_no_found">no found, please try another. If this word have mine we will update soon</string>
     <string name="see_more_mean">See more</string>
     <string name="turn_float">Real time translate</string>
+    <string name="tutorial">To translate , let copy a word and click float button</string>
+    <string name="understand">I understanded</string>
 </resources>
