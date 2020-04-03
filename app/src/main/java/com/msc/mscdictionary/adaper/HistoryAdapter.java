@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,8 +42,15 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
         favouriteDAO = new OffFavouriteDAO(context);
-        View view = LayoutInflater.from(context).inflate(R.layout.item_favourite, new CardView(context), false);
-        return new ViewHolder(view);
+        View view = null;
+
+        if(viewType == 0){
+            view = LayoutInflater.from(context).inflate(R.layout.item_date, new CardView(context), false);
+        } else {
+            view = LayoutInflater.from(context).inflate(R.layout.item_history, new CardView(context), false);
+        }
+
+        return new ViewHolder(view, viewType);
     }
 
     public void setCallback(AdapterCallback callback){
@@ -50,44 +58,55 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     }
 
     @Override
+    public int getItemViewType(int position) {
+        if(wordList.get(position).getEnWord().equals(Constant.GHOST_EN)){
+            return 0;
+        }
+        return 1;
+    }
+    @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Word word = wordList.get(position);
-        holder.tvVoice.setText(word.getVoice());
-        holder.tvMean.setText(word.getEnWord().substring(0, 1).toUpperCase() + word.getEnWord().substring(1).toLowerCase());
+        if(getItemViewType(position) == 1){
+            holder.tvVoice.setText(word.getVoice());
+            holder.tvMean.setText(word.getEnWord().substring(0, 1).toUpperCase() + word.getEnWord().substring(1).toLowerCase());
 
-        if(favouriteDAO.checkHas(word)){
-            holder.btnFavourite.setImageResource(R.drawable.ic_favourite_select);
-        }else {
-            holder.btnFavourite.setImageResource(R.drawable.ic_favourite);
-        }
-
-        holder.btnFavourite.setOnClickListener(v -> {
             if(favouriteDAO.checkHas(word)){
-                removeFavourite(word, holder.btnFavourite);
+                holder.btnFavourite.setImageResource(R.drawable.ic_favourite_select);
             }else {
-                addFavourite(word, holder.btnFavourite);
+                holder.btnFavourite.setImageResource(R.drawable.ic_favourite);
             }
-        });
 
-        holder.btnSpeaker.setOnClickListener(v -> {
-            MediaBuilder.playLink(word.getUrlSpeak(), new MediaBuilder.MediaCallback() {
-                @Override
-                public void start() {
-                    new Handler(Looper.getMainLooper()).post(() -> {
-                        holder.btnSpeaker.setVisibility(View.INVISIBLE);
-                        holder.progressBar.setVisibility(View.VISIBLE);
-                    });
-                }
-
-                @Override
-                public void end() {
-                    new Handler(Looper.getMainLooper()).post(() -> {
-                        holder.btnSpeaker.setVisibility(View.VISIBLE);
-                        holder.progressBar.setVisibility(View.INVISIBLE);
-                    });
+            holder.btnFavourite.setOnClickListener(v -> {
+                if(favouriteDAO.checkHas(word)){
+                    removeFavourite(word, holder.btnFavourite);
+                }else {
+                    addFavourite(word, holder.btnFavourite);
                 }
             });
-        });
+
+            holder.btnSpeaker.setOnClickListener(v -> {
+                MediaBuilder.playLink(word.getUrlSpeak(), new MediaBuilder.MediaCallback() {
+                    @Override
+                    public void start() {
+                        new Handler(Looper.getMainLooper()).post(() -> {
+                            holder.btnSpeaker.setVisibility(View.INVISIBLE);
+                            holder.progressBar.setVisibility(View.VISIBLE);
+                        });
+                    }
+
+                    @Override
+                    public void end() {
+                        new Handler(Looper.getMainLooper()).post(() -> {
+                            holder.btnSpeaker.setVisibility(View.VISIBLE);
+                            holder.progressBar.setVisibility(View.INVISIBLE);
+                        });
+                    }
+                });
+            });
+        }else {
+            holder.tvDate.setText(word.date);
+        }
     }
 
     private void addFavourite(Word word, ImageButton btnFavourite) {
@@ -132,19 +151,25 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         ImageButton btnSpeaker;
         ProgressBar progressBar;
         ImageButton btnFavourite;
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            tvMean = itemView.findViewById(R.id.tvMean);
-            tvVoice = itemView.findViewById(R.id.tvVoice);
-            btnSpeaker = itemView.findViewById(R.id.tvAudio);
-            progressBar = itemView.findViewById(R.id.progressVoice);
-            btnFavourite = itemView.findViewById(R.id.btnFavourite);
 
-            itemView.setOnClickListener(v -> {
-                if(callback != null){
-                    callback.itemClick(getLayoutPosition());
-                }
-            });
+        TextView tvDate;
+        public ViewHolder(@NonNull View itemView, int type) {
+            super(itemView);
+            if(type == 0){
+                tvDate = itemView.findViewById(R.id.tvDate);
+            }else {
+                tvMean = itemView.findViewById(R.id.tvMean);
+                tvVoice = itemView.findViewById(R.id.tvVoice);
+                btnSpeaker = itemView.findViewById(R.id.tvAudio);
+                progressBar = itemView.findViewById(R.id.progressVoice);
+                btnFavourite = itemView.findViewById(R.id.btnFavourite);
+
+                itemView.setOnClickListener(v -> {
+                    if(callback != null){
+                        callback.itemClick(getLayoutPosition());
+                    }
+                });
+            }
         }
     }
 }

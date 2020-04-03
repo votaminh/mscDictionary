@@ -8,7 +8,13 @@ import android.database.sqlite.SQLiteDatabase;
 import com.msc.mscdictionary.model.Word;
 import com.msc.mscdictionary.util.Constant;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class OffHistoryDAO {
@@ -23,10 +29,14 @@ public class OffHistoryDAO {
     }
 
     public void add(Word currentWord) {
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = new Date();
+        String dateS = dateFormat.format(date);
+
         db = dataHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("en",currentWord.getId());
-        values.put("date", System.currentTimeMillis()+"");
+        values.put("date",dateS );
         db.insert(HISTORY_TABLE,null,values);
     }
 
@@ -41,7 +51,9 @@ public class OffHistoryDAO {
         if(cursor.moveToFirst()){
             do {
                 int id = cursor.getInt(1);
+                String date = cursor.getString(2);
                 Word word = wordDAO.getWordById(id);
+                word.date = date;
                 list.add(word);
             }
             while (cursor.moveToNext());

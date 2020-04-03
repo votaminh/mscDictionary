@@ -46,4 +46,5 @@
     <string name="tutorial">To translate , let copy a word and click float button</string>
     <string name="understand">I understanded</string>
     <string name="tap_again_to_out">Back again to close</string>
+    <string name="can_not_empty">Can not empty</string>
 </resources>

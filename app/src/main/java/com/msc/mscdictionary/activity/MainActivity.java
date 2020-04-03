@@ -212,7 +212,11 @@ public class MainActivity extends BaseActivity {
 
         btnSearch.setOnClickListener((v) -> {
             final String en = edTextEn.getText().toString();
-            search(en, true);
+            if(en.isEmpty()){
+                Toast.makeText(this, getString(R.string.can_not_empty), Toast.LENGTH_SHORT).show();
+            }else {
+                search(en, true);
+            }
         });
 
         btnMenuDrawer.setOnClickListener(v -> {

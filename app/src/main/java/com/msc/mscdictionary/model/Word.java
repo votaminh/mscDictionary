@@ -22,6 +22,8 @@ public class Word {
     @SerializedName("url")
     private String urlSpeak;
 
+    public String date;
+
     public Word() {
     }
 

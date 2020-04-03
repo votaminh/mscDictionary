@@ -45,6 +45,7 @@ public class Constant {
     public static final int ID_NOTIFICATION_DOWNLOAD_ZIP = 2;
     public static final String RUN_SERVICE = "runService";
     public static final String SHOW_TOAST_BACK = "showToastBack";
+    public static final String GHOST_EN = "%DD";
 
     public static String ip = "http://192.168.43.13/";
 }

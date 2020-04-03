@@ -12,6 +12,7 @@ import com.msc.mscdictionary.adaper.HistoryAdapter;
 import com.msc.mscdictionary.base.BaseActivity;
 import com.msc.mscdictionary.database.OffHistoryDAO;
 import com.msc.mscdictionary.model.Word;
+import com.msc.mscdictionary.util.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,13 +39,13 @@ public class HistoryActivity extends BaseActivity {
 
     private void buildReFavourite() {
         wordList = historyDAO.getAllHistory();
+        wordList = assignWordByDate(wordList);
         historyAdapter = new HistoryAdapter(wordList);
         historyAdapter.setCallback((i) -> {
             goToMainWithWord(wordList.get(i));
         });
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, true);
-        linearLayoutManager.setStackFromEnd(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         reHistory.setLayoutManager(linearLayoutManager);
 
         reHistory.setAdapter(historyAdapter);
@@ -52,6 +53,36 @@ public class HistoryActivity extends BaseActivity {
         if(wordList.size() == 0){
             findViewById(R.id.tvNodata).setVisibility(View.VISIBLE);
         }
+    }
+
+    /**
+     * Hàm này dùng để thêm các phân tử ảo vào những nơi phân chia ngày . nó sẽ tạo 1 word ảo với en = %dd ,
+     * @param wordList
+     * @return
+     */
+    private List<Word> assignWordByDate(List<Word> wordList) {
+        wordList = invertPositoinList(wordList);
+        List<Word> list = new ArrayList<>();
+        String currentTime = "0";
+        for (int i = 0; i < wordList.size(); i++) {
+            Word word = wordList.get(i);
+            if(!currentTime.equals(word.date)){
+                Word ghostWord = new Word(Constant.GHOST_EN, "", "", "", "");
+                ghostWord.date = word.date;
+                list.add(ghostWord);
+                currentTime = word.date;
+            }
+            list.add(word);
+        }
+        return list;
+    }
+
+    private List<Word> invertPositoinList(List<Word> list) {
+        List<Word> invertList = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            invertList.add(0, list.get(i));
+        }
+        return invertList;
     }
 
     private void goToMainWithWord(Word word) {
