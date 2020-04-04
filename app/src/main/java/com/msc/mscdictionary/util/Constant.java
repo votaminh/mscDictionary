@@ -49,6 +49,7 @@ public class Constant {
     public static final String TIME_FIRST_RUN = "timeOfFirst";
     public static final String RATE = "rateApp";
     public static final String TUTORIAL = "tutorial";
+    public static final int NUMBER_COUNT_BR_SCROLL = 10;
 
     public static String ip = "http://192.168.43.13/";
 }

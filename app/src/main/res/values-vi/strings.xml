@@ -56,4 +56,6 @@
     <string name="rate_ok">Đánh giá ngay</string>
     <string name="rate_later">Để sau</string>
     <string name="search">Dịch</string>
+    <string name="title_dialog_practice">Sẽ sớm phát hành trong phiên bản tiếp theo</string>
+    <string name="message_dialog_practice">Đây là một chức năng thú vị, nó giúp bạn ôn luyện lại các từ vựng đã đánh dấu. Chức năng đang trong thời gian hoàn thiện và sẽ có trong bản cập nhật sớm nhất</string>
 </resources>

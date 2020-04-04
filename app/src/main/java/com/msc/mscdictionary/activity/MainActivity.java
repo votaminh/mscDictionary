@@ -215,10 +215,12 @@ public class MainActivity extends BaseActivity {
                 int day = (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
                 if(day > 3){
                     showDialogRate();
+                }else {
+                    rated = true;
                 }
-                showDialogRate();
             } catch (ParseException e) {
                 e.printStackTrace();
+                rated = true;
             }
         }
         return rated;
@@ -243,7 +245,7 @@ public class MainActivity extends BaseActivity {
                 Date date = new Date();
                 String dateS = dateFormat.format(date);
                 SharePreferenceUtil.saveStringPereferences(getApplicationContext(), Constant.TIME_FIRST_RUN, dateS);
-                moveTaskToBack();
+                moveTaskToBack(true);
             }
         });
         builder.show();
@@ -256,7 +258,11 @@ public class MainActivity extends BaseActivity {
         }
         int idPreviousWord = historyDAO.getEnById(currentIdHistory - 1);
         currentWord = wordDAO.getWordById(idPreviousWord);
-        search(currentWord.getEnWord(), false);
+        if(currentWord == null){
+            moveTaskToBack(true);
+        }else {
+            search(currentWord.getEnWord(), false);
+        }
     }
 
     private void onClick() {
@@ -322,9 +328,22 @@ public class MainActivity extends BaseActivity {
         });
 
         tvPractice.setOnClickListener(v -> {
-            showDialogAskLogin();
+            showDialogPractive();
             drawerLayout.closeDrawer(Gravity.LEFT);
         });
+    }
+
+    private void showDialogPractive() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.title_dialog_practice));
+        builder.setMessage(getString(R.string.message_dialog_practice));
+        builder.setPositiveButton(getString(R.string.understand), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.show();
     }
 
 

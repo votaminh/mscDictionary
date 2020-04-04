@@ -140,16 +140,17 @@ public class AppUtil {
     public static void rateApp(Context context){
         Uri uri = Uri.parse("market://details?id=" + context.getPackageName());
         Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
-        // To count with Play market backstack, After pressing back button,
-        // to taken back to our application, we need to add following flags to intent.
         goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
                 Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
-                Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+                Intent.FLAG_ACTIVITY_NEW_TASK);
         try {
+
             context.startActivity(goToMarket);
-        } catch (ActivityNotFoundException e) {
-            context.startActivity(new Intent(Intent.ACTION_VIEW,
-                    Uri.parse("http://play.google.com/store/apps/details?id=" + context.getPackageName())));
+        } catch (Exception e) {
+            Intent intent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("http://play.google.com/store/apps/details?id=" + context.getPackageName()));
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
         }
     }
 
@@ -159,6 +160,6 @@ public class AppUtil {
         share.setType("text/plain");
         share.putExtra(Intent.EXTRA_TEXT, message);
 
-        context.startActivity(Intent.createChooser(share, "Title of the dialog the system will open"));
+        context.startActivity(Intent.createChooser(share, "The system will open"));
     }
 }

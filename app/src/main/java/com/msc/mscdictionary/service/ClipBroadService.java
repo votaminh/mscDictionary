@@ -49,6 +49,9 @@ public class ClipBroadService extends Service {
             };
         }
 
+        if(intent == null){
+            return START_STICKY;
+        }
         run = intent.getExtras().getBoolean(Constant.RUN_SERVICE, true);
 
         if(run){

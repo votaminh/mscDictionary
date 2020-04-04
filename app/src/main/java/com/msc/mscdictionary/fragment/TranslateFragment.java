@@ -2,6 +2,7 @@ package com.msc.mscdictionary.fragment;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.webkit.WebSettings;
@@ -85,11 +86,11 @@ public class TranslateFragment extends BaseFragment {
             webViewMean.loadDataWithBaseURL(null, Constant.header + word.getHtmlFullMean() + Constant.endTag, "text/html", "utf-8", null);
             showWebview();
 
-            setUpPosition();
+            new Handler().postDelayed(() -> setPosition(), 200);
         });
     }
 
-    private void setUpPosition() {
+    private void setPosition() {
         MainActivity activity = (MainActivity) getActivity();
         if(activity != null){
             int[] location = activity.getLocationHeader();

@@ -230,7 +230,6 @@
                 android:text="@string/practice_lable"
                 android:drawableLeft="@drawable/ic_practice"
                 style="@style/item_menu_drawer"
-                android:visibility="gone"
                 android:background="?attr/selectableItemBackground"
                 />
 

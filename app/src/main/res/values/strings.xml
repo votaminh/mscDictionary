@@ -56,4 +56,6 @@
     <string name="rate_ok">Rate now</string>
     <string name="rate_later">Later</string>
     <string name="search">Search</string>
+    <string name="title_dialog_practice">Will release in next update</string>
+    <string name="message_dialog_practice">This a interest game, it can help you practice word, which you searched</string>
 </resources>
