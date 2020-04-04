@@ -90,7 +90,7 @@
                     app:layout_constraintRight_toRightOf="@id/edTextEn"
                     app:layout_constraintTop_toTopOf="@id/edTextEn"
                     app:layout_constraintBottom_toBottomOf="@id/edTextEn"
-                    android:text="Search"
+                    android:text="@string/search"
                     android:fontFamily="@font/poppins_bold"
                     android:layout_marginRight="@dimen/margin_small"
                     android:padding="10dp"

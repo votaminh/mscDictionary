@@ -55,4 +55,5 @@
     <string name="message_dialog_rate">You really seem to like this app, since you have already used it many times! It would be great if you took a moment to rate it.</string>
     <string name="rate_ok">Rate now</string>
     <string name="rate_later">Later</string>
+    <string name="search">Search</string>
 </resources>
