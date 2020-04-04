@@ -46,6 +46,9 @@ public class Constant {
     public static final String RUN_SERVICE = "runService";
     public static final String SHOW_TOAST_BACK = "showToastBack";
     public static final String GHOST_EN = "%DD";
+    public static final String TIME_FIRST_RUN = "timeOfFirst";
+    public static final String RATE = "rateApp";
+    public static final String TUTORIAL = "tutorial";
 
     public static String ip = "http://192.168.43.13/";
 }

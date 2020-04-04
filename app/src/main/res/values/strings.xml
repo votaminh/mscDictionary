@@ -45,10 +45,14 @@
     <string name="turn_float">Real time translate</string>
     <string name="tutorial">To translate , let copy a word and click float button</string>
     <string name="understand">I understanded</string>
-    <string name="tap_again_to_out">Back again to close</string>
+    <string name="tap_again_to_out">Double tap to back</string>
     <string name="can_not_empty">Can not empty</string>
     <string name="banner_ad_unit_id">ca-app-pub-9843359112474482/6161564308</string>
     <string name="ADMOB_APP_ID">ca-app-pub-9843359112474482~8049361045</string>
     <string name="banner_ad_unit_id_test">ca-app-pub-3940256099942544/6300978111</string>
     <string name="share_contetn">Great app for learn english</string>
+    <string name="title_dialog_rate">Rate this app</string>
+    <string name="message_dialog_rate">You really seem to like this app, since you have already used it many times! It would be great if you took a moment to rate it.</string>
+    <string name="rate_ok">Rate now</string>
+    <string name="rate_later">Later</string>
 </resources>

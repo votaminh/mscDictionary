@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -30,6 +31,11 @@ import com.msc.mscdictionary.util.Constant;
 import com.msc.mscdictionary.util.SharePreferenceUtil;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class SplashActivity extends BaseActivity {
     private NotificationCompat.Builder builder;
@@ -55,7 +61,6 @@ public class SplashActivity extends BaseActivity {
     @Override
     public void initView() {
         tvProgress = findViewById(R.id.tvProgress);
-
         hadRan = SharePreferenceUtil.getBooleanPerferences(this, Constant.HAS_RAN_APP, false);
         if(hadRan){
             goToMain();
@@ -143,10 +148,17 @@ public class SplashActivity extends BaseActivity {
         if(!hadRan){
            createDataBase();
            SharePreferenceUtil.saveBooleanPereferences(this, Constant.HAS_RAN_APP, true);
+
+           DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+           Date date = new Date();
+           String dateS = dateFormat.format(date);
+           SharePreferenceUtil.saveStringPereferences(this, Constant.TIME_FIRST_RUN, dateS);
         }
         Intent intent = new Intent(SplashActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
+
+
     }
 
     private void createDataBase() {

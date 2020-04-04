@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -47,6 +48,12 @@ import com.msc.mscdictionary.service.DownloadZipService;
 import com.msc.mscdictionary.util.AppUtil;
 import com.msc.mscdictionary.util.Constant;
 import com.msc.mscdictionary.util.SharePreferenceUtil;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends BaseActivity {
     private static final int DRAW_OVER_OTHER_APP_PERMISSION = 33;
@@ -163,12 +170,12 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         if(currentWord == null){
-            moveTaskToBack(true);
+            moveTaskToBack();
             return;
         }
 
         if(outOfApp){
-            moveTaskToBack(true);
+            moveTaskToBack();
         }else {
             outOfApp = true;
             boolean showToast = SharePreferenceUtil.getBooleanPerferences(this, Constant.SHOW_TOAST_BACK, true);
@@ -185,10 +192,67 @@ public class MainActivity extends BaseActivity {
 
     }
 
+    private void moveTaskToBack() {
+        if(checkShowRate()){
+            moveTaskToBack(true);
+        }
+    }
+
+    /**
+     * Néu user đã sữ dụng 3 ngày mà chưa rate thì sẽ hiện dialog rate
+     */
+    private boolean checkShowRate() {
+        boolean rated = SharePreferenceUtil.getBooleanPerferences(this, Constant.RATE, false);
+        if(!rated){
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            Date date = new Date();
+            String d1 = dateFormat.format(date);
+            String d2 = SharePreferenceUtil.getStringPereferences(this, Constant.TIME_FIRST_RUN, "");
+            try {
+                Date date1 = dateFormat.parse(d1);
+                Date date2 = dateFormat.parse(d2);
+                long diff = date2.getTime() - date1.getTime();
+                int day = (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+                if(day > 3){
+                    showDialogRate();
+                }
+                showDialogRate();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        return rated;
+    }
+
+    private void showDialogRate() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.title_dialog_rate));
+        builder.setMessage(getString(R.string.message_dialog_rate));
+        builder.setPositiveButton(getString(R.string.rate_ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                AppUtil.rateApp(getApplicationContext());
+                SharePreferenceUtil.saveBooleanPereferences(getApplicationContext(), Constant.RATE, true);
+            }
+        });
+        builder.setNeutralButton(getString(R.string.rate_later), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                SharePreferenceUtil.saveBooleanPereferences(getApplicationContext(), Constant.RATE, false);
+                DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                Date date = new Date();
+                String dateS = dateFormat.format(date);
+                SharePreferenceUtil.saveStringPereferences(getApplicationContext(), Constant.TIME_FIRST_RUN, dateS);
+                moveTaskToBack();
+            }
+        });
+        builder.show();
+    }
+
     private void backHistory() {
         int currentIdHistory = historyDAO.getIdWord(currentWord.getId());
         if(currentIdHistory == 0){
-            moveTaskToBack(true);
+            moveTaskToBack();
         }
         int idPreviousWord = historyDAO.getEnById(currentIdHistory - 1);
         currentWord = wordDAO.getWordById(idPreviousWord);
@@ -196,12 +260,21 @@ public class MainActivity extends BaseActivity {
     }
 
     private void onClick() {
-        tvRate.setOnClickListener(v -> AppUtil.rateApp(this));
+        tvRate.setOnClickListener(v -> {
+            AppUtil.rateApp(this);
+            SharePreferenceUtil.saveBooleanPereferences(getApplicationContext(), Constant.RATE, true);
+        });
         tvShare.setOnClickListener(v -> AppUtil.shareAppLink(this));
         llFloat.setOnClickListener(v -> {
             swFloat.toggle();
             if(swFloat.isChecked()){
-                askForSystemOverlayPermission();
+                boolean showTutorial = SharePreferenceUtil.getBooleanPerferences(getApplicationContext(), Constant.TUTORIAL, true);
+                if(showTutorial){
+                    showDialogTutorial();
+                    SharePreferenceUtil.saveBooleanPereferences(getApplicationContext(), Constant.TUTORIAL, false);
+                }else{
+                    askForSystemOverlayPermission();
+                }
                 enableServiceFloat();
                 SharePreferenceUtil.saveBooleanPereferences(this,Constant.ENABLE_FLOAT, true);
             }else {
@@ -412,7 +485,6 @@ public class MainActivity extends BaseActivity {
         if(translateFragment != null && translateFragment.isVisible()){
             translateFragment.showResult(word);
         }
-
     }
 
     private void setFavourite() {
@@ -436,7 +508,7 @@ public class MainActivity extends BaseActivity {
 
     private void askForSystemOverlayPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
-            showDialogTutorial();
+            goToSettingPermission();
         }
     }
 
@@ -451,8 +523,8 @@ public class MainActivity extends BaseActivity {
 
         TextView tvUnderstand = view.findViewById(R.id.btnUnderstand);
         tvUnderstand.setOnClickListener(v -> {
+            askForSystemOverlayPermission();
             dialogTutorial.dismiss();
-            goToSettingPermission();
         });
 
     }
