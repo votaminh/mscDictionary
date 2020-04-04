@@ -20,4 +20,9 @@ public class AdsHelper {
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
     }
+
+    public static void goneAds(AdView mAdView) {
+        mAdView.getLayoutParams().height = 0;
+        mAdView.getLayoutParams().width = 0;
+    }
 }

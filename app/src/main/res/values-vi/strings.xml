@@ -12,7 +12,7 @@
     <string name="rate_lable">Đánh Giá App</string>
     <string name="login_lable">Đăng Nhập</string>
     <string name="tap_to_login_lable">Chạm để đăng nhập</string>
-    <string name="run_service">Msc dictionary đang chạy</string>
+    <string name="run_service">Msc đang chạy</string>
     <string name="title_qick_translate">MSC Dịch Nhanh</string>
     <string name="error_quick_translate">Không tìm thấy kết quả</string>
     <string name="tap_to_close">Chạm để đóng</string>
@@ -40,11 +40,11 @@
     <string name="message_dialog_error_download">Đã xuất hiện lỗi trong lúc tải xuống, bạn vui lòng kiểm tra lại kết nối</string>
     <string name="extrac_zip_lable">Đang giải nén dữ liệu</string>
     <string name="copyright">Ứng dụng này thuộc quyền sở hữu của MSC \n mọi hành động sao chép không được phép đều vi phạm pháp luật</string>
-    <string name="error_no_found">không được tìm thấy, hãy thử bật mạng và thử lại. Nếu vẫn không tìm thấy thì chúng tôi sẽ sớm cập nhật</string>
+    <string name="error_no_found">không được tìm thấy, nếu bạn đang tắt mạng thì hãy thử bật mạng và thử lại. Nếu vẫn không tìm thấy thì chúng tôi sẽ sớm xử lý</string>
     <string name="see_more_mean">Xem đầy đủ nghĩa</string>
     <string name="turn_float">Dịch tức thời</string>
     <string name="tutorial">Để dịch tức thời, Hãy sao chép 1 từ bất kì và nhấn vào nút dịch</string>
-    <string name="understand">Tôi đã hiêu</string>
+    <string name="understand">Tôi đã hiểu</string>
     <string name="tap_again_to_out">Nhấn 2 lần liên tiếp để thoát</string>
     <string name="can_not_empty">Không thể để trống</string>
     <string name="banner_ad_unit_id">ca-app-pub-9843359112474482/6161564308</string>

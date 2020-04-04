@@ -12,11 +12,13 @@ import android.os.Looper;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.animation.AnticipateInterpolator;
 import android.view.animation.ScaleAnimation;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -266,6 +268,24 @@ public class MainActivity extends BaseActivity {
     }
 
     private void onClick() {
+        edTextEn.setOnEditorActionListener(
+                new EditText.OnEditorActionListener() {
+                    @Override
+                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                        if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+                                actionId == EditorInfo.IME_ACTION_DONE ||
+                                event != null &&
+                                        event.getAction() == KeyEvent.ACTION_DOWN &&
+                                        event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+                            if (event == null || !event.isShiftPressed()) {
+                                enterInput();
+                                return true; // consume.
+                            }
+                        }
+                        return false; // pass on to other listeners.
+                    }
+                }
+        );
         tvRate.setOnClickListener(v -> {
             AppUtil.rateApp(this);
             SharePreferenceUtil.saveBooleanPereferences(getApplicationContext(), Constant.RATE, true);
@@ -296,12 +316,7 @@ public class MainActivity extends BaseActivity {
         });
 
         btnSearch.setOnClickListener((v) -> {
-            final String en = edTextEn.getText().toString();
-            if(en.isEmpty()){
-                Toast.makeText(this, getString(R.string.can_not_empty), Toast.LENGTH_SHORT).show();
-            }else {
-                search(en, true);
-            }
+            enterInput();
         });
 
         btnMenuDrawer.setOnClickListener(v -> {
@@ -331,6 +346,15 @@ public class MainActivity extends BaseActivity {
             showDialogPractive();
             drawerLayout.closeDrawer(Gravity.LEFT);
         });
+    }
+
+    private void enterInput() {
+        final String en = edTextEn.getText().toString();
+        if(en.isEmpty()){
+            Toast.makeText(this, getString(R.string.can_not_empty), Toast.LENGTH_SHORT).show();
+        }else {
+            search(en, true);
+        }
     }
 
     private void showDialogPractive() {
@@ -558,6 +582,7 @@ public class MainActivity extends BaseActivity {
         showLoad();
         hideKeyboard(this);
         edTextEn.setText(en);
+        tvMean.setText(enInput.substring(0, 1).toUpperCase() + enInput.substring(1).toLowerCase());
         wordDAO.getWordByEn(en, new DictionaryCrawl.TranslateCallback() {
             @Override
             public void success(Word word) {

@@ -79,7 +79,7 @@
                     android:fontFamily="@font/poppins_medium"
                     android:paddingLeft="@dimen/margin_medium"
                     android:textSize="15sp"
-                    android:lines="1"
+                    android:singleLine="true"
                     android:imeOptions="actionDone"
                     />
 

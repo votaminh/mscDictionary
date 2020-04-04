@@ -1,6 +1,8 @@
 package com.msc.mscdictionary.activity;
 
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -35,19 +37,21 @@ public class HistoryActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        reHistory = findViewById(R.id.reHistory);
-        historyDAO = new OffHistoryDAO(this);
-        buildReFavourite();
-        continueBuild();
-        mAdView =(AdView)findViewById(R.id.adView);
-        if(AppUtil.isNetworkConnected(this)){
-            AdsHelper.setupAds(mAdView, this);
-        }
+        new Handler().postDelayed(() -> {
+            reHistory = findViewById(R.id.reHistory);
+            historyDAO = new OffHistoryDAO(this);
+            buildReFavourite();
+            continueBuild();
+            mAdView =(AdView)findViewById(R.id.adView);
+            if(AppUtil.isNetworkConnected(this)){
+                AdsHelper.setupAds(mAdView, this);
+            }else {
+                AdsHelper.goneAds(mAdView);
+            }
+        }, 500);
     }
 
     private void buildReFavourite() {
-        wordList = historyDAO.getAllHistory();
-        wordList = assignWordByDate(wordList);
         historyAdapter = new HistoryAdapter(wordList);
         historyAdapter.setCallback((i) -> {
             goToMainWithWord(wordList.get(i));
@@ -57,10 +61,19 @@ public class HistoryActivity extends BaseActivity {
         reHistory.setLayoutManager(linearLayoutManager);
 
         reHistory.setAdapter(historyAdapter);
-        findViewById(R.id.progress).setVisibility(View.INVISIBLE);
-        if(wordList.size() == 0){
-            findViewById(R.id.tvNodata).setVisibility(View.VISIBLE);
-        }
+
+        new Thread(() -> {
+            wordList = historyDAO.getAllHistory();
+            wordList = assignWordByDate(wordList);
+            new Handler(Looper.getMainLooper()).post(() -> {
+                historyAdapter.setData(wordList);
+                findViewById(R.id.progress).setVisibility(View.INVISIBLE);
+                if(wordList.size() == 0){
+                    findViewById(R.id.tvNodata).setVisibility(View.VISIBLE);
+                }
+            }
+            );
+        }).start();
     }
 
     /**

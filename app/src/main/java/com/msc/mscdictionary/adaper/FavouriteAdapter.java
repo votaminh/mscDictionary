@@ -119,6 +119,11 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
         return wordList.size();
     }
 
+    public void setData(List<Word> wordList) {
+        this.wordList = wordList;
+        notifyDataSetChanged();
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvMean;
         TextView tvVoice;

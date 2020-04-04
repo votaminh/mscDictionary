@@ -60,6 +60,8 @@ public class TranslateFragment extends BaseFragment {
         mAdView =(AdView)view.findViewById(R.id.adView);
         if(AppUtil.isNetworkConnected(getContext())){
             AdsHelper.setupAds(mAdView, getContext());
+        }else {
+            AdsHelper.goneAds(mAdView);
         }
     }
 
@@ -84,9 +86,7 @@ public class TranslateFragment extends BaseFragment {
             word.setHtmlFullMean(content);
 
             webViewMean.loadDataWithBaseURL(null, Constant.header + word.getHtmlFullMean() + Constant.endTag, "text/html", "utf-8", null);
-            showWebview();
-
-            new Handler().postDelayed(() -> setPosition(), 200);
+            new Handler().postDelayed(() -> setPosition(), 500);
         });
     }
 
@@ -105,6 +105,7 @@ public class TranslateFragment extends BaseFragment {
             }else {
                 webViewMean.scrollBy(0, (int) headHeight);
             }
+            showWebview();
         }
     }
 

@@ -46,11 +46,12 @@ public class FavouriteActivity extends BaseActivity {
         mAdView =(AdView)findViewById(R.id.adView);
         if(AppUtil.isNetworkConnected(this)){
             AdsHelper.setupAds(mAdView, this);
+        }else {
+            AdsHelper.goneAds(mAdView);
         }
     }
 
     private void buildReFavourite() {
-        wordList = favouriteDAO.getAllWordFavourite();
         favouriteAdapter = new FavouriteAdapter(wordList);
         favouriteAdapter.setCallback((i) -> {
             goToMainWithWord(wordList.get(i));
@@ -63,9 +64,15 @@ public class FavouriteActivity extends BaseActivity {
         linearLayoutManager.setStackFromEnd(true);
         reFavourite.setLayoutManager(linearLayoutManager);
         reFavourite.setAdapter(favouriteAdapter);
-        findViewById(R.id.progress).setVisibility(View.INVISIBLE);
+        new Thread(() -> {
+            wordList = favouriteDAO.getAllWordFavourite();
+            new Handler(Looper.getMainLooper()).post(() -> {
+                favouriteAdapter.setData(wordList);
+                findViewById(R.id.progress).setVisibility(View.INVISIBLE);
+                checkData();
+            });
+        }).start();
 
-        checkData();
     }
 
     private void checkData() {
