@@ -51,6 +51,7 @@ public class DictionaryCrawl {
                     doc = Jsoup.parse(new URL(url).openStream(), "utf-8", url);
                 } catch (IOException e) {
                     e.printStackTrace();
+                    translateCallback.fail("No connection");
                 }
 
                 if(doc == null){
