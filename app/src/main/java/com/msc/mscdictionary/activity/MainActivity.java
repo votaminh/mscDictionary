@@ -144,7 +144,6 @@ public class MainActivity extends BaseActivity {
         }else {
             new Handler().postDelayed(() -> {
                 showKeyBroad(edTextEn);
-                edTextEn.setCursorVisible(true);
             }, 500);
         }
 
@@ -506,7 +505,6 @@ public class MainActivity extends BaseActivity {
             view = new View(activity);
         }
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        edTextEn.setCursorVisible(false);
     }
 
     private void showKeyBroad(EditText textEdit) {
