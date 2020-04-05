@@ -490,9 +490,9 @@ public class MainActivity extends BaseActivity {
 
     private void setError(String s) {
         runOnUiThread(() -> {
-            llHeaderWord.setVisibility(View.INVISIBLE);
+            llHeaderWord.setVisibility(View.GONE);
             if(translateFragment != null && translateFragment.isVisible()){
-                String error = enInput + "  " + getString(R.string.error_no_found);
+                String error = enInput;
                 translateFragment.setError(error);
             }
         });

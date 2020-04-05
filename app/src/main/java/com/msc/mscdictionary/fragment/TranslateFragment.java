@@ -119,10 +119,16 @@ public class TranslateFragment extends BaseFragment {
 
     public void setError(String error) {
         new Handler(Looper.getMainLooper()).post(() -> {
-            tvNoHistory.setVisibility(View.INVISIBLE);
-            tvError.setVisibility(View.VISIBLE);
-            tvError.setText(error);
-            webViewMean.setVisibility(View.INVISIBLE);
+            if(AppUtil.isNetworkConnected(getContext())){
+
+                webViewMean.loadUrl("https://translate.google.com/#view=home&op=translate&sl=en&tl=vi&text=" + error);
+                showWebview();
+            }else {
+                tvNoHistory.setVisibility(View.INVISIBLE);
+                tvError.setVisibility(View.VISIBLE);
+                tvError.setText(error  + "  " + getString(R.string.error_no_found));
+                webViewMean.setVisibility(View.INVISIBLE);
+            }
         });
     }
 
