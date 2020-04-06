@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="mine"
-            android:fontFamily="@font/poppins_medium"
+            android:fontFamily="@font/opensans_egular"
             android:textColor="#454444"
             android:textSize="@dimen/big_size_text"
             android:layout_marginLeft="@dimen/margin_medium"
@@ -35,7 +35,7 @@
             android:layout_toRightOf="@id/tvMean"
             android:layout_marginLeft="@dimen/margin_small"
             android:text="/hei/"
-            android:fontFamily="@font/poppins_medium"
+            android:fontFamily="@font/opensans_egular"
             android:textSize="12sp"
             android:layout_centerVertical="true"
             />

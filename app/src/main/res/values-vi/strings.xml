@@ -6,7 +6,7 @@
     <string name="no_data_lable">Không có dữ liệu</string>
     <string name="history_lable">Lịch Sữ</string>
     <string name="favourite_lable">Đánh Dấu</string>
-    <string name="practice_lable">Luyên Tập</string>
+    <string name="practice_lable">Luyện Tập</string>
     <string name="logout_lable">Đăng Xuất</string>
     <string name="share_lable">Chia Sẽ</string>
     <string name="rate_lable">Đánh Giá App</string>
@@ -56,6 +56,17 @@
     <string name="rate_ok">Đánh giá ngay</string>
     <string name="rate_later">Để sau</string>
     <string name="search">Dịch</string>
+    <string name="error_no">không tìm thấy</string>
+    <string name="dictionary">Từ Điển</string>
+    <string name="translate">Dịch Văn Bản</string>
+    <string name="en_vi">English - Vietnamese</string>
+    <string name="change_label">Thay Đổi</string>
+    <string name="vi_en">Vietnamese - English</string>
+    <string name="title_dialog_ask_translate">Mở chức năng dịch</string>
+    <string name="message_dialog_ask_translate">Chúng tôi không tìm thấy từ này, bạn có muốn mở chức năng dịch văn bản?</string>
+    <string name="yes_lable">Có</string>
+    <string name="request_connect">Để phát âm thanh thì bạn phải kết nối mạng</string>
+    <string name="tap_to_open_app">Mở app</string>
     <string name="title_dialog_practice">Sẽ sớm phát hành trong phiên bản tiếp theo</string>
     <string name="message_dialog_practice">Đây là một chức năng thú vị, nó giúp bạn ôn luyện lại các từ vựng đã đánh dấu. Chức năng đang trong thời gian hoàn thiện và sẽ có trong bản cập nhật sớm nhất</string>
 </resources>

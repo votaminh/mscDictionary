@@ -32,7 +32,7 @@
         android:layout_above="@id/tvNoHistory"
         android:layout_centerHorizontal="true"
         android:textColor="@color/color_text_menu_item"
-        android:fontFamily="@font/poppins_medium"
+        android:fontFamily="@font/opensans_egular"
         android:visibility="invisible"
         />
     <TextView
@@ -44,7 +44,7 @@
         android:layout_centerInParent="true"
         android:textAlignment="center"
         android:text="@string/copyright"
-        android:fontFamily="@font/poppins_medium"
+        android:fontFamily="@font/opensans_egular"
         android:textColor="#A8A8A8"
         />
 
@@ -53,7 +53,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="sga no found"
-        android:fontFamily="@font/poppins_medium"
+        android:fontFamily="@font/opensans_egular"
         android:layout_marginLeft="@dimen/margin_medium"
         android:layout_marginRight="@dimen/margin_medium"
         android:layout_centerInParent="true"

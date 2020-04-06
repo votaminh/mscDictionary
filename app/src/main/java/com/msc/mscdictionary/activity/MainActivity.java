@@ -195,6 +195,10 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
+        if(drawerLayout.isDrawerOpen(findViewById(R.id.nav_view))){
+            drawerLayout.closeDrawer(Gravity.LEFT);
+            return;
+        }
         if(mode == DICTIONARY){
             if(currentWord == null){
                 moveTaskToBack();
@@ -205,6 +209,7 @@ public class MainActivity extends BaseActivity {
             if(translateFragment != null && translateFragment.isVisible())
             if(!translateFragment.checkBackTranslate()){
                 moveTaskToBack();
+                return;
             }
         }
 

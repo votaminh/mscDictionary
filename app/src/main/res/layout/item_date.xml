@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="20/30/2000"
-        android:fontFamily="@font/poppins_bold"
+        android:fontFamily="@font/opensans_bold"
         android:textSize="18sp"
         android:layout_marginLeft="@dimen/margin_medium"
         android:layout_centerVertical="true"
