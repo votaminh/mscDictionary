@@ -41,6 +41,7 @@
     <string name="extrac_zip_lable">Extracing data</string>
     <string name="copyright">This app is owned by the company MSC Solution \n any copying is illegal</string>
     <string name="error_no_found">not variable offline, please connection network</string>
+    <string name="error_no">not found</string>
     <string name="see_more_mean">See more</string>
     <string name="turn_float">Real time translate</string>
     <string name="tutorial">To translate , let copy a word and click float button</string>
@@ -63,4 +64,7 @@
     <string name="en_vi">English - Vietnamese</string>
     <string name="change_label">Change</string>
     <string name="vi_en">Vietnamese - English</string>
+    <string name="title_dialog_ask_translate">Open translate feature</string>
+    <string name="message_dialog_ask_translate">We can find this word in dictionary, do you want open translate tab to continue translate it ?</string>
+    <string name="yes_lable">Yes</string>
 </resources>

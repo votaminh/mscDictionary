@@ -1,5 +1,7 @@
 package com.msc.mscdictionary.fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -34,6 +36,8 @@ public class TranslateFragment extends BaseFragment {
     TextView tvNoData, tvNoHistory;
     TextView tvError;
     private AdView mAdView;
+    private MainActivity activity;
+    private String error;
 
     @Override
     public int resLayoutId() {
@@ -57,6 +61,8 @@ public class TranslateFragment extends BaseFragment {
         }else {
             AdsHelper.goneAds(mAdView);
         }
+
+        activity = (MainActivity) getActivity();
     }
 
     private void setUpWebviewTranslate() {
@@ -69,9 +75,6 @@ public class TranslateFragment extends BaseFragment {
                 return true;
             }
         });
-
-        webviewTranslate.loadUrl("https://translate.google.com/#view=home&op=translate&sl=en&tl=vi&text=Click%20here%20to%20translate");
-
     }
 
     private void setupWebviewMean() {
@@ -101,7 +104,6 @@ public class TranslateFragment extends BaseFragment {
     }
 
     private void translateEn(String en) {
-        MainActivity activity = (MainActivity) getActivity();
         if(activity != null){
             activity.search(en, true);
             webViewMean.setVisibility(View.INVISIBLE);
@@ -125,7 +127,6 @@ public class TranslateFragment extends BaseFragment {
     }
 
     private void setPosition() {
-        MainActivity activity = (MainActivity) getActivity();
         if(activity != null){
             int[] location = activity.getLocationHeader();
             float statusBarHeight = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, getContext().getResources().getDisplayMetrics());
@@ -155,8 +156,10 @@ public class TranslateFragment extends BaseFragment {
     }
 
     public void setError(String error) {
+        this.error = error;
         new Handler(Looper.getMainLooper()).post(() -> {
             if(AppUtil.isNetworkConnected(getContext())){
+                showDialogAskTranslate();
             }else {
                 tvNoHistory.setVisibility(View.INVISIBLE);
                 tvError.setVisibility(View.VISIBLE);
@@ -164,6 +167,36 @@ public class TranslateFragment extends BaseFragment {
                 webViewMean.setVisibility(View.INVISIBLE);
             }
         });
+    }
+
+    private void showErrorDictionary(String error) {
+        tvNoHistory.setVisibility(View.INVISIBLE);
+        tvError.setVisibility(View.VISIBLE);
+        tvError.setText(error  + "  " + getString(R.string.error_no));
+        webViewMean.setVisibility(View.INVISIBLE);
+    }
+
+    private void showDialogAskTranslate() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle(getString(R.string.title_dialog_ask_translate));
+        builder.setMessage(getString(R.string.message_dialog_ask_translate));
+        builder.setPositiveButton(getString(R.string.yes_lable), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if(activity != null){
+                    activity.tvTranslateClick();
+                    webviewTranslate.loadUrl("https://translate.google.com/#view=home&op=translate&sl=en&tl=vi&text=" + error);
+                }
+            }
+        });
+
+        builder.setNeutralButton(getString(R.string.cancel_lable), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                showErrorDictionary(error);
+            }
+        });
+        builder.show();
     }
 
 

@@ -292,19 +292,11 @@ public class MainActivity extends BaseActivity {
     private void onClick() {
 
         tvDictionary.setOnClickListener(v -> {
-            tvDictionary.setTextColor(getResources().getColor(R.color.white));
-            tvTranslate.setTextColor(getResources().getColor(R.color.un_pri));
-            mode = DICTIONARY;
-            enableDictionary();
-            hideKeyboard(this);
+            tvDictionaryClick();
         });
 
         tvTranslate.setOnClickListener(v -> {
-            tvDictionary.setTextColor(getResources().getColor(R.color.un_pri));
-            tvTranslate.setTextColor(getResources().getColor(R.color.white));
-            mode = TRANSLATE;
-            enableTranslate();
-            hideKeyboard(this);
+            tvTranslateClick();
         });
 
         edTextEn.setOnEditorActionListener(
@@ -395,6 +387,22 @@ public class MainActivity extends BaseActivity {
             showDialogPractive();
             drawerLayout.closeDrawer(Gravity.LEFT);
         });
+    }
+
+    public void tvTranslateClick() {
+        tvDictionary.setTextColor(getResources().getColor(R.color.un_pri));
+        tvTranslate.setTextColor(getResources().getColor(R.color.white));
+        mode = TRANSLATE;
+        enableTranslate();
+        hideKeyboard(this);
+    }
+
+    public void tvDictionaryClick() {
+        tvDictionary.setTextColor(getResources().getColor(R.color.white));
+        tvTranslate.setTextColor(getResources().getColor(R.color.un_pri));
+        mode = DICTIONARY;
+        enableDictionary();
+        hideKeyboard(this);
     }
 
     private void enableTranslateVi_En() {
