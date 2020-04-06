@@ -62,6 +62,10 @@ public class MainActivity extends BaseActivity {
     public static final int MAIN_REQUEST = 818;
     private static final int MAIN_TO_FAVOURITE = 34;
     private static final int MAIN_TO_HISTORY = 35;
+    private static final int DICTIONARY = 0;
+    private static final int TRANSLATE = 1;
+    private static final int TRANSLATE_EV_VI = 2;
+    private static final int TRANSLATE_VI_EN = 3;
     EditText edTextEn;
     TextView btnSearch;
     ProgressBar progress;
@@ -91,6 +95,11 @@ public class MainActivity extends BaseActivity {
     private AlertDialog dialogTutorial;
     private boolean outOfApp = false;
 
+    TextView tvDictionary, tvTranslate;
+
+    int mode = DICTIONARY;
+    int modeTranslate = TRANSLATE_EV_VI;
+
     @Override
     public int resLayoutId() {
         return R.layout.activity_main;
@@ -102,6 +111,7 @@ public class MainActivity extends BaseActivity {
 
         btnFavourite = findViewById(R.id.btnFavourite);
         edTextEn = findViewById(R.id.edTextEn);
+        edTextEn.setFocusable(true);
         btnSearch = findViewById(R.id.btnSearch);
         progress = findViewById(R.id.progress);
         btnMenuDrawer = findViewById(R.id.btnMenuDrawer);
@@ -111,6 +121,9 @@ public class MainActivity extends BaseActivity {
         tvVoice = findViewById(R.id.tvVoice);
         btnSpeaker = findViewById(R.id.tvAudio);
         progressBar = findViewById(R.id.progressVoice);
+
+        tvDictionary = findViewById(R.id.btnDictionary);
+        tvTranslate = findViewById(R.id.btnTranslate);
 
         llHeaderWord = findViewById(R.id.llHeader);
 
@@ -267,6 +280,23 @@ public class MainActivity extends BaseActivity {
     }
 
     private void onClick() {
+
+        tvDictionary.setOnClickListener(v -> {
+            tvDictionary.setTextColor(getResources().getColor(R.color.white));
+            tvTranslate.setTextColor(getResources().getColor(R.color.un_pri));
+            mode = DICTIONARY;
+            enableDictionary();
+            hideKeyboard(this);
+        });
+
+        tvTranslate.setOnClickListener(v -> {
+            tvDictionary.setTextColor(getResources().getColor(R.color.un_pri));
+            tvTranslate.setTextColor(getResources().getColor(R.color.white));
+            mode = TRANSLATE;
+            enableTranslate();
+            hideKeyboard(this);
+        });
+
         edTextEn.setOnEditorActionListener(
                 new EditText.OnEditorActionListener() {
                     @Override
@@ -315,7 +345,17 @@ public class MainActivity extends BaseActivity {
         });
 
         btnSearch.setOnClickListener((v) -> {
-            enterInput();
+            if(mode == DICTIONARY){
+                enterInput();
+            }else if(mode == TRANSLATE){
+                if(modeTranslate == TRANSLATE_EV_VI){
+                    modeTranslate = TRANSLATE_VI_EN;
+                    enableTranslateVi_En();
+                }else if(modeTranslate == TRANSLATE_VI_EN){
+                    modeTranslate = TRANSLATE_EV_VI;
+                    enableTranslateEv_Vi();
+                }
+            }
         });
 
         btnMenuDrawer.setOnClickListener(v -> {
@@ -345,6 +385,46 @@ public class MainActivity extends BaseActivity {
             showDialogPractive();
             drawerLayout.closeDrawer(Gravity.LEFT);
         });
+    }
+
+    private void enableTranslateVi_En() {
+        edTextEn.setHint(getString(R.string.vi_en));
+        if(translateFragment != null && translateFragment.isVisible()){
+            translateFragment.enableVi_En();
+        }
+    }
+
+    private void enableTranslateEv_Vi() {
+        edTextEn.setHint(getString(R.string.en_vi));
+        if(translateFragment != null && translateFragment.isVisible()){
+            translateFragment.enableEn_Vi();
+        }
+    }
+
+    private void enableTranslate() {
+        edTextEn.setEnabled(false);
+        btnSearch.setText(getString(R.string.change_label));
+        llHeaderWord.setVisibility(View.GONE);
+
+        if(modeTranslate == TRANSLATE_EV_VI){
+            edTextEn.setHint(getString(R.string.en_vi));
+        }else if(modeTranslate == TRANSLATE_VI_EN){
+            edTextEn.setHint(getString(R.string.vi_en));
+        }
+
+        if(translateFragment != null && translateFragment.isVisible()){
+            translateFragment.enableTranslate();
+        }
+    }
+
+    private void enableDictionary(){
+        edTextEn.setEnabled(true);
+        edTextEn.setHint(getString(R.string.type_word_lable));
+        btnSearch.setText(getString(R.string.search));
+
+        if(translateFragment != null && translateFragment.isVisible()){
+            translateFragment.enableDictionary();
+        }
     }
 
     private void enterInput() {

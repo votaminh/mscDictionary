@@ -58,4 +58,9 @@
     <string name="search">Search</string>
     <string name="title_dialog_practice">Will release in next update</string>
     <string name="message_dialog_practice">This a interest game, it can help you practice word, which you searched</string>
+    <string name="dictionary">Dictionary</string>
+    <string name="translate">Translate</string>
+    <string name="en_vi">English - Vietnamese</string>
+    <string name="change_label">Change</string>
+    <string name="vi_en">Vietnamese - English</string>
 </resources>

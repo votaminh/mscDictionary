@@ -44,15 +44,39 @@
                         android:src="@drawable/menu_drawer"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/tille_lable"
-                        android:textColor="@color/white"
-                        android:layout_centerInParent="true"
-                        android:fontFamily="@font/poppins_bold"
-                        android:textSize="@dimen/size_text_title"
-                        />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_toRightOf="@id/btnMenuDrawer"
+                        android:orientation="horizontal"
+                        android:layout_alignParentRight="true">
+
+
+                        <TextView
+                            android:id="@+id/btnDictionary"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:text="@string/dictionary"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/poppins_bold"
+                            android:textSize="@dimen/size_text_title"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            />
+
+                        <TextView
+                            android:id="@+id/btnTranslate"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:text="@string/translate"
+                            android:textColor="@color/un_pri"
+                            android:fontFamily="@font/poppins_bold"
+                            android:textSize="@dimen/size_text_title"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            />
+                    </LinearLayout>
 
                 </RelativeLayout>
 

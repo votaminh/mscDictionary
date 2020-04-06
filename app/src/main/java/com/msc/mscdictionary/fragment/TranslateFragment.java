@@ -21,6 +21,7 @@ import com.msc.mscdictionary.activity.MainActivity;
 import com.msc.mscdictionary.R;
 import com.msc.mscdictionary.ads.AdsHelper;
 import com.msc.mscdictionary.base.BaseFragment;
+import com.msc.mscdictionary.custom.NestedWebView;
 import com.msc.mscdictionary.model.Word;
 import com.msc.mscdictionary.util.AppUtil;
 import com.msc.mscdictionary.util.Constant;
@@ -28,7 +29,7 @@ import com.msc.mscdictionary.util.Constant;
 
 public class TranslateFragment extends BaseFragment {
     public static final String TAG = "TranslateFragment";
-    WebView webViewMean;
+    NestedWebView webViewMean, webviewTranslate;
     Word currentWord;
     TextView tvNoData, tvNoHistory;
     TextView tvError;
@@ -42,17 +43,10 @@ public class TranslateFragment extends BaseFragment {
     @Override
     public void initView(View view) {
         webViewMean = view.findViewById(R.id.webviewMean);
-        WebSettings webSettings = webViewMean.getSettings();
-        webSettings.setJavaScriptEnabled(true);
-        webViewMean.setHorizontalScrollBarEnabled(false);
-        webViewMean.setWebViewClient(new WebViewClient(){
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                String en = url.replace(Constant.BASELINK_SOHA, "");
-                translateEn(en);
-                return true;
-            }
-        });
+        setupWebviewMean();
+
+        webviewTranslate = view.findViewById(R.id.webviewTranslate);
+        setUpWebviewTranslate();
 
         tvNoData = view.findViewById(R.id.tvNodata);
         tvNoHistory = view.findViewById(R.id.tvNoHistory);
@@ -65,6 +59,46 @@ public class TranslateFragment extends BaseFragment {
         }
     }
 
+    private void setUpWebviewTranslate() {
+        WebSettings webSettingst = webviewTranslate.getSettings();
+        webSettingst.setJavaScriptEnabled(true);
+        webviewTranslate.setHorizontalScrollBarEnabled(false);
+        webviewTranslate.setWebViewClient(new WebViewClient(){
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                return true;
+            }
+        });
+
+        webviewTranslate.loadUrl("https://translate.google.com/#view=home&op=translate&sl=en&tl=vi&text=Click%20here%20to%20translate");
+
+    }
+
+    private void setupWebviewMean() {
+        WebSettings webSettings = webViewMean.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webViewMean.setHorizontalScrollBarEnabled(false);
+        webViewMean.setWebViewClient(new WebViewClient(){
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                String en = url.replace(Constant.BASELINK_SOHA, "");
+                translateEn(en);
+                return true;
+            }
+        });
+    }
+
+
+    public void enableTranslate(){
+        webViewMean.setVisibility(View.INVISIBLE);
+        webviewTranslate.setVisibility(View.VISIBLE);
+        hideAllNote();
+    }
+
+    public void enableDictionary(){
+        webViewMean.setVisibility(View.VISIBLE);
+        webviewTranslate.setVisibility(View.INVISIBLE);
+    }
 
     private void translateEn(String en) {
         MainActivity activity = (MainActivity) getActivity();
@@ -111,7 +145,10 @@ public class TranslateFragment extends BaseFragment {
 
     private void showWebview() {
         webViewMean.setVisibility(View.VISIBLE);
+        hideAllNote();
+    }
 
+    private void hideAllNote() {
         tvNoData.setVisibility(View.INVISIBLE);
         tvNoHistory.setVisibility(View.INVISIBLE);
         tvError.setVisibility(View.INVISIBLE);
@@ -120,9 +157,7 @@ public class TranslateFragment extends BaseFragment {
     public void setError(String error) {
         new Handler(Looper.getMainLooper()).post(() -> {
             if(AppUtil.isNetworkConnected(getContext())){
-
-                webViewMean.loadUrl("https://translate.google.com/#view=home&op=translate&sl=en&tl=vi&text=" + error);
-                showWebview();
+//                showWebview();
             }else {
                 tvNoHistory.setVisibility(View.INVISIBLE);
                 tvError.setVisibility(View.VISIBLE);
@@ -133,4 +168,11 @@ public class TranslateFragment extends BaseFragment {
     }
 
 
+    public void enableVi_En() {
+        webviewTranslate.loadUrl("https://translate.google.com/#view=home&op=translate&sl=vi&tl=en&text=Nh%E1%BA%A5n%20v%C3%A0o%20%C4%91%C3%A2y%20%C4%91%E1%BB%83%20d%E1%BB%8Bch");
+    }
+
+    public void enableEn_Vi() {
+        webviewTranslate.loadUrl("https://translate.google.com/#view=home&op=translate&sl=en&tl=vi&text=Click%20here%20to%20translate");
+    }
 }

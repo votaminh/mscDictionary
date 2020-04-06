@@ -15,7 +15,9 @@
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-9843359112474482~8049361045"/>
-        <activity android:name=".activity.MainActivity">
+        <activity android:name=".activity.MainActivity"
+            android:windowSoftInputMode=""
+            >
         </activity>
         <activity android:name=".activity.SplashActivity">
             <intent-filter>
