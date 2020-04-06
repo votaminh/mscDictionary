@@ -454,13 +454,13 @@ public class MainActivity extends BaseActivity {
         edTextEn.setEnabled(true);
         edTextEn.setHint(getString(R.string.type_word_lable));
         btnSearch.setText(getString(R.string.search));
-
         if(translateFragment != null && translateFragment.isVisible()){
             translateFragment.enableDictionary();
         }
 
         if(currentWord != null){
             llHeaderWord.setVisibility(View.VISIBLE);
+            tvMean.setText(currentWord.getEnWord());
         }
     }
 
