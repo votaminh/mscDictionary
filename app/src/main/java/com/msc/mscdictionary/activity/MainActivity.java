@@ -2,9 +2,12 @@ package com.msc.mscdictionary.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
@@ -100,6 +103,8 @@ public class MainActivity extends BaseActivity {
     int mode = DICTIONARY;
     int modeTranslate = TRANSLATE_EV_VI;
 
+    private BroadcastReceiver mNetworkReceiver;
+
     @Override
     public int resLayoutId() {
         return R.layout.activity_main;
@@ -145,6 +150,11 @@ public class MainActivity extends BaseActivity {
         wordDAO = new OffWordDAO(this);
         favouriteDAO = new OffFavouriteDAO(this);
         historyDAO = new OffHistoryDAO(this);
+        mNetworkReceiver = new NetworkChangeReceiver();
+        ((NetworkChangeReceiver) mNetworkReceiver).setConnectListen(() -> {
+            search(enInput, false);
+            unregisterNetworkChanges();
+        });
 
         openDefault();
     }
@@ -576,6 +586,14 @@ public class MainActivity extends BaseActivity {
                 translateFragment.setError(error);
             }
         });
+
+        if(!AppUtil.isNetworkConnected(this)){
+            listenConnect();
+        }
+    }
+
+    private void listenConnect() {
+        registerNetworkBroadcastForNougat();
     }
 
     public void hideKeyboard(Activity activity) {
@@ -782,4 +800,38 @@ public class MainActivity extends BaseActivity {
 
     }
 
+    private void registerNetworkBroadcastForNougat() {
+        registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+    }
+
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public class NetworkChangeReceiver extends BroadcastReceiver {
+        ConnectListen connectListen;
+
+        public void setConnectListen(ConnectListen connectListen){
+            this.connectListen = connectListen;
+        }
+        @Override
+        public void onReceive(final Context context, final Intent intent) {
+            if(AppUtil.isNetworkConnected(context))
+            {
+                if(connectListen != null){
+                    connectListen.connected();
+                }
+            }
+
+        }
+
+    }
+
+    public interface ConnectListen{
+        void connected();
+    }
 }

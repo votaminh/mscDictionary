@@ -157,7 +157,6 @@ public class TranslateFragment extends BaseFragment {
     public void setError(String error) {
         new Handler(Looper.getMainLooper()).post(() -> {
             if(AppUtil.isNetworkConnected(getContext())){
-//                showWebview();
             }else {
                 tvNoHistory.setVisibility(View.INVISIBLE);
                 tvError.setVisibility(View.VISIBLE);

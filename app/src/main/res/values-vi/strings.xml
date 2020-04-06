@@ -40,7 +40,7 @@
     <string name="message_dialog_error_download">Đã xuất hiện lỗi trong lúc tải xuống, bạn vui lòng kiểm tra lại kết nối</string>
     <string name="extrac_zip_lable">Đang giải nén dữ liệu</string>
     <string name="copyright">Ứng dụng này thuộc quyền sở hữu của MSC \n mọi hành động sao chép không được phép đều vi phạm pháp luật</string>
-    <string name="error_no_found">không được tìm thấy, nếu bạn đang tắt mạng thì hãy thử bật mạng và thử lại. Nếu vẫn không tìm thấy thì chúng tôi sẽ sớm xử lý</string>
+    <string name="error_no_found">không khả dụng ở chế độ offline, vui lòng bật kết nối</string>
     <string name="see_more_mean">Xem đầy đủ nghĩa</string>
     <string name="turn_float">Dịch tức thời</string>
     <string name="tutorial">Để dịch tức thời, Hãy sao chép 1 từ bất kì và nhấn vào nút dịch</string>
