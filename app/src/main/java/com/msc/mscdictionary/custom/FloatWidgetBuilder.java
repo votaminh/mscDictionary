@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import com.msc.mscdictionary.R;
 import com.msc.mscdictionary.activity.MainActivity;
+import com.msc.mscdictionary.database.OffFavouriteDAO;
 import com.msc.mscdictionary.database.OffWordDAO;
 import com.msc.mscdictionary.model.Word;
 import com.msc.mscdictionary.network.DictionaryCrawl;
@@ -270,6 +271,8 @@ public class FloatWidgetBuilder {
                 String encoding = word.getHtmlFullMean();
                 word.setHtmlFullMean(AppUtil.decodingHtml(encoding));
                 new Handler(Looper.getMainLooper()).post(() -> {
+                    OffFavouriteDAO favouriteDAO = new OffFavouriteDAO(context);
+                    favouriteDAO.add(word);
                     tvResult.setText(word.getCommonMean());
                     progressBar.setVisibility(View.INVISIBLE);
                 });
@@ -281,6 +284,8 @@ public class FloatWidgetBuilder {
                     @Override
                     public void success(Word word) {
                         new Handler(Looper.getMainLooper()).post(() -> {
+                            OffFavouriteDAO favouriteDAO = new OffFavouriteDAO(context);
+                            favouriteDAO.add(word);
                             tvResult.setText(word.getCommonMean());
                             progressBar.setVisibility(View.INVISIBLE);
                         });
