@@ -165,9 +165,11 @@ public class MainActivity extends BaseActivity {
             search(en, true);
             new Handler().postDelayed(() -> hideKeyboard(this), 500);
         }else {
-            new Handler().postDelayed(() -> {
-                showKeyBroad(edTextEn);
-            }, 500);
+            if(mode == DICTIONARY){
+                new Handler().postDelayed(() -> {
+                    showKeyBroad(edTextEn);
+                }, 500);
+            }
         }
 
         boolean enableFloat = SharePreferenceUtil.getBooleanPerferences(this, Constant.ENABLE_FLOAT, false);
@@ -193,9 +195,17 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        if(currentWord == null){
-            moveTaskToBack();
-            return;
+        if(mode == DICTIONARY){
+            if(currentWord == null){
+                moveTaskToBack();
+                return;
+            }
+
+        }else if(mode == TRANSLATE){
+            if(translateFragment != null && translateFragment.isVisible())
+            if(!translateFragment.checkBackTranslate()){
+                moveTaskToBack();
+            }
         }
 
         if(outOfApp){
@@ -211,9 +221,10 @@ public class MainActivity extends BaseActivity {
                 outOfApp = false;
             }, 400);
 
-            backHistory();
+            if(mode == DICTIONARY){
+                backHistory();
+            }
         }
-
     }
 
     private void moveTaskToBack() {
@@ -341,8 +352,12 @@ public class MainActivity extends BaseActivity {
         });
         
         btnSpeaker.setOnClickListener(v -> {
-            if(currentWord != null){
-                playAudio(currentWord.getUrlSpeak());
+            if(AppUtil.isNetworkConnected(getApplicationContext())){
+                if(currentWord != null){
+                    playAudio(currentWord.getEnWord());
+                }
+            }else {
+                Toast.makeText(this, getString(R.string.request_connect), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -443,6 +458,10 @@ public class MainActivity extends BaseActivity {
         if(translateFragment != null && translateFragment.isVisible()){
             translateFragment.enableDictionary();
         }
+
+        if(currentWord != null){
+            llHeaderWord.setVisibility(View.VISIBLE);
+        }
     }
 
     private void enterInput() {
@@ -522,8 +541,8 @@ public class MainActivity extends BaseActivity {
         new Handler().postDelayed(() -> btnFavourite.setImageResource(R.drawable.ic_favourite), Constant.DURATION_SCALE_FAVOURITE);
     }
 
-    private void playAudio(String urlSpeak) {
-        MediaBuilder.playLink(urlSpeak, new MediaBuilder.MediaCallback() {
+    private void playAudio(String en) {
+        MediaBuilder.playLink(en, new MediaBuilder.MediaCallback() {
             @Override
             public void start() {
                 new Handler(Looper.getMainLooper()).post(() -> {

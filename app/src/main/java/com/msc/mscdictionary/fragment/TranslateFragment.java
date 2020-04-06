@@ -1,6 +1,7 @@
 package com.msc.mscdictionary.fragment;
 
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Looper;
@@ -75,6 +76,7 @@ public class TranslateFragment extends BaseFragment {
                 return true;
             }
         });
+        webviewTranslate.loadUrl("https://translate.google.com/#view=home&op=translate&sl=en&tl=vi&text=Click%20here%20to%20translate");
     }
 
     private void setupWebviewMean() {
@@ -206,5 +208,12 @@ public class TranslateFragment extends BaseFragment {
 
     public void enableEn_Vi() {
         webviewTranslate.loadUrl("https://translate.google.com/#view=home&op=translate&sl=en&tl=vi&text=Click%20here%20to%20translate");
+    }
+
+    public boolean checkBackTranslate() {
+        if(webviewTranslate.canGoBack()){
+            webviewTranslate.goBack();
+            return true;
+        }else return false;
     }
 }
