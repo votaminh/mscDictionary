@@ -15,6 +15,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AnticipateInterpolator;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -41,6 +45,14 @@ public class FloatWidgetBuilder {
     Context context;
     private long oldTime = 0;
     private long currentTime = 0;
+    private TextView edEn;
+    private View tvClose;
+    private View progressBar;
+    private TextView tvResult;
+    private TextView tvSearch;
+    private TextView openTranslate;
+    private View llDictionary;
+    private NestedWebView webviewTranslate;
 
     public void prepare(Context context){
         this.context = context;
@@ -204,21 +216,53 @@ public class FloatWidgetBuilder {
     }
 
     private void setUpQuickly(String s) {
-        TextView edEn = quickTranslate.findViewById(R.id.edTextEn);
-        TextView tvClose = quickTranslate.findViewById(R.id.tvClose);
-        ProgressBar progressBar = quickTranslate.findViewById(R.id.progress);
-        TextView tvResult = quickTranslate.findViewById(R.id.tvResult);
-        TextView tvSearch = quickTranslate.findViewById(R.id.btnSearch);
+        if(edEn == null){
+            edEn = quickTranslate.findViewById(R.id.edTextEn);
+            tvClose = quickTranslate.findViewById(R.id.tvClose);
+            progressBar = quickTranslate.findViewById(R.id.progress);
+            tvResult = quickTranslate.findViewById(R.id.tvResult);
+            tvSearch = quickTranslate.findViewById(R.id.btnSearch);
+
+            openTranslate = quickTranslate.findViewById(R.id.tvOpenTranslate);
+
+            llDictionary = quickTranslate.findViewById(R.id.llDictionary);
+            webviewTranslate = quickTranslate.findViewById(R.id.webviewTranslate);
+
+            WebSettings webSettingst = webviewTranslate.getSettings();
+            webSettingst.setJavaScriptEnabled(true);
+            webviewTranslate.setHorizontalScrollBarEnabled(false);
+            webviewTranslate.setWebViewClient(new WebViewClient(){
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                    return true;
+                }
+
+                @Override
+                public void onPageFinished(WebView view, String url) {
+                    super.onPageFinished(view, url);
+                    view.scrollTo(0, 150);
+                }
+            });
+            webviewTranslate.loadUrl("https://translate.google.com/#view=home&op=translate&sl=en&tl=vi&text=Click%20here%20to%20translate");
+
+            edEn.setOnClickListener(v -> openApp(s));
+            tvResult.setOnClickListener(v -> openApp(s));
+            tvSearch.setOnClickListener(v -> openApp(s));
+            tvClose.setOnClickListener(v -> removeTranslate());
+
+            openTranslate.setOnClickListener(v -> openApp(s));
+        }
+
+
         tvResult.setText("");
         progressBar.setVisibility(View.VISIBLE);
+        webviewTranslate.setVisibility(View.GONE);
+        llDictionary.setVisibility(View.VISIBLE);
+        openTranslate.setVisibility(View.GONE);
+
+
 
         edEn.setText(s);
-
-        edEn.setOnClickListener(v -> openApp(s));
-        tvResult.setOnClickListener(v -> openApp(s));
-        tvSearch.setOnClickListener(v -> openApp(s));
-
-        tvClose.setOnClickListener(v -> removeTranslate());
         OffWordDAO offWordDAO = new OffWordDAO(context);
         offWordDAO.getWordByEn(s, new DictionaryCrawl.TranslateCallback() {
             @Override
@@ -245,8 +289,11 @@ public class FloatWidgetBuilder {
                     @Override
                     public void fail(final String error) {
                         new Handler(Looper.getMainLooper()).post(() -> {
-                            tvResult.setText("error");
                             progressBar.setVisibility(View.INVISIBLE);
+                            webviewTranslate.loadUrl("https://translate.google.com/#view=home&op=translate&sl=en&tl=vi&text=" + s);
+                            webviewTranslate.setVisibility(View.VISIBLE);
+                            llDictionary.setVisibility(View.GONE);
+                            openTranslate.setVisibility(View.VISIBLE);
                         });
                     }
                 }).translate();

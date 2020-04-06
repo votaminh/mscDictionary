@@ -68,4 +68,5 @@
     <string name="message_dialog_ask_translate">We can find this word in dictionary, do you want open translate tab to continue translate it ?</string>
     <string name="yes_lable">Yes</string>
     <string name="request_connect">To play audio you have to connet internet</string>
+    <string name="tap_to_open_app">Open app</string>
 </resources>
