@@ -86,7 +86,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             });
 
             holder.btnSpeaker.setOnClickListener(v -> {
-                MediaBuilder.playLink(word.getUrlSpeak(), new MediaBuilder.MediaCallback() {
+                MediaBuilder.playLink(word.getEnWord(), new MediaBuilder.MediaCallback() {
                     @Override
                     public void start() {
                         new Handler(Looper.getMainLooper()).post(() -> {
