@@ -13,7 +13,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -109,6 +108,9 @@ public class MainActivity extends BaseActivity {
     int modeTranslate = TRANSLATE_EV_VI;
 
     private BroadcastReceiver mNetworkReceiver;
+    private View appBarLayout;
+    private CoordinatorLayout.LayoutParams paramsAppbar;
+    private AppBarLayout.Behavior behaviorAppbar;
 
     @Override
     public int resLayoutId() {
@@ -147,10 +149,24 @@ public class MainActivity extends BaseActivity {
         swFloat = findViewById(R.id.swFloat);
         llFloat = findViewById(R.id.llTurnFloat);
         sbSizeText = findViewById(R.id.sbSizeText);
+        appBarLayout = findViewById(R.id.appBarLayout);
+        appBarLayout.getViewTreeObserver().addOnGlobalFocusChangeListener(new ViewTreeObserver.OnGlobalFocusChangeListener() {
+            @Override
+            public void onGlobalFocusChanged(View oldFocus, View newFocus) {
+                paramsAppbar = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
+                behaviorAppbar = (AppBarLayout.Behavior) paramsAppbar.getBehavior();
+                behaviorAppbar.setDragCallback(new AppBarLayout.Behavior.DragCallback() {
+                    @Override
+                    public boolean canDrag(@NonNull AppBarLayout appBarLayout) {
+                        return false;
+                    }
+                });
+            }
+        });
+
         setUpSeekbar();
         onClick();
-        
-        disableScrollAppbar();
+
         openTranslateFragment();
 //        showDialogDownloadData();
 
@@ -473,6 +489,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void enableTranslate() {
+
         edTextEn.setEnabled(false);
         btnSearch.setText(getString(R.string.change_label));
         llHeaderWord.setVisibility(View.GONE);
@@ -486,6 +503,8 @@ public class MainActivity extends BaseActivity {
         if(translateFragment != null && translateFragment.isVisible()){
             translateFragment.enableTranslate();
         }
+
+        enableScrollAppbar();
     }
 
     private void enableDictionary(){
@@ -500,6 +519,8 @@ public class MainActivity extends BaseActivity {
             llHeaderWord.setVisibility(View.VISIBLE);
             tvMean.setText(currentWord.getEnWord());
         }
+
+        disableScrollAppbar();
     }
 
     private void enterInput() {
@@ -848,21 +869,21 @@ public class MainActivity extends BaseActivity {
     }
 
     private void disableScrollAppbar() {
-        AppBarLayout appBarLayout = findViewById(R.id.appBarLayout);
-        appBarLayout.getViewTreeObserver().addOnGlobalFocusChangeListener(new ViewTreeObserver.OnGlobalFocusChangeListener() {
+        behaviorAppbar.setDragCallback(new AppBarLayout.Behavior.DragCallback() {
             @Override
-            public void onGlobalFocusChanged(View oldFocus, View newFocus) {
-                CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
-                AppBarLayout.Behavior behavior = (AppBarLayout.Behavior) params.getBehavior();
-                behavior.setDragCallback(new AppBarLayout.Behavior.DragCallback() {
-                    @Override
-                    public boolean canDrag(@NonNull AppBarLayout appBarLayout) {
-                        return false;
-                    }
-                });
+            public boolean canDrag(@NonNull AppBarLayout appBarLayout) {
+                return false;
             }
         });
+    }
 
+    private void enableScrollAppbar() {
+        behaviorAppbar.setDragCallback(new AppBarLayout.Behavior.DragCallback() {
+            @Override
+            public boolean canDrag(@NonNull AppBarLayout appBarLayout) {
+                return true;
+            }
+        });
     }
 
     private void setUpSeekbar() {
