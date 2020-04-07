@@ -8,6 +8,7 @@ import android.graphics.Point;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -241,7 +242,7 @@ public class FloatWidgetBuilder {
                 @Override
                 public void onPageFinished(WebView view, String url) {
                     super.onPageFinished(view, url);
-                    view.scrollTo(0, 150);
+                    view.scrollTo(0, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 56 * 2, context.getResources().getDisplayMetrics()));
                 }
             });
             webviewTranslate.loadUrl("https://translate.google.com/#view=home&op=translate&sl=en&tl=vi&text=Click%20here%20to%20translate");
@@ -257,6 +258,7 @@ public class FloatWidgetBuilder {
 
         tvResult.setText("");
         progressBar.setVisibility(View.VISIBLE);
+        webviewTranslate.getLayoutParams().height = context.getResources().getDisplayMetrics().heightPixels/2;
         webviewTranslate.setVisibility(View.GONE);
         llDictionary.setVisibility(View.VISIBLE);
         openTranslate.setVisibility(View.GONE);

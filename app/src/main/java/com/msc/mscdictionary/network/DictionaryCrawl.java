@@ -58,23 +58,22 @@ public class DictionaryCrawl {
                     return;
                 }
 
-                doc.outputSettings().charset("utf-8");
-
-                Elements sub = doc.select("div#content_selectable");
-
-                Elements word = doc.select("div.world");
-                Element elementFirstWord = word.first();
-
-                String voice = "";
-                if( elementFirstWord.select("span.color-black").first() != null){
-                    voice = elementFirstWord.select("span.color-black").first().text();
-                }
-
-                String urlVoide = "";
-
-                Element content = sub.first();
-
                 try{
+                    doc.outputSettings().charset("utf-8");
+
+                    Elements sub = doc.select("div#content_selectable");
+
+                    Elements word = doc.select("div.world");
+                    Element elementFirstWord = word.first();
+
+                    String voice = "";
+                    if( elementFirstWord.select("span.color-black").first() != null){
+                        voice = elementFirstWord.select("span.color-black").first().text();
+                    }
+
+                    String urlVoide = "";
+
+                    Element content = sub.first();
                     Elements meanSelection = content.select("div.content");
                     String commonMean = meanSelection.first().select("div.margin25").first().text();
 
