@@ -24,10 +24,12 @@ import com.msc.mscdictionary.activity.MainActivity;
 import com.msc.mscdictionary.R;
 import com.msc.mscdictionary.ads.AdsHelper;
 import com.msc.mscdictionary.base.BaseFragment;
+import com.msc.mscdictionary.custom.HtmlBuilder;
 import com.msc.mscdictionary.custom.NestedWebView;
 import com.msc.mscdictionary.model.Word;
 import com.msc.mscdictionary.util.AppUtil;
 import com.msc.mscdictionary.util.Constant;
+import com.msc.mscdictionary.util.SharePreferenceUtil;
 
 
 public class TranslateFragment extends BaseFragment {
@@ -121,9 +123,9 @@ public class TranslateFragment extends BaseFragment {
                 content += Constant.TAG_BR;
             }
             content += word.getHtmlFullMean();
-            word.setHtmlFullMean(content);
-
-            webViewMean.loadDataWithBaseURL(null, Constant.header + word.getHtmlFullMean() + Constant.endTag, "text/html", "utf-8", null);
+            float ratio = SharePreferenceUtil.getFloatPereferences(getContext(), Constant.RATIO_SIZE_CONTENT, 1);
+            HtmlBuilder h = new HtmlBuilder(ratio, content);
+            webViewMean.loadDataWithBaseURL(null, h.get(), "text/html", "utf-8", null);
             new Handler().postDelayed(() -> setPosition(), 500);
         });
     }

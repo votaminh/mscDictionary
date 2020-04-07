@@ -16,6 +16,7 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
@@ -25,8 +26,10 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -78,6 +81,8 @@ public class MainActivity extends BaseActivity {
     TextView tvVoice;
     ImageButton btnSpeaker;
     ProgressBar progressBar;
+
+    SeekBar sbSizeText;
 
     Switch swFloat;
     RelativeLayout llFloat;
@@ -141,6 +146,8 @@ public class MainActivity extends BaseActivity {
 
         swFloat = findViewById(R.id.swFloat);
         llFloat = findViewById(R.id.llTurnFloat);
+        sbSizeText = findViewById(R.id.sbSizeText);
+        setUpSeekbar();
         onClick();
         
         disableScrollAppbar();
@@ -160,6 +167,10 @@ public class MainActivity extends BaseActivity {
     }
 
     private void openDefault() {
+        float ratio = SharePreferenceUtil.getFloatPereferences(getApplicationContext(), Constant.RATIO_SIZE_CONTENT, 1);
+        int progress = (int) ((ratio - 1)*6);
+        sbSizeText.setProgress(progress);
+
         if(getIntent().getExtras() != null){
             String en = getIntent().getExtras().getString(Constant.EN_NAME_PUT, "");
             search(en, true);
@@ -306,6 +317,28 @@ public class MainActivity extends BaseActivity {
     }
 
     private void onClick() {
+
+        sbSizeText.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                float ratio =  1f + progress/6f;
+                SharePreferenceUtil.saveFloatPereferences(getApplicationContext(), Constant.RATIO_SIZE_CONTENT, ratio);
+                if(currentWord != null){
+                    setResultSearch(currentWord, false);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
 
         tvDictionary.setOnClickListener(v -> {
             tvDictionaryClick();
@@ -830,6 +863,33 @@ public class MainActivity extends BaseActivity {
             }
         });
 
+    }
+
+    private void setUpSeekbar() {
+        sbSizeText.setOnTouchListener(new ListView.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View v, MotionEvent event)
+            {
+                int action = event.getAction();
+                switch (action)
+                {
+                    case MotionEvent.ACTION_DOWN:
+                        // Disallow Drawer to intercept touch events.
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        // Allow Drawer to intercept touch events.
+                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                        break;
+                }
+
+                // Handle seekbar touch events.
+                v.onTouchEvent(event);
+                return true;
+            }
+        });
     }
 
     private void registerNetworkBroadcastForNougat() {

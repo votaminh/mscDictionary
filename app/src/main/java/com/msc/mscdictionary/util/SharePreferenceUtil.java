@@ -34,6 +34,11 @@ public class SharePreferenceUtil {
         return sharedPreferences.getInt(name, defaultValule);
     }
 
+    public static float getFloatPereferences(Context context, String name, int defaultValule) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Constant.SHAREPREFERENCES, Context.MODE_PRIVATE);
+        return sharedPreferences.getFloat(name, defaultValule);
+    }
+
     public static String getStringPereferences(Context context, String name, String defaultValule) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(Constant.SHAREPREFERENCES, Context.MODE_PRIVATE);
         return sharedPreferences.getString(name, defaultValule);

@@ -292,11 +292,35 @@
                     />
             </RelativeLayout>
 
+            <RelativeLayout
+                android:id="@+id/llSizeText"
+                android:layout_below="@id/llTurnFloat"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_header">
+
+                <TextView
+                    android:id="@+id/tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/item_menu_drawer"
+                    android:text="@string/size_text"
+                    android:layout_centerVertical="true"
+                    />
+
+                <SeekBar
+                    android:id="@+id/sbSizeText"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:max="3"
+                    />
+            </RelativeLayout>
+
             <TextView
                 android:id="@+id/tvRate"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/height_header"
-                android:layout_below="@id/llTurnFloat"
+                android:layout_below="@id/llSizeText"
                 android:text="@string/rate_lable"
                 android:drawableLeft="@drawable/ic_rate"
                 style="@style/item_menu_drawer"

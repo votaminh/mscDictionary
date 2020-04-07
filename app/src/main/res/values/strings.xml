@@ -69,4 +69,5 @@
     <string name="yes_lable">Yes</string>
     <string name="request_connect">To play audio you have to connet internet</string>
     <string name="tap_to_open_app">Open app</string>
+    <string name="size_text">Size Text</string>
 </resources>
