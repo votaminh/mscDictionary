@@ -84,7 +84,8 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                >
 
                 <View
                     app:layout_constraintTop_toTopOf="parent"
@@ -119,7 +120,7 @@
                     android:layout_marginRight="@dimen/margin_small"
                     android:padding="10dp"
                     android:textColor="@color/colorPrimary"
-                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:background="?attr/selectableItemBackground"
                     />
 
                 <ProgressBar

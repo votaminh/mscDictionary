@@ -119,11 +119,11 @@ public class TranslateFragment extends BaseFragment {
             tvNoHistory.setVisibility(View.INVISIBLE);
             currentWord = word;
             String content = "";
-            for (int i = 0; i < Constant.NUMBER_COUNT_BR; i++) {
+            float ratio = SharePreferenceUtil.getFloatPereferences(getContext(), Constant.RATIO_SIZE_CONTENT, 1);
+            for (int i = 0; i < 1/ratio * Constant.NUMBER_COUNT_BR; i++) {
                 content += Constant.TAG_BR;
             }
             content += word.getHtmlFullMean();
-            float ratio = SharePreferenceUtil.getFloatPereferences(getContext(), Constant.RATIO_SIZE_CONTENT, 1);
             HtmlBuilder h = new HtmlBuilder(ratio, content);
             webViewMean.loadDataWithBaseURL(null, h.get(), "text/html", "utf-8", null);
             new Handler().postDelayed(() -> setPosition(), 500);
@@ -164,12 +164,11 @@ public class TranslateFragment extends BaseFragment {
         new Handler(Looper.getMainLooper()).post(() -> {
             if(AppUtil.isNetworkConnected(getContext())){
                 showDialogAskTranslate();
-            }else {
-                tvNoHistory.setVisibility(View.INVISIBLE);
-                tvError.setVisibility(View.VISIBLE);
-                tvError.setText(error  + "  " + getString(R.string.error_no_found));
-                webViewMean.setVisibility(View.INVISIBLE);
             }
+            tvNoHistory.setVisibility(View.INVISIBLE);
+            tvError.setVisibility(View.VISIBLE);
+            tvError.setText(error  + "  " + getString(R.string.error_no_found));
+            webViewMean.setVisibility(View.INVISIBLE);
         });
     }
 
