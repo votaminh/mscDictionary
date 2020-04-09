@@ -70,4 +70,9 @@
     <string name="request_connect">To play audio you have to connet internet</string>
     <string name="tap_to_open_app">Open app</string>
     <string name="size_text">Size Text</string>
+    <string name="start_lable">Start</string>
+    <string name="tutorial_practice">We will get word in your favourite, Question will a audio, and its pronounce. You have to choice correct word</string>
+    <string name="amount_word">Amount word you want to practice now</string>
+    <string name="from_lable">From</string>
+    <string name="to_lable">To</string>
 </resources>

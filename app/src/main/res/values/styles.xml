@@ -34,4 +34,12 @@
         <item name="colorAccent">#00295C</item>
     </style>
 
+    <style name="text_choice">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_marginLeft">@dimen/margin_medium</item>
+        <item name="fontFamily">@font/opensans_bold</item>
+        <item name="android:textSize">@dimen/size_text_title</item>
+        <item name="android:paddingLeft">@dimen/margin_medium</item>
+    </style>
+
 </resources>

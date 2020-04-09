@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/tvHeader"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_header"
+        android:background="@color/colorPrimary"
+        android:text="@string/practice_lable"
+        android:fontFamily="@font/opensans_bold"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:textSize="@dimen/size_text_title"
+        />
+
+    <ScrollView
+        android:layout_below="@id/tvHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+            <TextView
+                android:id="@+id/tvTutorial"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/tutorial_practice"
+                android:layout_marginLeft="@dimen/margin_medium"
+                android:layout_marginRight="@dimen/margin_medium"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:textSize="15sp"
+                android:fontFamily="@font/opensans_egular"
+                />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/llAmount"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_below="@id/tvTutorial">
+
+                <TextView
+                    android:id="@+id/tvAmount"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/height_header"
+                    android:text="@string/amount_word"
+                    android:fontFamily="@font/opensans_bold"
+                    android:textColor="@color/colorPrimary"
+                    android:gravity="center"
+                    android:layout_marginLeft="@dimen/margin_medium"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:textSize="16sp"
+                    />
+
+                <TextView
+                    android:id="@+id/from"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/height_header"
+                    app:layout_constraintTop_toBottomOf="@id/tvAmount"
+                    android:layout_marginLeft="@dimen/margin_medium"
+                    app:layout_constraintRight_toLeftOf="@id/edFrom"
+                    android:text="@string/from_lable"
+                    android:fontFamily="@font/opensans_bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:gravity="center_vertical"
+                    android:textSize="16sp"
+                    />
+
+                <EditText
+                    android:id="@+id/edFrom"
+                    android:layout_width="@dimen/height_header"
+                    android:layout_height="@dimen/height_header"
+                    app:layout_constraintTop_toBottomOf="@id/tvAmount"
+                    app:layout_constraintLeft_toRightOf="@id/from"
+                    app:layout_constraintRight_toLeftOf="@id/tvTo"
+                    android:layout_marginLeft="@dimen/margin_medium"
+                    android:background="@drawable/bg_textinput_practice"
+                    android:text="0"
+                    android:textColor="@color/gray"
+                    android:gravity="center"
+                    android:inputType="number"
+                    />
+
+                <TextView
+                    android:id="@+id/tvTo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/height_header"
+                    android:text="@string/to_lable"
+                    app:layout_constraintTop_toBottomOf="@id/tvAmount"
+                    app:layout_constraintLeft_toRightOf="@id/edFrom"
+                    app:layout_constraintRight_toLeftOf="@id/edTo"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/opensans_bold"
+                    android:layout_marginLeft="@dimen/margin_medium"
+                    android:gravity="center_vertical"
+                    />
+
+                <EditText
+                    android:id="@+id/edTo"
+                    android:layout_width="@dimen/height_header"
+                    android:layout_height="@dimen/height_header"
+                    app:layout_constraintTop_toBottomOf="@id/tvAmount"
+                    app:layout_constraintLeft_toRightOf="@id/tvTo"
+                    android:layout_marginLeft="@dimen/margin_medium"
+                    android:background="@drawable/bg_textinput_practice"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:text="100"
+                    android:textColor="@color/gray"
+                    android:gravity="center"
+                    android:inputType="number"
+                    />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/animate"
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                app:lottie_loop="true"
+                android:layout_below="@id/llAmount"
+                />
+        </RelativeLayout>
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/tvStart"
+        android:layout_width="150dp"
+        android:layout_height="@dimen/height_header"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/margin_medium"
+        android:background="@drawable/bg_tv_button"
+        android:text="@string/start_lable"
+        android:fontFamily="@font/opensans_bold"
+        android:textColor="@color/white"
+        android:gravity="center"
+        />
+
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</RelativeLayout>

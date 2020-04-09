@@ -453,9 +453,15 @@ public class MainActivity extends BaseActivity {
         });
 
         tvPractice.setOnClickListener(v -> {
-            showDialogPractive();
+            goToPractice();
             drawerLayout.closeDrawer(Gravity.LEFT);
         });
+    }
+
+    private void goToPractice() {
+//        showDialogPractive();
+        Intent intent = new Intent(MainActivity.this, PracticeActivity.class);
+        startActivity(intent);
     }
 
     public void tvTranslateClick() {

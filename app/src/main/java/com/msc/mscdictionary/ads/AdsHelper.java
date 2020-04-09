@@ -17,8 +17,9 @@ public class AdsHelper {
 
             }
         });
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
+//        AdRequest adRequest = new AdRequest.Builder().build();
+//        adView.loadAd(adRequest);
+        goneAds(adView);
     }
 
     public static void goneAds(AdView mAdView) {
