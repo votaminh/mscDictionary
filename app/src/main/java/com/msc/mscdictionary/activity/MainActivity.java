@@ -408,7 +408,7 @@ public class MainActivity extends BaseActivity {
         btnSpeaker.setOnClickListener(v -> {
             if(AppUtil.isNetworkConnected(getApplicationContext())){
                 if(currentWord != null){
-                    playAudio(currentWord.getEnWord());
+                    playAudio(currentWord.getUrlSpeak());
                 }
             }else {
                 Toast.makeText(this, getString(R.string.request_connect), Toast.LENGTH_SHORT).show();
@@ -606,8 +606,8 @@ public class MainActivity extends BaseActivity {
         new Handler().postDelayed(() -> btnFavourite.setImageResource(R.drawable.ic_favourite), Constant.DURATION_SCALE_FAVOURITE);
     }
 
-    private void playAudio(String en) {
-        MediaBuilder.playLink(en, new MediaBuilder.MediaCallback() {
+    private void playAudio(String url) {
+        MediaBuilder.playLink(url, new MediaBuilder.MediaCallback() {
             @Override
             public void start() {
                 new Handler(Looper.getMainLooper()).post(() -> {
@@ -711,6 +711,11 @@ public class MainActivity extends BaseActivity {
         new Handler(Looper.getMainLooper()).post(() -> {
             tvVoice.setText(word.getVoice());
             tvMean.setText(word.getEnWord().substring(0, 1).toUpperCase() + word.getEnWord().substring(1).toLowerCase());
+            if(word.getUrlSpeak().isEmpty()){
+                btnSpeaker.setVisibility(View.INVISIBLE);
+            }else{
+                btnSpeaker.setVisibility(View.VISIBLE);
+            }
             llHeaderWord.setVisibility(View.VISIBLE);
         });
         if(translateFragment != null && translateFragment.isVisible()){
@@ -766,6 +771,7 @@ public class MainActivity extends BaseActivity {
     }
 
     public void search(String en, boolean addHistory) {
+        translateFragment.showLoad();
         this.enInput = validateInput(en);
         showLoad();
         hideKeyboard(this);

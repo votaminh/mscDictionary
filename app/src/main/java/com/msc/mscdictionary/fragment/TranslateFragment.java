@@ -11,6 +11,7 @@ import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.ads.AdListener;
@@ -41,6 +42,7 @@ public class TranslateFragment extends BaseFragment {
     private AdView mAdView;
     private MainActivity activity;
     private String error;
+    ProgressBar progressBar;
 
     @Override
     public int resLayoutId() {
@@ -54,6 +56,8 @@ public class TranslateFragment extends BaseFragment {
 
         webviewTranslate = view.findViewById(R.id.webviewTranslate);
         setUpWebviewTranslate();
+
+        progressBar = view.findViewById(R.id.progress);
 
         tvNoData = view.findViewById(R.id.tvNodata);
         tvNoHistory = view.findViewById(R.id.tvNoHistory);
@@ -79,6 +83,12 @@ public class TranslateFragment extends BaseFragment {
             }
         });
         webviewTranslate.loadUrl("https://translate.google.com/#view=home&op=translate&sl=en&tl=vi&text=Click%20here%20to%20translate");
+    }
+
+    public void showLoad(){
+        progressBar.setVisibility(View.VISIBLE);
+        webViewMean.setVisibility(View.INVISIBLE);
+        webviewTranslate.setVisibility(View.INVISIBLE);
     }
 
     private void setupWebviewMean() {
@@ -116,6 +126,7 @@ public class TranslateFragment extends BaseFragment {
 
     public void showResult(Word word){
         new Handler(Looper.getMainLooper()).post(() -> {
+            progressBar.setVisibility(View.INVISIBLE);
             tvNoHistory.setVisibility(View.INVISIBLE);
             currentWord = word;
             String content = "";
@@ -162,6 +173,7 @@ public class TranslateFragment extends BaseFragment {
     public void setError(String error) {
         this.error = error;
         new Handler(Looper.getMainLooper()).post(() -> {
+            progressBar.setVisibility(View.INVISIBLE);
             if(AppUtil.isNetworkConnected(getContext())){
                 showDialogAskTranslate();
             }

@@ -73,7 +73,7 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
         });
 
         holder.btnSpeaker.setOnClickListener(v -> {
-            MediaBuilder.playLink(word.getEnWord(), new MediaBuilder.MediaCallback() {
+            MediaBuilder.playLink(word.getUrlSpeak(), new MediaBuilder.MediaCallback() {
                 @Override
                 public void start() {
                     new Handler(Looper.getMainLooper()).post(() -> {

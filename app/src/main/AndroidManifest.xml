@@ -23,7 +23,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".activity.LoginActivity"/>
         <activity android:name=".activity.HistoryActivity"/>
@@ -31,11 +35,6 @@
         <activity android:name=".activity.PracticeActivity"
             android:windowSoftInputMode="stateHidden"
             >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <service android:name=".service.ClipBroadService"/>
         <service android:name=".service.DownloadZipService"/>
