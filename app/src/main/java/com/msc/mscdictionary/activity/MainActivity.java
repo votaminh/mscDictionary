@@ -530,7 +530,8 @@ public class MainActivity extends BaseActivity {
     }
 
     private void enterInput() {
-        final String en = edTextEn.getText().toString();
+        String en = edTextEn.getText().toString();
+        en = en.replace(" ", "+");
         if(en.isEmpty()){
             Toast.makeText(this, getString(R.string.can_not_empty), Toast.LENGTH_SHORT).show();
         }else {
