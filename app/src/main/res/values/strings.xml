@@ -76,4 +76,9 @@
     <string name="from_lable">From</string>
     <string name="to_lable">To</string>
     <string name="loading">Loading</string>
+    <string name="result">Result</string>
+    <string name="list_word_uncorrect">List uncorrect word</string>
+    <string name="re_practice">Repractice uncorrect word</string>
+    <string name="practice_all">Repractice all word</string>
+    <string name="out_lable">Close practice</string>
 </resources>

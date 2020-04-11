@@ -3,19 +3,27 @@ package com.msc.mscdictionary.fragment;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.msc.mscdictionary.R;
+import com.msc.mscdictionary.adaper.FavouriteAdapter;
 import com.msc.mscdictionary.base.BaseFragment;
 import com.msc.mscdictionary.media.MediaBuilder;
 import com.msc.mscdictionary.model.Word;
@@ -23,6 +31,8 @@ import com.msc.mscdictionary.network.DownloadFile;
 import com.msc.mscdictionary.util.AppUtil;
 import com.msc.mscdictionary.util.Constant;
 import com.msc.mscdictionary.util.SharePreferenceUtil;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +44,7 @@ import jp.wasabeef.blurry.Blurry;
 public class Game1Fragment extends BaseFragment {
     public static final String TAG = "game1Fragment";
     private List<Word> listWord = new ArrayList<>();
+    private List<Word> listUnCorrectWord = new ArrayList<>();
 
     ImageView imvMean, imvBlurBg, imvSpeak;
     TextView tvMean, tvPronounce, tvWord;
@@ -273,6 +284,7 @@ public class Game1Fragment extends BaseFragment {
 
             // nếu câu trả lời sai thì mới hiện
             if(correctAnswer != userAnswer){
+                listUnCorrectWord.add(currentWord);
                 switch (userAnswer){
                     case 1 :
                         setWrong(tvA);
@@ -345,6 +357,62 @@ public class Game1Fragment extends BaseFragment {
 
     private void finishGame() {
         runGame = false;
+        showDialogResult();
+    }
+
+    private void showDialogResult() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_result, new ScrollView(getContext()), false);
+        builder.setView(view);
+        Dialog dialog = builder.create();
+        dialog.show();
+
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            RecyclerView reWord = view.findViewById(R.id.reWord);
+            FavouriteAdapter favouriteAdapter = new FavouriteAdapter(listUnCorrectWord);
+            reWord.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+            reWord.setAdapter(favouriteAdapter);
+        }, 500);
+
+        TextView tvPracUncorrect = view.findViewById(R.id.rePracUn);
+        TextView tvAll = view.findViewById(R.id.reAll);
+        TextView tvClose = view.findViewById(R.id.close);
+
+        if(listUnCorrectWord.size() < 4){
+            tvPracUncorrect.setVisibility(View.GONE);
+        }
+
+        tvPracUncorrect.setOnClickListener(v -> {
+            if(listUnCorrectWord.size() < 4){
+
+            }else {
+                listWord.clear();
+                listWord = listUnCorrectWord;
+                listUnCorrectWord = new ArrayList<>();
+                dialog.dismiss();
+                runAgain();
+            }
+        });
+
+        tvAll.setOnClickListener(v -> {
+            listUnCorrectWord = new ArrayList<>();
+            runAgain();
+            dialog.dismiss();
+        });
+
+        tvClose.setOnClickListener(v -> {
+            dialog.dismiss();
+            getActivity().finish();
+        });
+    }
+
+    private void runAgain() {
+        llLoad.setVisibility(View.VISIBLE);
+        index = 0;
+        timeSecond = 0;
+        runGame = true;
+        loadFirstResource();
+        runTime();
     }
 
     /**
