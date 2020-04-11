@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -20,6 +21,8 @@ import com.msc.mscdictionary.media.MediaBuilder;
 import com.msc.mscdictionary.model.Word;
 import com.msc.mscdictionary.network.DownloadFile;
 import com.msc.mscdictionary.util.AppUtil;
+import com.msc.mscdictionary.util.Constant;
+import com.msc.mscdictionary.util.SharePreferenceUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +56,7 @@ public class Game1Fragment extends BaseFragment {
     int timeSecond = 0;
 
     RelativeLayout llLoad;
+    ImageButton btnSettingSpeaker;
 
     /**
      * loadNext là lúc hệ thống loadResource. bắt đầu chạy thì sẽ là true, sau khi load xong thì false
@@ -93,10 +97,21 @@ public class Game1Fragment extends BaseFragment {
         llLoad = view.findViewById(R.id.llLoad);
 
         noImageBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bg_gallery);
+        btnSettingSpeaker = view.findViewById(R.id.btnSettingSpeaker);
+        setUp();
 
         runGame = true;
         loadFirstResource();
         runTime();
+    }
+
+    private void setUp() {
+        boolean auto = SharePreferenceUtil.getBooleanPerferences(getContext(), Constant.AUTO_SPEAKER, true);
+        if(auto){
+            btnSettingSpeaker.setImageResource(R.drawable.auto_speaker);
+        }else {
+            btnSettingSpeaker.setImageResource(R.drawable.default_speaker);
+        }
     }
 
     private void loadFirstResource() {
@@ -172,6 +187,17 @@ public class Game1Fragment extends BaseFragment {
             playAudio(currentWord.getUrlSpeak());
         });
 
+        btnSettingSpeaker.setOnClickListener(v -> {
+            boolean auto = SharePreferenceUtil.getBooleanPerferences(getContext(), Constant.AUTO_SPEAKER, true);
+            if(auto){
+                SharePreferenceUtil.saveBooleanPereferences(getContext(), Constant.AUTO_SPEAKER, false);
+                btnSettingSpeaker.setImageResource(R.drawable.default_speaker);
+            }else {
+                SharePreferenceUtil.saveBooleanPereferences(getContext(), Constant.AUTO_SPEAKER, true);
+                btnSettingSpeaker.setImageResource(R.drawable.auto_speaker);
+            }
+
+        });
         tvA.setOnClickListener(v -> {
             if(!isClicked){
                 userAnswer = 1;
@@ -351,8 +377,11 @@ public class Game1Fragment extends BaseFragment {
 
                 progressBar.setVisibility(View.INVISIBLE);
                 imvSpeak.setVisibility(View.VISIBLE);
+                boolean auto = SharePreferenceUtil.getBooleanPerferences(getContext(), Constant.AUTO_SPEAKER, true);
                 if(!currentWord.getUrlSpeak().isEmpty()){
-                    playAudio(currentWord.getUrlSpeak());
+                    if(auto)
+                        playAudio(currentWord.getUrlSpeak());
+
                 }else {
                     imvSpeak.setVisibility(View.INVISIBLE);
                 }
@@ -371,11 +400,15 @@ public class Game1Fragment extends BaseFragment {
     }
 
     private void hideLoad() {
-        llLoad.setVisibility(View.INVISIBLE);
+        new Handler(Looper.getMainLooper()).post(() -> {
+            llLoad.setVisibility(View.INVISIBLE);
+        });
     }
 
     private void showLoad() {
-        llLoad.setVisibility(View.VISIBLE);
+        new Handler(Looper.getMainLooper()).post(() -> {
+            llLoad.setVisibility(View.VISIBLE);
+        });
     }
 
     private void resetBackground() {

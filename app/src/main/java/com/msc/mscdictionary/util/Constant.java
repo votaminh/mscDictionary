@@ -35,4 +35,5 @@ public class Constant {
 
     public static String ip = "http://192.168.43.13/";
     public static String RATIO_SIZE_CONTENT = "ratioSize";
+    public static String AUTO_SPEAKER = "autoSpeaker";
 }
