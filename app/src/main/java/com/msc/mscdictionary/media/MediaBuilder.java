@@ -32,7 +32,7 @@ public class MediaBuilder {
 
                 });
                 mediaPlayer.start();
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }).start();
