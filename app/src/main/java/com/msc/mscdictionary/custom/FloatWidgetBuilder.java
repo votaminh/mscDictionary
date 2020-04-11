@@ -246,15 +246,14 @@ public class FloatWidgetBuilder {
                 }
             });
             webviewTranslate.loadUrl("https://translate.google.com/#view=home&op=translate&sl=en&tl=vi&text=Click%20here%20to%20translate");
-
-            edEn.setOnClickListener(v -> openApp(s));
-            tvResult.setOnClickListener(v -> openApp(s));
-            tvSearch.setOnClickListener(v -> openApp(s));
-            tvClose.setOnClickListener(v -> removeTranslate());
-
-            openTranslate.setOnClickListener(v -> openApp(s));
         }
 
+        edEn.setOnClickListener(v -> openApp(s));
+        tvResult.setOnClickListener(v -> openApp(s));
+        tvSearch.setOnClickListener(v -> openApp(s));
+        tvClose.setOnClickListener(v -> removeTranslate());
+
+        openTranslate.setOnClickListener(v -> openApp(s));
 
         tvResult.setText("");
         progressBar.setVisibility(View.VISIBLE);
@@ -270,11 +269,16 @@ public class FloatWidgetBuilder {
         offWordDAO.getWordByEn(s, new DictionaryCrawl.TranslateCallback() {
             @Override
             public void success(Word word) {
+                boolean saved = SharePreferenceUtil.getBooleanPerferences(context, Constant.ENABLE_AUTO_FAVOURITE, false);
+                if(saved){
+                    OffFavouriteDAO favouriteDAO = new OffFavouriteDAO(context);
+                    if(!favouriteDAO.checkHas(word)){
+                        favouriteDAO.add(word);
+                    }
+                }
                 String encoding = word.getHtmlFullMean();
                 word.setHtmlFullMean(AppUtil.decodingHtml(encoding));
                 new Handler(Looper.getMainLooper()).post(() -> {
-                    OffFavouriteDAO favouriteDAO = new OffFavouriteDAO(context);
-                    favouriteDAO.add(word);
                     tvResult.setText(word.getCommonMean());
                     progressBar.setVisibility(View.INVISIBLE);
                 });
@@ -285,9 +289,16 @@ public class FloatWidgetBuilder {
                 DictionaryCrawl.instance(s, new DictionaryCrawl.TranslateCallback() {
                     @Override
                     public void success(Word word) {
-                        new Handler(Looper.getMainLooper()).post(() -> {
+                        boolean saved = SharePreferenceUtil.getBooleanPerferences(context, Constant.ENABLE_AUTO_FAVOURITE, false);
+                        if(saved){
+                            saveWordOffline(word);
                             OffFavouriteDAO favouriteDAO = new OffFavouriteDAO(context);
-                            favouriteDAO.add(word);
+                            if(!favouriteDAO.checkHas(word)){
+                                favouriteDAO.add(word);
+                            }
+                        }
+
+                        new Handler(Looper.getMainLooper()).post(() -> {
                             tvResult.setText(word.getCommonMean());
                             progressBar.setVisibility(View.INVISIBLE);
                         });
@@ -306,6 +317,15 @@ public class FloatWidgetBuilder {
                 }).translate();
             }
         });
+    }
+
+    private void saveWordOffline(Word word) {
+        int biggestId = SharePreferenceUtil.getIntPereferences(context, Constant.CURRENT_ID_WORD, 0);
+        biggestId++;
+        word.setId(biggestId);
+        SharePreferenceUtil.saveIntPereferences(context, Constant.CURRENT_ID_WORD, biggestId);
+        OffWordDAO wordDAO = new OffWordDAO(context);
+        wordDAO.addWord(word);
     }
 
     private void openApp(String s) {

@@ -208,7 +208,9 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        android:background="@color/background_content"
+        >
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -294,8 +296,42 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/llSizeText"
+                android:id="@+id/llTurnAutoFavourite"
                 android:layout_below="@id/llTurnFloat"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_header">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/item_menu_drawer"
+                    android:text="@string/turn_auto"
+                    android:layout_centerVertical="true"
+                    />
+
+                <Switch
+                    android:id="@+id/swFavourite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/margin_small"
+                    android:clickable="false"
+                    />
+            </RelativeLayout>
+
+            <View
+                android:clickable="true"
+                android:id="@+id/maskAutoFavourite"
+                android:layout_below="@id/llTurnFloat"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_header"
+                android:background="#99FFFFFF"
+                />
+
+            <RelativeLayout
+                android:id="@+id/llSizeText"
+                android:layout_below="@id/llTurnAutoFavourite"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/height_header">
 

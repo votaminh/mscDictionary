@@ -81,11 +81,16 @@ public class MainActivity extends BaseActivity {
     ImageButton btnSpeaker;
     ProgressBar progressBar;
 
+    View maskAutoFavourite;
+
     SeekBar sbSizeText;
 
     Switch swFloat;
     RelativeLayout llFloat;
-    
+
+    Switch swAutoFavourite;
+    RelativeLayout llAutoFavourite;
+
     Word currentWord;
     RelativeLayout llHeaderWord;
     private TranslateFragment translateFragment;
@@ -128,6 +133,7 @@ public class MainActivity extends BaseActivity {
         progress = findViewById(R.id.progress);
         btnMenuDrawer = findViewById(R.id.btnMenuDrawer);
         drawerLayout = findViewById(R.id.drawerLayout);
+        maskAutoFavourite = findViewById(R.id.maskAutoFavourite);
 
         tvMean = findViewById(R.id.tvMean);
         tvVoice = findViewById(R.id.tvVoice);
@@ -148,6 +154,9 @@ public class MainActivity extends BaseActivity {
 
         swFloat = findViewById(R.id.swFloat);
         llFloat = findViewById(R.id.llTurnFloat);
+        swAutoFavourite = findViewById(R.id.swFavourite);
+        llAutoFavourite = findViewById(R.id.llTurnAutoFavourite);
+
         sbSizeText = findViewById(R.id.sbSizeText);
         appBarLayout = findViewById(R.id.appBarLayout);
         appBarLayout.getViewTreeObserver().addOnGlobalFocusChangeListener(new ViewTreeObserver.OnGlobalFocusChangeListener() {
@@ -203,8 +212,17 @@ public class MainActivity extends BaseActivity {
         if(enableFloat){
             enableServiceFloat();
             swFloat.setChecked(true);
+            maskAutoFavourite.setVisibility(View.INVISIBLE);
         }else {
             swFloat.setChecked(false);
+            maskAutoFavourite.setVisibility(View.VISIBLE);
+        }
+
+        boolean enableAutoAddFavourite = SharePreferenceUtil.getBooleanPerferences(this,Constant.ENABLE_AUTO_FAVOURITE, false);
+        if(enableAutoAddFavourite){
+            swAutoFavourite.setChecked(true);
+        }else {
+            swAutoFavourite.setChecked(false);
         }
     }
 
@@ -399,9 +417,21 @@ public class MainActivity extends BaseActivity {
                 }
                 enableServiceFloat();
                 SharePreferenceUtil.saveBooleanPereferences(this,Constant.ENABLE_FLOAT, true);
+                maskAutoFavourite.setVisibility(View.INVISIBLE);
             }else {
                 disableServiceFloat();
                 SharePreferenceUtil.saveBooleanPereferences(this,Constant.ENABLE_FLOAT, false);
+                maskAutoFavourite.setVisibility(View.VISIBLE);
+            }
+        });
+
+        llAutoFavourite.setOnClickListener(v -> {
+            swAutoFavourite.toggle();
+            if(swAutoFavourite.isChecked()){
+                SharePreferenceUtil.saveBooleanPereferences(this,Constant.ENABLE_AUTO_FAVOURITE, true);
+                Toast.makeText(this, getString(R.string.tutorial_auto_add_when_search), Toast.LENGTH_SHORT).show();
+            }else {
+                SharePreferenceUtil.saveBooleanPereferences(this,Constant.ENABLE_AUTO_FAVOURITE, false);
             }
         });
         
@@ -771,7 +801,9 @@ public class MainActivity extends BaseActivity {
     }
 
     public void search(String en, boolean addHistory) {
-        translateFragment.showLoad();
+        if(translateFragment != null && translateFragment.isVisible()){
+            translateFragment.showLoad();
+        }
         this.enInput = validateInput(en);
         showLoad();
         hideKeyboard(this);

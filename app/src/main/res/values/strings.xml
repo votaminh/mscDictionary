@@ -81,4 +81,6 @@
     <string name="re_practice">Repractice uncorrect word</string>
     <string name="practice_all">Repractice all word</string>
     <string name="out_lable">Close practice</string>
+    <string name="turn_auto">Auto favourite when search</string>
+    <string name="tutorial_auto_add_when_search">When you search any word, this word is favourited, and you can practice anytime</string>
 </resources>
