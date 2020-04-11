@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import com.msc.mscdictionary.R;
 import com.msc.mscdictionary.base.BaseFragment;
-import com.msc.mscdictionary.firebase.MyFirebase;
 import com.msc.mscdictionary.media.MediaBuilder;
 import com.msc.mscdictionary.model.Word;
 import com.msc.mscdictionary.network.DownloadFile;
@@ -49,9 +48,18 @@ public class Game1Fragment extends BaseFragment {
     int timeAni = 0;
     RelativeLayout llRoot;
 
-    Bitmap nextBitmap, noImageBitmap;
+    Bitmap currentBitmap, nextBitmap, noImageBitmap;
     private boolean runGame = false;
     int timeSecond = 0;
+
+    RelativeLayout llLoad;
+
+    /**
+     * loadNext là lúc hệ thống loadResource. bắt đầu chạy thì sẽ là true, sau khi load xong thì false
+     */
+    private boolean loadNext = false;
+    private boolean loadNext1 = true;
+
     @Override
     public int resLayoutId() {
         return R.layout.game_1_fragment;
@@ -82,12 +90,47 @@ public class Game1Fragment extends BaseFragment {
 
         tvTime = view.findViewById(R.id.tvTime);
         tvCount = view.findViewById(R.id.tvCount);
+        llLoad = view.findViewById(R.id.llLoad);
 
         noImageBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bg_gallery);
 
         runGame = true;
         loadFirstResource();
         runTime();
+    }
+
+    private void loadFirstResource() {
+        DownloadFile.downloadBitmap(AppUtil.getLinkForWord(listWord.get(0).getEnWord()), new DownloadFile.DownloadBitmapListener() {
+            @Override
+            public void success(Bitmap b) {
+                currentBitmap = b;
+                loadSecondResource();
+            }
+
+            @Override
+            public void fail() {
+                currentBitmap = Bitmap.createBitmap(noImageBitmap);
+                loadSecondResource();
+            }
+        });
+    }
+
+    private void loadSecondResource() {
+        DownloadFile.downloadBitmap(AppUtil.getLinkForWord(listWord.get(1).getEnWord()), new DownloadFile.DownloadBitmapListener() {
+            @Override
+            public void success(Bitmap b) {
+                nextBitmap = b;
+                loadNext = false;
+                startGame(index);
+            }
+
+            @Override
+            public void fail() {
+                nextBitmap = Bitmap.createBitmap(noImageBitmap);
+                loadNext = false;
+                startGame(index);
+            }
+        });
     }
 
     private void runTime() {
@@ -114,27 +157,6 @@ public class Game1Fragment extends BaseFragment {
                 });
             }
         }).start();
-    }
-
-    private void loadFirstResource() {
-        DownloadFile.downloadBitmap(AppUtil.getLinkForWord(listWord.get(0).getEnWord()), new DownloadFile.DownloadBitmapListener() {
-            @Override
-            public void success(Bitmap b) {
-                nextBitmap = b;
-                finishLoadFirst();
-            }
-
-            @Override
-            public void fail() {
-                nextBitmap = Bitmap.createBitmap(noImageBitmap);
-                finishLoadFirst();
-                MyFirebase.addWordNoImage(listWord.get(0).getEnWord());
-            }
-        });
-    }
-
-    private void finishLoadFirst() {
-        new Handler(Looper.getMainLooper()).post(() -> startGame(index));
     }
 
     private void hideAllProgress() {
@@ -299,31 +321,58 @@ public class Game1Fragment extends BaseFragment {
         runGame = false;
     }
 
+    /**
+     * Đây là hàm bắt đầu game, nó sẽ chờ sau khi load xong resouce thì mới chạy
+     * @param index vị trí từ hiện tại trong list word
+     */
     private void startGame(int index) {
-        resetBackground();
-        currentWord = listWord.get(index);
-        tvCount.setText((index + 1) + "/" + listWord.size());
+        showLoad();
+        new Thread(() -> {
+            while (loadNext){
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
 
-        tvWord.setText("?");
-        tvPronounce.setText(currentWord.getVoice());
-        tvMean.setText(currentWord.getCommonMean());
-        imvMean.setImageBitmap(nextBitmap);
-        Blurry.with(getContext()).radius(100).from(nextBitmap).into(imvBlurBg);
+            new Handler(Looper.getMainLooper()).post(() -> {
+                hideLoad();
+                resetBackground();
+                currentWord = listWord.get(index);
+                tvCount.setText((index + 1) + "/" + listWord.size());
 
-        if(!currentWord.getUrlSpeak().isEmpty()){
-            playAudio(currentWord.getUrlSpeak());
-        }else {
-            imvSpeak.setVisibility(View.INVISIBLE);
-        }
+                tvWord.setText("?");
+                tvPronounce.setText(currentWord.getVoice());
+                tvMean.setText(currentWord.getCommonMean());
+                imvMean.setImageBitmap(currentBitmap);
+                Blurry.with(getContext()).radius(100).from(currentBitmap).into(imvBlurBg);
 
-        correctAnswer = random(1, 4);
-        setCorrectAnswer();
+                if(!currentWord.getUrlSpeak().isEmpty()){
+                    playAudio(currentWord.getUrlSpeak());
+                }else {
+                    imvSpeak.setVisibility(View.INVISIBLE);
+                }
 
-        String[] randomAnswer = getRandomAnswer();
-        setRandomAnswer(randomAnswer);
+                correctAnswer = random(1, 4);
+                setCorrectAnswer();
 
-        onClick();
-        loadNextResource(index);
+                String[] randomAnswer = getRandomAnswer();
+                setRandomAnswer(randomAnswer);
+
+                onClick();
+                loadNextResource1(index);
+            });
+
+        }).start();
+    }
+
+    private void hideLoad() {
+        llLoad.setVisibility(View.INVISIBLE);
+    }
+
+    private void showLoad() {
+        llLoad.setVisibility(View.VISIBLE);
     }
 
     private void resetBackground() {
@@ -337,25 +386,48 @@ public class Game1Fragment extends BaseFragment {
         tvD.setTextColor(getResources().getColor(R.color.black));
     }
 
-    private void loadNextResource(int index) {
-        if(index == listWord.size() - 1){
-            return;
-        }
-        int i = index + 1;
-        Word nextWord = listWord.get(i);
-        String link = AppUtil.getLinkForWord(nextWord.getEnWord());
-        DownloadFile.downloadBitmap(link, new DownloadFile.DownloadBitmapListener() {
-            @Override
-            public void success(Bitmap b) {
-                nextBitmap = b;
+    private void loadNextResource1(int index) {
+        new Thread(() -> {
+            loadNext = true;
+            if(index < listWord.size() - 2){
+                loadNextResource2(index);
             }
+            while (loadNext1){
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            loadNext = false;
+        }).start();
 
-            @Override
-            public void fail() {
-                MyFirebase.addWordNoImage(nextWord.getEnWord());
-                nextBitmap = Bitmap.createBitmap(noImageBitmap);
-            }
-        });
+    }
+
+    private void loadNextResource2(int index) {
+        new Thread(() -> {
+            loadNext1 = true;
+            int i = index + 2;
+            DownloadFile.downloadBitmap(AppUtil.getLinkForWord(listWord.get(i).getEnWord()), new DownloadFile.DownloadBitmapListener() {
+                @Override
+                public void success(Bitmap b) {
+                    currentBitmap = nextBitmap;
+                    if(b == null){
+                        nextBitmap = Bitmap.createBitmap(noImageBitmap);
+                    }else {
+                        nextBitmap = b;
+                    }
+                    loadNext1 = false;
+                }
+
+                @Override
+                public void fail() {
+                    currentBitmap = nextBitmap;
+                    nextBitmap = Bitmap.createBitmap(noImageBitmap);
+                    loadNext1 = false;
+                }
+            });
+        }).start();
     }
 
     private void setRandomAnswer(String[] randomAnswer) {

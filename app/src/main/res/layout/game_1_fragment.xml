@@ -272,4 +272,27 @@
         </RelativeLayout>
     </LinearLayout>
 
+    <RelativeLayout
+        android:id="@+id/llLoad"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#CCFFFFFF"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/loading"
+            android:fontFamily="@font/opensans_bold"
+            android:textSize="20sp"
+            android:layout_centerInParent="true"
+            android:id="@+id/tv"
+            />
+
+        <ProgressBar
+            android:layout_width="@dimen/size_progress"
+            android:layout_height="@dimen/size_progress"
+            android:layout_centerHorizontal="true"
+            android:layout_above="@id/tv"
+            />
+    </RelativeLayout>
 </RelativeLayout>
