@@ -78,4 +78,15 @@ public class OffWordDAO {
         values.put("urlSpeak",word.getUrlSpeak());
         db.insert(WORD_TABLE,null,values);
     }
+
+    public void editWord(Word word) {
+        db = dataHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("en",word.getEnWord());
+        values.put("htmtMean",word.getHtmlFullMean());
+        values.put("commonMean",word.getCommonMean());
+        values.put("voice",word.getVoice());
+        values.put("urlSpeak",word.getUrlSpeak());
+        db.update("word", values, "idWord = ?", new String[]{word.getId()+""});
+    }
 }

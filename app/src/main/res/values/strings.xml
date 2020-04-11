@@ -83,4 +83,7 @@
     <string name="out_lable">Close practice</string>
     <string name="turn_auto">Auto favourite when search</string>
     <string name="tutorial_auto_add_when_search">When you search any word, this word is favourited, and you can practice anytime</string>
+    <string name="editmean">Edit your mean</string>
+    <string name="edit_tutorial">Edit word\'s mean, which will be showed in practice and real translate</string>
+    <string name="edit_lable">Edit</string>
 </resources>

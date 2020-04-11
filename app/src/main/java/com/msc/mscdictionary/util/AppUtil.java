@@ -166,4 +166,8 @@ public class AppUtil {
     public static String getLinkForWord(String enWord) {
         return "https://raw.githubusercontent.com/votaminh/DataStore/master/dictionaryApp/image/" + enWord + ".png";
     }
+
+    public static String upperFirstChar(String enWord) {
+        return  enWord.substring(0, 1).toUpperCase() + enWord.substring(1).toLowerCase();
+    }
 }

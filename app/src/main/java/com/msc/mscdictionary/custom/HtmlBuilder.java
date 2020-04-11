@@ -8,10 +8,26 @@ public class HtmlBuilder {
     float ratioSize;
     String header, endTag;
     String html;
+    String meanUser;
+    String tagBr = "";
 
-    public HtmlBuilder(float ratioSize, String html){
+    public HtmlBuilder(float ratioSize, String html, String meanUser){
         this.ratioSize = ratioSize;
         this.html = html;
+
+        for (int i = 0; i < 1/ratioSize * Constant.NUMBER_COUNT_BR; i++) {
+            tagBr += Constant.TAG_BR;
+        }
+
+        this.meanUser = "<div class=\"bg-grey bold font-large m-top20\">\n" +
+                "    <span>Nghĩa thông dụng</span>\n" +
+                "</div> \n" +
+                "<div class=\"green bold margin25 m-top15\">\n" +
+                meanUser +
+                "</div> \n" +
+                "<div id=\"edit_mean\">\n" +
+                "    <a style=\"color: #2196f3;\" href=\"editMean\" >Chỉnh sửa nghĩa thông dụng</a>\n" +
+                "</div>" ;
 
         header = "<html>\n" +
                 "<header>\n" +
@@ -213,7 +229,9 @@ public class HtmlBuilder {
                 "        .m-top20 {\n" +
                 "            margin-top: 20px !important\n" +
                 "        }\n" +
-                "\n" +
+                "#edit_mean{\n" +
+                "            margin-top: 10px;\n" +
+                "        }"+
                 "    </style>\n" +
                 "</header>\n" +
                 "\n" +
@@ -233,6 +251,7 @@ public class HtmlBuilder {
     }
 
     public String get(){
-        return header + html + endTag;
+        String h = header+ tagBr + meanUser + html + endTag;
+        return h;
     }
 }

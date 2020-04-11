@@ -740,7 +740,7 @@ public class MainActivity extends BaseActivity {
         setFavourite();
         new Handler(Looper.getMainLooper()).post(() -> {
             tvVoice.setText(word.getVoice());
-            tvMean.setText(word.getEnWord().substring(0, 1).toUpperCase() + word.getEnWord().substring(1).toLowerCase());
+            tvMean.setText(AppUtil.upperFirstChar(word.getEnWord()));
             if(word.getUrlSpeak().isEmpty()){
                 btnSpeaker.setVisibility(View.INVISIBLE);
             }else{

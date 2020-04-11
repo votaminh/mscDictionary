@@ -1,32 +1,26 @@
 package com.msc.mscdictionary.fragment;
 
 import android.app.AlertDialog;
-import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.InterstitialAd;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.msc.mscdictionary.activity.MainActivity;
 import com.msc.mscdictionary.R;
 import com.msc.mscdictionary.ads.AdsHelper;
 import com.msc.mscdictionary.base.BaseFragment;
 import com.msc.mscdictionary.custom.HtmlBuilder;
 import com.msc.mscdictionary.custom.NestedWebView;
+import com.msc.mscdictionary.database.OffWordDAO;
 import com.msc.mscdictionary.model.Word;
 import com.msc.mscdictionary.util.AppUtil;
 import com.msc.mscdictionary.util.Constant;
@@ -43,6 +37,7 @@ public class TranslateFragment extends BaseFragment {
     private MainActivity activity;
     private String error;
     ProgressBar progressBar;
+    OffWordDAO wordDAO ;
 
     @Override
     public int resLayoutId() {
@@ -57,6 +52,7 @@ public class TranslateFragment extends BaseFragment {
         webviewTranslate = view.findViewById(R.id.webviewTranslate);
         setUpWebviewTranslate();
 
+        wordDAO = new OffWordDAO(getContext());
         progressBar = view.findViewById(R.id.progress);
 
         tvNoData = view.findViewById(R.id.tvNodata);
@@ -98,11 +94,47 @@ public class TranslateFragment extends BaseFragment {
         webViewMean.setWebViewClient(new WebViewClient(){
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                String en = url.replace(Constant.BASELINK_SOHA, "");
-                translateEn(en);
+                if(url.isEmpty()){
+                    showDialogEditMean();
+                }else {
+                    String en = url.replace(Constant.BASELINK_SOHA, "");
+                    translateEn(en);
+                }
                 return true;
             }
         });
+    }
+
+    private void showDialogEditMean() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        View view = getLayoutInflater().inflate(R.layout.dialog_edit_mean, null, false);
+        TextView tvEn = view.findViewById(R.id.tvEn);
+        EditText edVi = view.findViewById(R.id.edMean);
+
+        tvEn.setText(AppUtil.upperFirstChar(currentWord.getEnWord()));
+        edVi.setText(currentWord.getCommonMean());
+        edVi.setSelection(currentWord.getCommonMean().length());
+
+        builder.setView(view);
+        builder.setPositiveButton(getString(R.string.edit_lable), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                editMean(edVi.getText().toString());
+            }
+        });
+        builder.setNeutralButton(getString(R.string.cancel_lable), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.show();
+    }
+
+    private void editMean(String mean) {
+        currentWord.setCommonMean(mean);
+        wordDAO.editWord(currentWord);
+        translateEn(currentWord.getEnWord());
     }
 
 
@@ -129,13 +161,8 @@ public class TranslateFragment extends BaseFragment {
             progressBar.setVisibility(View.INVISIBLE);
             tvNoHistory.setVisibility(View.INVISIBLE);
             currentWord = word;
-            String content = "";
             float ratio = SharePreferenceUtil.getFloatPereferences(getContext(), Constant.RATIO_SIZE_CONTENT, 1);
-            for (int i = 0; i < 1/ratio * Constant.NUMBER_COUNT_BR; i++) {
-                content += Constant.TAG_BR;
-            }
-            content += word.getHtmlFullMean();
-            HtmlBuilder h = new HtmlBuilder(ratio, content);
+            HtmlBuilder h = new HtmlBuilder(ratio, word.getHtmlFullMean(), word.getCommonMean());
             webViewMean.loadDataWithBaseURL(null, h.get(), "text/html", "utf-8", null);
             new Handler().postDelayed(() -> setPosition(), 500);
         });
