@@ -31,6 +31,7 @@ public class Constant {
     public static final String RATE = "rateApp";
     public static final String TUTORIAL = "tutorial";
     public static final int NUMBER_COUNT_BR_SCROLL = 10;
+    public static final String WORD_NOT_IMAGE = "NoImage";
 
     public static String ip = "http://192.168.43.13/";
     public static String RATIO_SIZE_CONTENT = "ratioSize";

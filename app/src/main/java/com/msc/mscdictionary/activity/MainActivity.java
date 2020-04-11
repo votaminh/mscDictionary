@@ -531,7 +531,6 @@ public class MainActivity extends BaseActivity {
 
     private void enterInput() {
         String en = edTextEn.getText().toString();
-        en = en.replace(" ", "+");
         if(en.isEmpty()){
             Toast.makeText(this, getString(R.string.can_not_empty), Toast.LENGTH_SHORT).show();
         }else {
@@ -778,6 +777,8 @@ public class MainActivity extends BaseActivity {
         hideKeyboard(this);
         edTextEn.setText(en);
         tvMean.setText(enInput.substring(0, 1).toUpperCase() + enInput.substring(1).toLowerCase());
+
+        en = en.replace(" ", "+");
         wordDAO.getWordByEn(en, new DictionaryCrawl.TranslateCallback() {
             @Override
             public void success(Word word) {

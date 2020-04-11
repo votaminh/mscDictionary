@@ -162,4 +162,8 @@ public class AppUtil {
 
         context.startActivity(Intent.createChooser(share, "The system will open"));
     }
+
+    public static String getLinkForWord(String enWord) {
+        return "https://raw.githubusercontent.com/votaminh/DataStore/master/dictionaryApp/image/" + enWord + ".png";
+    }
 }

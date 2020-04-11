@@ -10,7 +10,7 @@ android {
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
-
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -55,6 +55,9 @@ dependencies {
     implementation 'com.google.android.gms:play-services-ads:19.0.1'
 
     implementation 'com.airbnb.android:lottie:3.4.0'
+
+    implementation 'jp.wasabeef:blurry:3.0.0'
+
 }
 
 apply plugin: 'com.google.gms.google-services'

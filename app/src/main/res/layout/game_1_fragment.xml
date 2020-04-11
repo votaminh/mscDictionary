@@ -4,46 +4,53 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
     >
 
     <ImageView
         android:id="@+id/imvBlurBg"
         android:layout_width="match_parent"
+        android:scaleType="centerCrop"
         android:layout_height="match_parent"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#4DFFFFFF"
+        />
     <RelativeLayout
         android:id="@+id/llHeader"
         android:layout_width="match_parent"
-        android:background="@color/colorPrimary"
         android:layout_height="@dimen/height_header">
 
         <ImageButton
             android:layout_width="@dimen/height_header"
             android:layout_height="@dimen/height_header"
-            android:src="@drawable/ic_cancel"
+            android:src="@drawable/ic_back"
+            android:tint="@color/black"
             android:background="?attr/selectableItemBackground"
-            android:tint="@color/white"
             />
 
         <TextView
+            android:id="@+id/tvTime"
             android:layout_width="100dp"
             android:layout_height="@dimen/height_header"
             android:layout_alignParentRight="true"
-            tools:text="1 : 30"
             android:fontFamily="@font/opensans_bold"
             android:textSize="@dimen/size_text_title"
             android:gravity="center_vertical|right"
             android:paddingRight="@dimen/margin_medium"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             />
 
         <TextView
+            android:id="@+id/tvCount"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:text="30/45"
             android:fontFamily="@font/opensans_bold"
             android:textSize="@dimen/size_text_title"
             android:gravity="center"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             />
     </RelativeLayout>
 
@@ -52,31 +59,37 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_below="@id/llHeader"
-        android:layout_above="@id/llQuestion"
+        android:layout_above="@id/llOne"
+        android:layout_marginBottom="90dp"
         />
 
     <RelativeLayout
         android:id="@+id/llQuestion"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/height_header"
+        android:layout_height="wrap_content"
         android:layout_above="@id/llOne"
         android:layout_marginBottom="@dimen/margin_medium">
 
         <TextView
             android:id="@+id/tvWord"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:minWidth="100dp"
+            android:layout_height="@dimen/height_header"
+            android:layout_alignParentBottom="true"
             tools:text="home"
             android:layout_marginLeft="@dimen/margin_medium"
             android:gravity="center"
             android:fontFamily="@font/opensans_bold"
             android:textSize="18sp"
+            android:visibility="invisible"
+            android:textColor="@color/white"
             />
 
         <TextView
             android:id="@+id/tvPronounce"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/height_header"
+            android:layout_alignParentBottom="true"
             tools:text="/asfsf/"
             android:layout_toRightOf="@id/tvWord"
             android:gravity="center_vertical"
@@ -84,27 +97,50 @@
             android:layout_marginLeft="@dimen/margin_medium"
             />
 
-        <ImageView
-            android:id="@+id/imvSpeaker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_speaker"
-            android:layout_toRightOf="@id/tvPronounce"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/margin_medium"
-            />
-
         <TextView
             android:id="@+id/tvMean"
             android:layout_width="wrap_content"
+            android:minHeight="@dimen/height_header"
+            android:layout_centerHorizontal="true"
+            android:maxWidth="200dp"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/imvSpeaker"
+            android:gravity="center_vertical"
             tools:text="ngoi nha"
-            android:layout_centerVertical="true"
+            android:layout_alignParentBottom="true"
             android:fontFamily="@font/opensans_bold"
-            android:textSize="18sp"
-            android:layout_marginLeft="@dimen/margin_medium"
+            android:textSize="23sp"
+            android:background="@drawable/bg_text_question"
+            android:paddingLeft="@dimen/margin_medium"
+            android:paddingRight="@dimen/margin_medium"
+            android:textColor="@color/white"
             />
+
+        <RelativeLayout
+            android:id="@+id/llSpeak"
+            android:layout_width="@dimen/height_header"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="@dimen/margin_medium"
+            android:layout_height="@dimen/height_header">
+            <ImageView
+                android:id="@+id/imvSpeaker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:src="@drawable/ic_speaker"
+                android:layout_centerVertical="true"
+                android:background="?attr/selectableItemBackground"
+                android:tint="@color/white"
+                />
+
+            <ProgressBar
+                android:id="@+id/progress"
+                android:layout_centerInParent="true"
+                android:layout_width="@dimen/size_progress"
+                android:layout_height="@dimen/size_progress"
+                android:visibility="invisible"
+                />
+        </RelativeLayout>
 
     </RelativeLayout>
 
@@ -117,26 +153,59 @@
         android:layout_marginBottom="@dimen/margin_medium"
         >
 
-        <TextView
-            android:id="@+id/tvA"
+        <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            tools:text="home"
-            style="@style/text_choice"
             android:background="@drawable/bg_text_choice"
-            />
-
-        <TextView
-            android:id="@+id/tvB"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            tools:text="home"
-            style="@style/text_choice"
-            android:background="@drawable/bg_text_choice"
+            android:layout_marginLeft="@dimen/margin_medium"
             android:layout_marginRight="@dimen/margin_medium"
-            />
+            >
+            <TextView
+                android:id="@+id/tvA"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:text="home"
+                style="@style/text_choice"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                />
+
+            <ProgressBar
+                android:id="@+id/progressA"
+                android:layout_width="@dimen/size_progress"
+                android:layout_height="@dimen/size_progress"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/margin_medium"
+                />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/bg_text_choice"
+            android:layout_marginLeft="@dimen/margin_medium"
+            android:layout_marginRight="@dimen/margin_medium"
+            >
+            <TextView
+                android:id="@+id/tvB"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:text="home"
+                style="@style/text_choice"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                />
+
+            <ProgressBar
+                android:id="@+id/progressB"
+                android:layout_width="@dimen/size_progress"
+                android:layout_height="@dimen/size_progress"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/margin_medium"
+                />
+        </RelativeLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -148,26 +217,59 @@
         android:layout_marginBottom="@dimen/margin_medium"
         >
 
-        <TextView
-            android:id="@+id/tvC"
+        <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            tools:text="home"
-            style="@style/text_choice"
             android:background="@drawable/bg_text_choice"
-            />
-
-        <TextView
-            android:id="@+id/tvD"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            tools:text="home"
-            style="@style/text_choice"
-            android:background="@drawable/bg_text_choice"
+            android:layout_marginLeft="@dimen/margin_medium"
             android:layout_marginRight="@dimen/margin_medium"
-            />
+            >
+            <TextView
+                android:id="@+id/tvC"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:text="home"
+                style="@style/text_choice"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                />
+
+            <ProgressBar
+                android:id="@+id/progressC"
+                android:layout_width="@dimen/size_progress"
+                android:layout_height="@dimen/size_progress"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/margin_medium"
+                />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/bg_text_choice"
+            android:layout_marginLeft="@dimen/margin_medium"
+            android:layout_marginRight="@dimen/margin_medium"
+            >
+            <TextView
+                android:id="@+id/tvD"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:text="home"
+                style="@style/text_choice"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                />
+
+            <ProgressBar
+                android:id="@+id/progressD"
+                android:layout_width="@dimen/size_progress"
+                android:layout_height="@dimen/size_progress"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/margin_medium"
+                />
+        </RelativeLayout>
     </LinearLayout>
 
 </RelativeLayout>

@@ -2,6 +2,8 @@ package com.msc.mscdictionary.network;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -76,9 +78,31 @@ public class DownloadFile extends AsyncTask<String, Void, Void> {
         }
     }
 
+    public static void downloadBitmap(String link, DownloadBitmapListener downloadListener){
+        new Thread(() -> {
+            try {
+                URL url = new URL(link);
+                URLConnection conexion = url.openConnection();
+                conexion.connect();
+                InputStream input = new BufferedInputStream(url.openStream());
+                Bitmap b = BitmapFactory.decodeStream(input);
+                input.close();
+
+                downloadListener.success(b);
+            }catch (Exception e){
+                downloadListener.fail();
+            }
+        }).start();
+    }
+
     public interface DownloadListener{
         void progress(int progress);
         void fail(String error);
         void finish();
+    }
+
+    public interface DownloadBitmapListener{
+        void success(Bitmap b);
+        void fail();
     }
 }

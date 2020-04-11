@@ -87,6 +87,10 @@ public class MyFirebase {
         });
     }
 
+    public static void addWordNoImage(String en){
+        data.child(Constant.DICTION_NODE).child(Constant.WORD_NOT_IMAGE).push().setValue(en);
+    }
+
     public interface TaskListener {
         void fail(String error);
         void success();
