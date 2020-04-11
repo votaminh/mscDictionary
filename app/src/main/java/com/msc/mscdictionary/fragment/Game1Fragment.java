@@ -348,6 +348,9 @@ public class Game1Fragment extends BaseFragment {
                 imvMean.setImageBitmap(currentBitmap);
                 Blurry.with(getContext()).radius(100).from(currentBitmap).into(imvBlurBg);
 
+
+                progressBar.setVisibility(View.INVISIBLE);
+                imvSpeak.setVisibility(View.VISIBLE);
                 if(!currentWord.getUrlSpeak().isEmpty()){
                     playAudio(currentWord.getUrlSpeak());
                 }else {
@@ -491,6 +494,8 @@ public class Game1Fragment extends BaseFragment {
     }
 
     private void playAudio(String link){
+
+        MediaBuilder.stop();
         MediaBuilder.playLink(link, new MediaBuilder.MediaCallback() {
             @Override
             public void start() {

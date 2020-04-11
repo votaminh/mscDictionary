@@ -15,12 +15,12 @@ import java.io.IOException;
 import java.net.URL;
 
 public class MediaBuilder {
-
+    public static MediaPlayer mediaPlayer = null;
     public static void playLink(String link, MediaCallback callback) {
         new Thread(() -> {
             callback.start();
             try {
-                MediaPlayer mediaPlayer = new MediaPlayer();
+                mediaPlayer = new MediaPlayer();
                 mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
                 mediaPlayer.setDataSource(link);
                 mediaPlayer.prepare();
@@ -36,6 +36,12 @@ public class MediaBuilder {
                 e.printStackTrace();
             }
         }).start();
+    }
+
+    public static void stop() {
+        if(mediaPlayer != null){
+            mediaPlayer.stop();
+        }
     }
 
     public interface MediaCallback{
