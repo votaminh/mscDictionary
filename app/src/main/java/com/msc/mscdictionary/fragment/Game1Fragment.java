@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -148,6 +149,7 @@ public class Game1Fragment extends BaseFragment {
                 nextBitmap = b;
                 loadNext = false;
                 startGame(index);
+                loadNext1 = false;
             }
 
             @Override
@@ -155,6 +157,7 @@ public class Game1Fragment extends BaseFragment {
                 nextBitmap = Bitmap.createBitmap(noImageBitmap);
                 loadNext = false;
                 startGame(index);
+                loadNext1 = false;
             }
         });
     }
@@ -493,15 +496,17 @@ public class Game1Fragment extends BaseFragment {
     private void loadNextResource1(int index) {
         new Thread(() -> {
             loadNext = true;
-            if(index < listWord.size() - 2){
-                loadNextResource2(index);
-            }
             while (loadNext1){
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+            }
+
+            currentBitmap = nextBitmap;
+            if(index < listWord.size() - 2){
+                loadNextResource2(index);
             }
             loadNext = false;
         }).start();
@@ -515,20 +520,21 @@ public class Game1Fragment extends BaseFragment {
             DownloadFile.downloadBitmap(AppUtil.getLinkForWord(listWord.get(i).getEnWord()), new DownloadFile.DownloadBitmapListener() {
                 @Override
                 public void success(Bitmap b) {
-                    currentBitmap = nextBitmap;
                     if(b == null){
                         nextBitmap = Bitmap.createBitmap(noImageBitmap);
                     }else {
                         nextBitmap = b;
                     }
                     loadNext1 = false;
+                    new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(getContext(), "da tai hinh tiep", Toast.LENGTH_SHORT).show());
                 }
 
                 @Override
                 public void fail() {
-                    currentBitmap = nextBitmap;
                     nextBitmap = Bitmap.createBitmap(noImageBitmap);
                     loadNext1 = false;
+                    new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(getContext(), "da tai hinh tiep", Toast.LENGTH_SHORT).show());
+
                 }
             });
         }).start();

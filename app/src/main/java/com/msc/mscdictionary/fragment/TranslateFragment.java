@@ -94,7 +94,7 @@ public class TranslateFragment extends BaseFragment {
         webViewMean.setWebViewClient(new WebViewClient(){
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                if(url.isEmpty()){
+                if(url.isEmpty() || url.equalsIgnoreCase("about:blank")){
                     showDialogEditMean();
                 }else {
                     String en = url.replace(Constant.BASELINK_SOHA, "");
@@ -135,6 +135,7 @@ public class TranslateFragment extends BaseFragment {
         currentWord.setCommonMean(mean);
         wordDAO.editWord(currentWord);
         translateEn(currentWord.getEnWord());
+        activity.hideKeyboard(activity);
     }
 
 

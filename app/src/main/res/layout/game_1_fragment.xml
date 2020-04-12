@@ -108,7 +108,7 @@
             tools:text="ngoi nha"
             android:layout_alignParentBottom="true"
             android:fontFamily="@font/opensans_bold"
-            android:textSize="23sp"
+            android:textSize="@dimen/size_text_title"
             android:background="@drawable/bg_text_question"
             android:paddingLeft="@dimen/margin_medium"
             android:paddingRight="@dimen/margin_medium"

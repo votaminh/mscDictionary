@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -18,6 +19,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 public class DownloadFile extends AsyncTask<String, Void, Void> {
+    private static final int MAX_SIZE_BITMAP = 500;
     WeakReference<Context> contextWeakReference;
     DownloadListener downloadListener;
     String out;
@@ -88,12 +90,21 @@ public class DownloadFile extends AsyncTask<String, Void, Void> {
                 Bitmap b = BitmapFactory.decodeStream(input);
                 input.close();
 
+                if(b.getWidth() > MAX_SIZE_BITMAP){
+                    float ratio = b.getWidth()/(float)b.getHeight();
+                    b = Bitmap.createScaledBitmap(b, MAX_SIZE_BITMAP, (int) (MAX_SIZE_BITMAP/ratio), false);
+                }else if(b.getHeight() > MAX_SIZE_BITMAP){
+                    float ratio = b.getWidth()/(float)b.getHeight();
+                    b = Bitmap.createScaledBitmap(b, (int) (MAX_SIZE_BITMAP * ratio), MAX_SIZE_BITMAP, false);
+                }
+
                 downloadListener.success(b);
             }catch (Exception e){
                 downloadListener.fail();
             }
         }).start();
     }
+
 
     public interface DownloadListener{
         void progress(int progress);

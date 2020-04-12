@@ -26,7 +26,7 @@ public class HtmlBuilder {
                 meanUser +
                 "</div> \n" +
                 "<div id=\"edit_mean\">\n" +
-                "    <a style=\"color: #2196f3;\" href=\"editMean\" >Chỉnh sửa nghĩa thông dụng</a>\n" +
+                "    <a target=\"_blank\" style=\"color: #2196f3;\" href=\"\" >Chỉnh sửa nghĩa thông dụng</a>\n" +
                 "</div>" ;
 
         header = "<html>\n" +
