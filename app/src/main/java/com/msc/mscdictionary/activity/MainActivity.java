@@ -50,12 +50,14 @@ import com.msc.mscdictionary.fragment.TranslateFragment;
 import com.msc.mscdictionary.media.MediaBuilder;
 import com.msc.mscdictionary.model.Word;
 import com.msc.mscdictionary.network.DictionaryCrawl;
+import com.msc.mscdictionary.network.DownloadFile;
 import com.msc.mscdictionary.service.ClipBroadService;
 import com.msc.mscdictionary.service.DownloadZipService;
 import com.msc.mscdictionary.util.AppUtil;
 import com.msc.mscdictionary.util.Constant;
 import com.msc.mscdictionary.util.SharePreferenceUtil;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -436,12 +438,8 @@ public class MainActivity extends BaseActivity {
         });
         
         btnSpeaker.setOnClickListener(v -> {
-            if(AppUtil.isNetworkConnected(getApplicationContext())){
-                if(currentWord != null){
-                    playAudio(currentWord.getUrlSpeak());
-                }
-            }else {
-                Toast.makeText(this, getString(R.string.request_connect), Toast.LENGTH_SHORT).show();
+            if(currentWord != null){
+                playAudio(currentWord.getUrlSpeak());
             }
         });
 
@@ -656,7 +654,12 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void fail(String error) {
-                Toast.makeText(MainActivity.this, "No Speak", Toast.LENGTH_SHORT).show();
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    btnSpeaker.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.INVISIBLE);
+                    Toast.makeText(MainActivity.this, "No audio", Toast.LENGTH_SHORT).show();
+                });
+
             }
         });
     }
@@ -738,6 +741,7 @@ public class MainActivity extends BaseActivity {
             historyDAO.add(word);
         }
         setFavourite();
+        checkDownloadOfflineAudio(word);
         new Handler(Looper.getMainLooper()).post(() -> {
             tvVoice.setText(word.getVoice());
             tvMean.setText(AppUtil.upperFirstChar(word.getEnWord()));
@@ -750,6 +754,36 @@ public class MainActivity extends BaseActivity {
         });
         if(translateFragment != null && translateFragment.isVisible()){
             translateFragment.showResult(word);
+        }
+    }
+
+    private void checkDownloadOfflineAudio(Word word) {
+        String url = word.getUrlSpeak();
+        if(url.isEmpty()){
+            // save with link github and add to firebase
+            String githubLink = AppUtil.getLinkAudioGithub(word.getEnWord());
+        }else if(url.contains("http")){
+            // save offline
+            DownloadFile.downloadAudio(url, word.getEnWord(), new DownloadFile.DownloadListener() {
+                @Override
+                public void progress(int progress) {
+
+                }
+
+                @Override
+                public void fail(String error) {
+
+                }
+
+                @Override
+                public void finish() {
+                    if(getApplicationContext() != null){
+                        String newLInkOffline =  AppUtil.getLinkAudioOffline(word.getEnWord());
+                        word.setUrlSpeak(newLInkOffline);
+                        wordDAO.editWord(word);
+                    }
+                }
+            });
         }
     }
 

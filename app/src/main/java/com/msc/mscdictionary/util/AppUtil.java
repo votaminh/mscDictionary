@@ -14,8 +14,10 @@ import android.view.animation.AnticipateInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageButton;
 
+import com.msc.mscdictionary.BuildConfig;
 import com.msc.mscdictionary.R;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -169,5 +171,15 @@ public class AppUtil {
 
     public static String upperFirstChar(String enWord) {
         return  enWord.substring(0, 1).toUpperCase() + enWord.substring(1).toLowerCase();
+    }
+
+    public static String getLinkAudioOffline(String enWord) {
+        String path = Constant.PATH_PARRENT_AUDIO + enWord + ".mp3";
+        return path;
+    }
+
+    public static String getLinkAudioGithub(String enWord) {
+        String githubLink = "https://raw.githubusercontent.com/votaminh/DataStore/master/dictionaryApp/audio/" + enWord + ".mp3";
+        return githubLink;
     }
 }

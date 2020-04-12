@@ -8,9 +8,11 @@ import android.graphics.Canvas;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.msc.mscdictionary.util.AppUtil;
 import com.msc.mscdictionary.util.Constant;
 
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -105,6 +107,38 @@ public class DownloadFile extends AsyncTask<String, Void, Void> {
         }).start();
     }
 
+    public static void downloadAudio(String link,String en, DownloadListener listener){
+        new Thread(() -> {
+            try {
+                URL url = new URL(link);
+                URLConnection conexion = url.openConnection();
+                conexion.connect();
+                InputStream input = new BufferedInputStream(url.openStream());
+
+                String pathParrentOffline = Constant.PATH_PARRENT_AUDIO;
+                File parent = new File(pathParrentOffline);
+                if(!parent.exists()){
+                    parent.mkdir();
+                }
+
+                File audio = new File(parent, en + ".mp3");
+                FileOutputStream out = new FileOutputStream(audio);
+
+                byte[] b = new byte[1024];
+                if(input.read(b) != -1){
+                    out.write(b);
+                }
+
+                listener.finish();
+
+                out.flush();
+                out.close();
+                input.close();
+            }catch (Exception e){
+                listener.fail(e.toString());
+            }
+        }).start();
+    }
 
     public interface DownloadListener{
         void progress(int progress);

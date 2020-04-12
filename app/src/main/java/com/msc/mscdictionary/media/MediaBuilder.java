@@ -13,6 +13,7 @@ import org.jsoup.nodes.Document;
 
 import java.io.IOException;
 import java.net.URL;
+import java.net.URLConnection;
 
 public class MediaBuilder {
     public static MediaPlayer mediaPlayer = null;
@@ -20,6 +21,13 @@ public class MediaBuilder {
         new Thread(() -> {
             callback.start();
             try {
+                String link1 = link;
+                if(link1.contains("github")){
+                    URL url = new URL(link1);
+                    URLConnection conexion = url.openConnection();
+                    conexion.connect();
+                }
+
                 mediaPlayer = new MediaPlayer();
                 mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
                 mediaPlayer.setDataSource(link);
@@ -34,6 +42,7 @@ public class MediaBuilder {
                 mediaPlayer.start();
             } catch (Exception e) {
                 e.printStackTrace();
+                callback.fail(e.toString());
             }
         }).start();
     }
