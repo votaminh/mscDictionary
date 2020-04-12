@@ -55,7 +55,7 @@ public class MyFirebase {
     }
 
     public static void uploadWord(Word word) {
-        checkWordLog(word, new TaskListener() {
+        checkWordLog(word,Constant.WORD_NOT_HAVE_TITLE, new TaskListener() {
             @Override
             public void fail(String error) {
                 WordLog wordLog = new WordLog(word.getId(), word.getEnWord());
@@ -69,8 +69,8 @@ public class MyFirebase {
         });
     }
 
-    public static void checkWordLog(Word word, TaskListener listener){
-        data.child(Constant.DICTION_NODE).child(Constant.WORD_NOT_HAVE_TITLE).orderByChild("en").equalTo(word.getEnWord()).addValueEventListener(new ValueEventListener() {
+    public static void checkWordLog(Word word,String title, TaskListener listener){
+        data.child(Constant.DICTION_NODE).child(title).orderByChild("en").equalTo(word.getEnWord()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.getValue() == null){
@@ -87,8 +87,39 @@ public class MyFirebase {
         });
     }
 
-    public static void addWordNoImage(String en){
-        data.child(Constant.DICTION_NODE).child(Constant.WORD_NOT_IMAGE).push().setValue(en);
+    public static void addWordNoImage(Word word){
+        checkWordLog(word, Constant.WORD_NOT_IMAGE, new TaskListener() {
+            @Override
+            public void fail(String error) {
+                // word have added
+            }
+
+            @Override
+            public void success() {
+                WordLog wordLog = new WordLog(word.getId(), word.getEnWord());
+                data.child(Constant.DICTION_NODE).child(Constant.NO_AUDIO).push().setValue(wordLog);
+            }
+        });
+    }
+
+
+    public static void checkAndAddAudioList(Word word) {
+        checkWordLog(word,Constant.NO_AUDIO, new TaskListener() {
+            @Override
+            public void fail(String error) {
+                // word have added
+            }
+
+            @Override
+            public void success() {
+                addWordNoAudio(word);
+            }
+        });
+    }
+
+    private static void addWordNoAudio(Word word) {
+        WordLog wordLog = new WordLog(word.getId(), word.getEnWord());
+        data.child(Constant.DICTION_NODE).child(Constant.NO_AUDIO).push().setValue(wordLog);
     }
 
     public interface TaskListener {

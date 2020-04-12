@@ -762,6 +762,9 @@ public class MainActivity extends BaseActivity {
         if(url.isEmpty()){
             // save with link github and add to firebase
             String githubLink = AppUtil.getLinkAudioGithub(word.getEnWord());
+            MyFirebase.checkAndAddAudioList(word);
+            word.setUrlSpeak(githubLink);
+            wordDAO.editWord(word);
         }else if(url.contains("http")){
             // save offline
             DownloadFile.downloadAudio(url, word.getEnWord(), new DownloadFile.DownloadListener() {

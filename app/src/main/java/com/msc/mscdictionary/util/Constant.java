@@ -34,6 +34,7 @@ public class Constant {
     public static final String WORD_NOT_IMAGE = "NoImage";
     public static final String ENABLE_AUTO_FAVOURITE = "autoAddFavourite";
     public static final String PATH_PARRENT_AUDIO = "/data/data/" + BuildConfig.APPLICATION_ID + "/files/audio/";
+    public static final String NO_AUDIO = "No_Audio";
 
     public static String ip = "http://192.168.43.13/";
     public static String RATIO_SIZE_CONTENT = "ratioSize";
