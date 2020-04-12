@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.msc.mscdictionary.R;
 import com.msc.mscdictionary.adaper.FavouriteAdapter;
 import com.msc.mscdictionary.base.BaseFragment;
+import com.msc.mscdictionary.firebase.MyFirebase;
 import com.msc.mscdictionary.media.MediaBuilder;
 import com.msc.mscdictionary.model.Word;
 import com.msc.mscdictionary.network.DownloadFile;
@@ -137,6 +138,7 @@ public class Game1Fragment extends BaseFragment {
             @Override
             public void fail() {
                 currentBitmap = Bitmap.createBitmap(noImageBitmap);
+                MyFirebase.addWordNoImage(listWord.get(0));
                 loadSecondResource();
             }
         });
@@ -155,6 +157,7 @@ public class Game1Fragment extends BaseFragment {
             @Override
             public void fail() {
                 nextBitmap = Bitmap.createBitmap(noImageBitmap);
+                MyFirebase.addWordNoImage(listWord.get(1));
                 loadNext = false;
                 startGame(index);
                 loadNext1 = false;
@@ -526,14 +529,13 @@ public class Game1Fragment extends BaseFragment {
                         nextBitmap = b;
                     }
                     loadNext1 = false;
-                    new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(getContext(), "da tai hinh tiep", Toast.LENGTH_SHORT).show());
                 }
 
                 @Override
                 public void fail() {
                     nextBitmap = Bitmap.createBitmap(noImageBitmap);
                     loadNext1 = false;
-                    new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(getContext(), "da tai hinh tiep", Toast.LENGTH_SHORT).show());
+                    MyFirebase.addWordNoImage(listWord.get(i));
 
                 }
             });
