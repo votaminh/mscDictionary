@@ -1,5 +1,7 @@
 package com.msc.mscdictionary.firebase;
 
+import android.content.Context;
+import android.provider.Settings;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -20,6 +22,7 @@ public class MyFirebase {
     public static DatabaseReference data = FirebaseDatabase.getInstance().getReference();
     public static FirebaseStorage storage = FirebaseStorage.getInstance();
     private static User userLog;
+    private static boolean isAdd = true;
     
     public static void checkLogin(String name, String pass, TaskListener listener){
         data.child(Constant.DICTION_NODE).child(Constant.USER_TITLE).orderByChild("userName").equalTo(name).addValueEventListener(new ValueEventListener() {
@@ -54,11 +57,14 @@ public class MyFirebase {
         return userLog;
     }
 
-    public static void uploadWord(Word word) {
+    public static void uploadWord(Word word, Context context) {
+        String android_id = Settings.Secure.getString(context.getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+
         checkWordLog(word,Constant.WORD_NOT_HAVE_TITLE, new TaskListener() {
             @Override
             public void fail(String error) {
-                WordLog wordLog = new WordLog(word.getId(), word.getEnWord());
+                WordLog wordLog = new WordLog("ID_Device: " + android_id, word.getEnWord());
                 data.child(Constant.DICTION_NODE).child(Constant.WORD_NOT_HAVE_TITLE).push().setValue(wordLog);
             }
 
@@ -73,10 +79,12 @@ public class MyFirebase {
         data.child(Constant.DICTION_NODE).child(title).orderByChild("en").equalTo(word.getEnWord()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.getValue() == null){
-                    listener.fail("this word was had ");
-                }else {
-                    listener.success();
+                if(isAdd){
+                    if(dataSnapshot.getValue() == null){
+                        listener.fail("this word was had ");
+                    }else {
+                        listener.success();
+                    }
                 }
             }
 
@@ -88,16 +96,18 @@ public class MyFirebase {
     }
 
     public static void addWordNoImage(Word word){
+        isAdd = true;
         checkWordLog(word, Constant.WORD_NOT_IMAGE, new TaskListener() {
             @Override
             public void fail(String error) {
-                // word have added
+                WordLog wordLog = new WordLog(word.getId()+"", word.getEnWord());
+                data.child(Constant.DICTION_NODE).child(Constant.WORD_NOT_IMAGE).push().setValue(wordLog);
+                isAdd = false;
             }
 
             @Override
             public void success() {
-                WordLog wordLog = new WordLog(word.getId(), word.getEnWord());
-                data.child(Constant.DICTION_NODE).child(Constant.NO_AUDIO).push().setValue(wordLog);
+                isAdd = false;
             }
         });
     }
@@ -107,18 +117,18 @@ public class MyFirebase {
         checkWordLog(word,Constant.NO_AUDIO, new TaskListener() {
             @Override
             public void fail(String error) {
-                // word have added
+                addWordNoAudio(word);
             }
 
             @Override
             public void success() {
-                addWordNoAudio(word);
+
             }
         });
     }
 
     private static void addWordNoAudio(Word word) {
-        WordLog wordLog = new WordLog(word.getId(), word.getEnWord());
+        WordLog wordLog = new WordLog(word.getId()+"", word.getEnWord());
         data.child(Constant.DICTION_NODE).child(Constant.NO_AUDIO).push().setValue(wordLog);
     }
 
@@ -128,10 +138,10 @@ public class MyFirebase {
     }
 
     public static class WordLog{
-        public int id;
+        public String id;
         public String en;
 
-        public WordLog(int id, String en){
+        public WordLog(String id, String en){
             this.id = id;
             this.en = en;
         }

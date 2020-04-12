@@ -741,7 +741,7 @@ public class MainActivity extends BaseActivity {
             historyDAO.add(word);
         }
         setFavourite();
-        checkDownloadOfflineAudio(word);
+        AppUtil.checkDownloadOfflineAudio(word, getApplicationContext());
         new Handler(Looper.getMainLooper()).post(() -> {
             tvVoice.setText(word.getVoice());
             tvMean.setText(AppUtil.upperFirstChar(word.getEnWord()));
@@ -754,39 +754,6 @@ public class MainActivity extends BaseActivity {
         });
         if(translateFragment != null && translateFragment.isVisible()){
             translateFragment.showResult(word);
-        }
-    }
-
-    private void checkDownloadOfflineAudio(Word word) {
-        String url = word.getUrlSpeak();
-        if(url.isEmpty()){
-            // save with link github and add to firebase
-            String githubLink = AppUtil.getLinkAudioGithub(word.getEnWord());
-            MyFirebase.checkAndAddAudioList(word);
-            word.setUrlSpeak(githubLink);
-            wordDAO.editWord(word);
-        }else if(url.contains("http")){
-            // save offline
-            DownloadFile.downloadAudio(url, word.getEnWord(), new DownloadFile.DownloadListener() {
-                @Override
-                public void progress(int progress) {
-
-                }
-
-                @Override
-                public void fail(String error) {
-
-                }
-
-                @Override
-                public void finish() {
-                    if(getApplicationContext() != null){
-                        String newLInkOffline =  AppUtil.getLinkAudioOffline(word.getEnWord());
-                        word.setUrlSpeak(newLInkOffline);
-                        wordDAO.editWord(word);
-                    }
-                }
-            });
         }
     }
 
@@ -892,7 +859,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void upLoadFirebase(Word word) {
-        MyFirebase.uploadWord(word);
+        MyFirebase.uploadWord(word, this);
     }
 
     private void saveWordOffline(Word word) {

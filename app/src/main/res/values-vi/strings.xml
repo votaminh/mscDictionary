@@ -70,4 +70,21 @@
     <string name="title_dialog_practice">Sẽ sớm phát hành trong phiên bản tiếp theo</string>
     <string name="message_dialog_practice">Đây là một chức năng thú vị, nó giúp bạn ôn luyện lại các từ vựng đã đánh dấu. Chức năng đang trong thời gian hoàn thiện và sẽ có trong bản cập nhật sớm nhất</string>
     <string name="size_text">Cỡ chữ</string>
+    <string name="start_lable">Bắt Đầu</string>
+    <string name="tutorial_practice">Bạn sẽ luyện tập lại các từ đánh dấu, Sẽ có âm thanh và nghĩa tiếng việt. Bạn phải chọn từ tiếng anh đúng</string>
+    <string name="amount_word">Số lượng từ bạn muốn luyện tập</string>
+    <string name="from_lable">Từ vị trí</string>
+    <string name="to_lable">tới</string>
+    <string name="loading">Đang chuẩn bị...</string>
+    <string name="result">Kết quả</string>
+    <string name="list_word_uncorrect">Danh sách câu sai</string>
+    <string name="re_practice">Luyện tập lại các câu sai</string>
+    <string name="practice_all">Luyện tập lại tất cả</string>
+    <string name="out_lable">Thoát</string>
+    <string name="turn_auto">Tự động đánh dấu khi tra</string>
+    <string name="tutorial_auto_add_when_search">Khi bạn tra một từ nào đó, nó sẽ được tự động đánh dấu</string>
+    <string name="editmean">Chỉnh sửa nghĩa thông dụng</string>
+    <string name="edit_tutorial">Dùng để chỉnh sửa nghĩa của bạn, sẽ được hiển thị trong khi bạn luyện tập và khi bạn tra từ điển </string>
+    <string name="edit_lable">Chỉnh Sửa</string>
+    <string name="wanted_practice">Luyện tập các từ được đánh dấu, bạn phải đánh dấu nhiều hơn 4 từ để luyện tập</string>
 </resources>

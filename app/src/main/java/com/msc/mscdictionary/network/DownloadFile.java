@@ -124,8 +124,8 @@ public class DownloadFile extends AsyncTask<String, Void, Void> {
                 File audio = new File(parent, en + ".mp3");
                 FileOutputStream out = new FileOutputStream(audio);
 
-                byte[] b = new byte[1024];
-                if(input.read(b) != -1){
+                byte[] b = new byte[8];
+                while (input.read(b) != -1){
                     out.write(b);
                 }
 

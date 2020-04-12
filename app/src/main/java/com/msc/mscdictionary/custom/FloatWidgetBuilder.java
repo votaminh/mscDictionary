@@ -27,6 +27,7 @@ import com.msc.mscdictionary.R;
 import com.msc.mscdictionary.activity.MainActivity;
 import com.msc.mscdictionary.database.OffFavouriteDAO;
 import com.msc.mscdictionary.database.OffWordDAO;
+import com.msc.mscdictionary.firebase.MyFirebase;
 import com.msc.mscdictionary.model.Word;
 import com.msc.mscdictionary.network.DictionaryCrawl;
 import com.msc.mscdictionary.network.WordDAO;
@@ -326,6 +327,9 @@ public class FloatWidgetBuilder {
         SharePreferenceUtil.saveIntPereferences(context, Constant.CURRENT_ID_WORD, biggestId);
         OffWordDAO wordDAO = new OffWordDAO(context);
         wordDAO.addWord(word);
+
+        // uptoFirebase
+        MyFirebase.uploadWord(word, context);
     }
 
     private void openApp(String s) {

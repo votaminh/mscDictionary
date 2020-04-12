@@ -1,10 +1,15 @@
 package com.msc.mscdictionary.media;
 
+import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 
+import com.msc.mscdictionary.database.OffWordDAO;
+import com.msc.mscdictionary.firebase.MyFirebase;
 import com.msc.mscdictionary.model.Word;
 import com.msc.mscdictionary.network.DictionaryCrawl;
+import com.msc.mscdictionary.network.DownloadFile;
+import com.msc.mscdictionary.util.AppUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -58,5 +63,4 @@ public class MediaBuilder {
         void end();
         void fail(String error);
     }
-
 }

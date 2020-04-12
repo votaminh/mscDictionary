@@ -24,6 +24,7 @@ import com.msc.mscdictionary.callback.AdapterCallback;
 import com.msc.mscdictionary.database.OffFavouriteDAO;
 import com.msc.mscdictionary.media.MediaBuilder;
 import com.msc.mscdictionary.model.Word;
+import com.msc.mscdictionary.util.AppUtil;
 import com.msc.mscdictionary.util.Constant;
 
 import java.util.List;
@@ -86,6 +87,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             });
 
             holder.btnSpeaker.setOnClickListener(v -> {
+                AppUtil.checkDownloadOfflineAudio(word, context);
                 MediaBuilder.playLink(word.getUrlSpeak(), new MediaBuilder.MediaCallback() {
                     @Override
                     public void start() {

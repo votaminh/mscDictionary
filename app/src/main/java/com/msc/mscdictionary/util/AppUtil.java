@@ -16,6 +16,10 @@ import android.widget.ImageButton;
 
 import com.msc.mscdictionary.BuildConfig;
 import com.msc.mscdictionary.R;
+import com.msc.mscdictionary.database.OffWordDAO;
+import com.msc.mscdictionary.firebase.MyFirebase;
+import com.msc.mscdictionary.model.Word;
+import com.msc.mscdictionary.network.DownloadFile;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
@@ -181,5 +185,39 @@ public class AppUtil {
     public static String getLinkAudioGithub(String enWord) {
         String githubLink = "https://raw.githubusercontent.com/votaminh/DataStore/master/dictionaryApp/audio/" + enWord + ".mp3";
         return githubLink;
+    }
+
+    public static void checkDownloadOfflineAudio(Word word, Context context) {
+        String url = word.getUrlSpeak();
+        OffWordDAO wordDAO = new OffWordDAO(context);
+        if(url.isEmpty()){
+            // save with link github and add to firebase
+            String githubLink = AppUtil.getLinkAudioGithub(word.getEnWord());
+            MyFirebase.checkAndAddAudioList(word);
+            word.setUrlSpeak(githubLink);
+            wordDAO.editWord(word);
+        }else if(url.contains("http")){
+            // save offline
+            DownloadFile.downloadAudio(url, word.getEnWord(), new DownloadFile.DownloadListener() {
+                @Override
+                public void progress(int progress) {
+
+                }
+
+                @Override
+                public void fail(String error) {
+
+                }
+
+                @Override
+                public void finish() {
+                    if(context != null){
+                        String newLInkOffline =  AppUtil.getLinkAudioOffline(word.getEnWord());
+                        word.setUrlSpeak(newLInkOffline);
+                        wordDAO.editWord(word);
+                    }
+                }
+            });
+        }
     }
 }

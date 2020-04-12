@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.msc.mscdictionary.R;
@@ -53,11 +54,15 @@ public class PracticeActivity extends BaseActivity {
 
     private void onClick() {
         tvStart.setOnClickListener(v -> {
-            disableAnimate();
-            int from = Integer.parseInt(edFrom.getText().toString());
-            int to = Integer.parseInt(edTo.getText().toString());
+            if(listWord.size() == 0){
+                Toast.makeText(this, getString(R.string.wanted_practice), Toast.LENGTH_SHORT).show();
+            }else {
+                disableAnimate();
+                int from = Integer.parseInt(edFrom.getText().toString());
+                int to = Integer.parseInt(edTo.getText().toString());
 
-            startGame1(from, to);
+                startGame1(from, to);
+            }
         });
     }
 

@@ -440,6 +440,7 @@ public class Game1Fragment extends BaseFragment {
                 hideLoad();
                 resetBackground();
                 currentWord = listWord.get(index);
+                AppUtil.checkDownloadOfflineAudio(currentWord, getContext());
                 tvCount.setText((index + 1) + "/" + listWord.size());
 
                 tvWord.setText("?");
