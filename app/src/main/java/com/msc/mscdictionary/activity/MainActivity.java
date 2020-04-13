@@ -919,21 +919,25 @@ public class MainActivity extends BaseActivity {
     }
 
     private void disableScrollAppbar() {
-        behaviorAppbar.setDragCallback(new AppBarLayout.Behavior.DragCallback() {
-            @Override
-            public boolean canDrag(@NonNull AppBarLayout appBarLayout) {
-                return false;
-            }
-        });
+        if(behaviorAppbar != null){
+            behaviorAppbar.setDragCallback(new AppBarLayout.Behavior.DragCallback() {
+                @Override
+                public boolean canDrag(@NonNull AppBarLayout appBarLayout) {
+                    return false;
+                }
+            });
+        }
     }
 
     private void enableScrollAppbar() {
-        behaviorAppbar.setDragCallback(new AppBarLayout.Behavior.DragCallback() {
-            @Override
-            public boolean canDrag(@NonNull AppBarLayout appBarLayout) {
-                return true;
-            }
-        });
+        if(behaviorAppbar != null){
+            behaviorAppbar.setDragCallback(new AppBarLayout.Behavior.DragCallback() {
+                @Override
+                public boolean canDrag(@NonNull AppBarLayout appBarLayout) {
+                    return true;
+                }
+            });
+        }
     }
 
     private void setUpSeekbar() {
