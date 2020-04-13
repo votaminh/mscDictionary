@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
@@ -606,7 +607,7 @@ public class Game1Fragment extends BaseFragment {
     private void playAudio(String link){
 
         MediaBuilder.stop();
-        MediaBuilder.playLink(link, new MediaBuilder.MediaCallback() {
+        MediaBuilder.playLink(getContext(), link, new MediaBuilder.MediaCallback() {
             @Override
             public void start() {
                 new Handler(Looper.getMainLooper()).post(() -> {
@@ -645,12 +646,12 @@ public class Game1Fragment extends BaseFragment {
         randomElementWord(listPractice);
     }
 
-    private void randomElementWord(List<Word> listPractice) {
-        int r = random(0, listPractice.size() - 1);
-        listWord.add(listPractice.get(r));
-        listPractice.remove(r);
-        if(listPractice.size() > 0){
-            randomElementWord(listPractice);
+    private void randomElementWord(List<Word> srcList) {
+        int r = random(0, srcList.size() - 1);
+        listWord.add(srcList.get(r));
+        srcList.remove(r);
+        if(srcList.size() > 0){
+            randomElementWord(srcList);
         }
     }
 }

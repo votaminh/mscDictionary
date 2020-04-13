@@ -88,7 +88,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
             holder.btnSpeaker.setOnClickListener(v -> {
                 AppUtil.checkDownloadOfflineAudio(word, context);
-                MediaBuilder.playLink(word.getUrlSpeak(), new MediaBuilder.MediaCallback() {
+                MediaBuilder.playLink(context, word.getUrlSpeak(), new MediaBuilder.MediaCallback() {
                     @Override
                     public void start() {
                         new Handler(Looper.getMainLooper()).post(() -> {

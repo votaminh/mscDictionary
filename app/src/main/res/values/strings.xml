@@ -87,4 +87,6 @@
     <string name="edit_tutorial">Edit word\'s mean, which will be showed in practice and real translate</string>
     <string name="edit_lable">Edit</string>
     <string name="wanted_practice">Practice word has saved in your favourite, so you have to has latest four word to practice</string>
+    <string name="no_connect">No Connection</string>
+    <string name="no_audio">No Audio</string>
 </resources>

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 
+import com.msc.mscdictionary.R;
 import com.msc.mscdictionary.database.OffWordDAO;
 import com.msc.mscdictionary.firebase.MyFirebase;
 import com.msc.mscdictionary.model.Word;
@@ -22,15 +23,24 @@ import java.net.URLConnection;
 
 public class MediaBuilder {
     public static MediaPlayer mediaPlayer = null;
-    public static void playLink(String link, MediaCallback callback) {
+    public static void playLink(Context context, String link, MediaCallback callback) {
         new Thread(() -> {
             callback.start();
             try {
                 String link1 = link;
                 if(link1.contains("github")){
-                    URL url = new URL(link1);
-                    URLConnection conexion = url.openConnection();
-                    conexion.connect();
+                    if(AppUtil.isNetworkConnected(context)){
+                        URL url = new URL(link1);
+                        URLConnection conexion = url.openConnection();
+                        conexion.connect();
+                    }else {
+                        callback.fail(context.getString(R.string.no_connect));
+                    }
+                }else if(link1.contains("http")){
+                    if(!AppUtil.isNetworkConnected(context)){
+                        callback.fail(context.getString(R.string.no_connect));
+                        return;
+                    }
                 }
 
                 mediaPlayer = new MediaPlayer();
@@ -47,7 +57,7 @@ public class MediaBuilder {
                 mediaPlayer.start();
             } catch (Exception e) {
                 e.printStackTrace();
-                callback.fail(e.toString());
+                callback.fail(context.getString(R.string.no_audio));
             }
         }).start();
     }

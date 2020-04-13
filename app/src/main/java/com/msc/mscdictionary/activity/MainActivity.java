@@ -635,7 +635,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void playAudio(String url) {
-        MediaBuilder.playLink(url, new MediaBuilder.MediaCallback() {
+        MediaBuilder.playLink(this, url, new MediaBuilder.MediaCallback() {
             @Override
             public void start() {
                 new Handler(Looper.getMainLooper()).post(() -> {
@@ -657,7 +657,7 @@ public class MainActivity extends BaseActivity {
                 new Handler(Looper.getMainLooper()).post(() -> {
                     btnSpeaker.setVisibility(View.VISIBLE);
                     progressBar.setVisibility(View.INVISIBLE);
-                    Toast.makeText(MainActivity.this, "No audio", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, error, Toast.LENGTH_SHORT).show();
                 });
 
             }

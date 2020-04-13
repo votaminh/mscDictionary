@@ -30,6 +30,7 @@ import com.msc.mscdictionary.util.AppUtil;
 import com.msc.mscdictionary.util.Constant;
 import com.msc.mscdictionary.util.SharePreferenceUtil;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -44,6 +45,8 @@ public class SplashActivity extends BaseActivity {
     private boolean hadRan = false;
 
     TextView tvProgress;
+    private String fileDes;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -67,7 +70,7 @@ public class SplashActivity extends BaseActivity {
         }else {
 
             String link = Constant.LINK_ZIP_DATABASE;
-            String fileDes = getFilesDir().toString() + Constant.ZIP_NAME;
+            fileDes = getFilesDir().toString() + Constant.ZIP_NAME;
             String fileDesZip = getFilesDir().toString() + "/";
 
             showNotificationDownload();
@@ -154,6 +157,7 @@ public class SplashActivity extends BaseActivity {
            String dateS = dateFormat.format(date);
            SharePreferenceUtil.saveStringPereferences(this, Constant.TIME_FIRST_RUN, dateS);
         }
+
         Intent intent = new Intent(SplashActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
@@ -168,6 +172,11 @@ public class SplashActivity extends BaseActivity {
         OffWordDAO wordDAO = new OffWordDAO(this);
         int biggestId = wordDAO.getBiggestId();
         SharePreferenceUtil.saveIntPereferences(this, Constant.CURRENT_ID_WORD, biggestId);
+
+        File file = new File(getFilesDir().toString() +"/"+ DataHelper.DB_NAME);
+        if(file.exists()){
+            file.delete();
+        }
     }
 
     public int getHeightNavi(){
