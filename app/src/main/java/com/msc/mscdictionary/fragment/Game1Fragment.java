@@ -6,6 +6,7 @@ import android.animation.ValueAnimator;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
@@ -71,6 +72,7 @@ public class Game1Fragment extends BaseFragment {
 
     RelativeLayout llLoad;
     ImageButton btnSettingSpeaker;
+    ImageButton btnBack;
 
     /**
      * loadNext là lúc hệ thống loadResource. bắt đầu chạy thì sẽ là true, sau khi load xong thì false
@@ -89,6 +91,7 @@ public class Game1Fragment extends BaseFragment {
         imvMean = view.findViewById(R.id.imvMean);
         imvBlurBg = view.findViewById(R.id.imvBlurBg);
         imvSpeak = view.findViewById(R.id.imvSpeaker);
+        btnBack = view.findViewById(R.id.btnBack);
 
         progressBar = view.findViewById(R.id.progress);
         tvMean = view.findViewById(R.id.tvMean);
@@ -114,9 +117,31 @@ public class Game1Fragment extends BaseFragment {
         btnSettingSpeaker = view.findViewById(R.id.btnSettingSpeaker);
         setUp();
 
+        btnBack.setOnClickListener(v -> showDialogOut());
+
         runGame = true;
         loadFirstResource();
         runTime();
+    }
+
+    private void showDialogOut() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle(getString(R.string.title_dialog_ask_out_game));
+        builder.setMessage(getString(R.string.message_dialog_ask_out_game));
+        builder.setPositiveButton(getString(R.string.out_lable), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                getActivity().finish();
+            }
+        });
+
+        builder.setNeutralButton(getString(R.string.continue_lable), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.show();
     }
 
     private void setUp() {

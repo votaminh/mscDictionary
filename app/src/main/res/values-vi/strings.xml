@@ -87,4 +87,9 @@
     <string name="edit_tutorial">Dùng để chỉnh sửa nghĩa của bạn, sẽ được hiển thị trong khi bạn luyện tập và khi bạn tra từ điển </string>
     <string name="edit_lable">Chỉnh Sửa</string>
     <string name="wanted_practice">Luyện tập các từ được đánh dấu, bạn phải đánh dấu nhiều hơn 4 từ để luyện tập</string>
+    <string name="no_connect">Không có kết nối</string>
+    <string name="no_audio">Không có âm thanh</string>
+    <string name="title_dialog_ask_out_game">Thoát game</string>
+    <string name="message_dialog_ask_out_game">Bạn có muốn thoát game khi chưa chơi xong không, kết quả của bạn sẽ không được lưu</string>
+    <string name="continue_lable">Tiếp tục</string>
 </resources>

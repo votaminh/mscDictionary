@@ -89,4 +89,7 @@
     <string name="wanted_practice">Practice word has saved in your favourite, so you have to has latest four word to practice</string>
     <string name="no_connect">No Connection</string>
     <string name="no_audio">No Audio</string>
+    <string name="title_dialog_ask_out_game">Out off game</string>
+    <string name="message_dialog_ask_out_game">Do you want out game now, the reuslt can not saved</string>
+    <string name="continue_lable">Continue</string>
 </resources>

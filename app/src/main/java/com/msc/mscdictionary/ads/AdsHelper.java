@@ -11,12 +11,13 @@ import com.google.android.gms.ads.initialization.OnInitializationCompleteListene
 public class AdsHelper {
 
     public static void setupAds(AdView adView, Context context){
-        MobileAds.initialize(context, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
 
-            }
-        });
+//        MobileAds.initialize(context, new OnInitializationCompleteListener() {
+//            @Override
+//            public void onInitializationComplete(InitializationStatus initializationStatus) {
+//
+//            }
+//        });
 //        AdRequest adRequest = new AdRequest.Builder().build();
 //        adView.loadAd(adRequest);
         goneAds(adView);

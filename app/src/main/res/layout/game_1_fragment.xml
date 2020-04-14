@@ -24,6 +24,7 @@
         android:layout_height="@dimen/height_header">
 
         <ImageButton
+            android:id="@+id/btnBack"
             android:layout_width="@dimen/height_header"
             android:layout_height="@dimen/height_header"
             android:src="@drawable/ic_back"
