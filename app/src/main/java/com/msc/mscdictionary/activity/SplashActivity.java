@@ -163,8 +163,6 @@ public class SplashActivity extends BaseActivity {
         Intent intent = new Intent(SplashActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
-
-
     }
 
     private void createDataBase() {

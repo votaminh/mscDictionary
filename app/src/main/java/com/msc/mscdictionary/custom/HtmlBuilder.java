@@ -2,6 +2,7 @@ package com.msc.mscdictionary.custom;
 
 import android.util.Log;
 
+import com.msc.mscdictionary.model.IrregulerVerbsWord;
 import com.msc.mscdictionary.util.Constant;
 
 public class HtmlBuilder {
@@ -10,8 +11,9 @@ public class HtmlBuilder {
     String html;
     String meanUser;
     String tagBr = "";
+    String irregulerVerbs = "";
 
-    public HtmlBuilder(float ratioSize, String html, String meanUser){
+    public HtmlBuilder(float ratioSize, String html, String meanUser, IrregulerVerbsWord irregulerVerbsWord){
         this.ratioSize = ratioSize;
         this.html = html;
 
@@ -19,6 +21,16 @@ public class HtmlBuilder {
             tagBr += Constant.TAG_BR;
         }
 
+        if(irregulerVerbsWord != null){
+            this.irregulerVerbs = "<div class=\"bg-grey bold font-large m-top20\">\n" +
+                    "            <span>Động từ bất quy tắc</span>\n" +
+                    "        </div>\n" +
+                    "        <div class=\"color-light-blue margin25 m-top15\">\n" +
+                    "            <a class=\"find_word\" dict=\"1\" rel=\""+ irregulerVerbsWord.getV1() +"\" href=\"javascript:void(0);\">"+ irregulerVerbsWord.getV1() +"</a>&nbsp; - <a class=\"find_word\"\n" +
+                    "            dict=\"1\" rel=\""+ irregulerVerbsWord.getV2() +"\" href=\"javascript:void(0);\">"+ irregulerVerbsWord.getV2() +"</a>&nbsp; - <a class=\"find_word\" dict=\"1\"\n" +
+                    "            rel=\""+ irregulerVerbsWord.getV3() +"\" href=\"javascript:void(0);\">"+ irregulerVerbsWord.getV3() +"</a>&nbsp;\n" +
+                    "        </div>";
+        }
         this.meanUser = "<div class=\"bg-grey bold font-large m-top20\">\n" +
                 "    <span>Nghĩa thông dụng</span>\n" +
                 "</div> \n" +
@@ -251,7 +263,7 @@ public class HtmlBuilder {
     }
 
     public String get(){
-        String h = header+ tagBr + meanUser + html + endTag;
+        String h = header+ tagBr + meanUser + irregulerVerbs + html + endTag;
         return h;
     }
 }

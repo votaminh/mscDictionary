@@ -20,7 +20,9 @@ import com.msc.mscdictionary.ads.AdsHelper;
 import com.msc.mscdictionary.base.BaseFragment;
 import com.msc.mscdictionary.custom.HtmlBuilder;
 import com.msc.mscdictionary.custom.NestedWebView;
+import com.msc.mscdictionary.database.OffIrregulerVerbsWord;
 import com.msc.mscdictionary.database.OffWordDAO;
+import com.msc.mscdictionary.model.IrregulerVerbsWord;
 import com.msc.mscdictionary.model.Word;
 import com.msc.mscdictionary.util.AppUtil;
 import com.msc.mscdictionary.util.Constant;
@@ -38,6 +40,7 @@ public class TranslateFragment extends BaseFragment {
     private String error;
     ProgressBar progressBar;
     OffWordDAO wordDAO ;
+    private OffIrregulerVerbsWord irregulerVerbsWord;
 
     @Override
     public int resLayoutId() {
@@ -66,6 +69,7 @@ public class TranslateFragment extends BaseFragment {
         }
 
         activity = (MainActivity) getActivity();
+        irregulerVerbsWord = new OffIrregulerVerbsWord(getContext());
     }
 
     private void setUpWebviewTranslate() {
@@ -159,14 +163,20 @@ public class TranslateFragment extends BaseFragment {
 
     public void showResult(Word word){
         new Handler(Looper.getMainLooper()).post(() -> {
+            IrregulerVerbsWord irregulerVerbsWord = getIrreguler(word);
             progressBar.setVisibility(View.INVISIBLE);
             tvNoHistory.setVisibility(View.INVISIBLE);
             currentWord = word;
             float ratio = SharePreferenceUtil.getFloatPereferences(getContext(), Constant.RATIO_SIZE_CONTENT, 1);
-            HtmlBuilder h = new HtmlBuilder(ratio, word.getHtmlFullMean(), word.getCommonMean());
+            HtmlBuilder h = new HtmlBuilder(ratio, word.getHtmlFullMean(), word.getCommonMean(), irregulerVerbsWord);
             webViewMean.loadDataWithBaseURL(null, h.get(), "text/html", "utf-8", null);
             new Handler().postDelayed(() -> setPosition(), 500);
         });
+    }
+
+    private IrregulerVerbsWord getIrreguler(Word word) {
+//        return irregulerVerbsWord.getWordByEn(word.getEnWord());
+        return null;
     }
 
     private void setPosition() {
