@@ -46,6 +46,7 @@ public class SplashActivity extends BaseActivity {
 
     TextView tvProgress;
     private String fileDes;
+    private boolean error = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -122,6 +123,7 @@ public class SplashActivity extends BaseActivity {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                error = true;
                 finish();
             }
         });
@@ -190,6 +192,10 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        moveTaskToBack(true);
+        if(error){
+            finish();
+        }else {
+            moveTaskToBack(true);
+        }
     }
 }
