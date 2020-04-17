@@ -114,15 +114,17 @@ public class MyFirebase {
 
 
     public static void checkAndAddAudioList(Word word) {
+        isAdd = true;
         checkWordLog(word,Constant.NO_AUDIO, new TaskListener() {
             @Override
             public void fail(String error) {
                 addWordNoAudio(word);
+                isAdd = false;
             }
 
             @Override
             public void success() {
-
+                isAdd = false;
             }
         });
     }

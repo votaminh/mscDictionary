@@ -658,6 +658,7 @@ public class MainActivity extends BaseActivity {
                     btnSpeaker.setVisibility(View.VISIBLE);
                     progressBar.setVisibility(View.INVISIBLE);
                     Toast.makeText(MainActivity.this, error, Toast.LENGTH_SHORT).show();
+                    MyFirebase.checkAndAddAudioList(currentWord);
                 });
 
             }

@@ -193,7 +193,6 @@ public class AppUtil {
         if(url.isEmpty()){
             // save with link github and add to firebase
             String githubLink = AppUtil.getLinkAudioGithub(word.getEnWord());
-            MyFirebase.checkAndAddAudioList(word);
             word.setUrlSpeak(githubLink);
             wordDAO.editWord(word);
         }else if(url.contains("http")){
