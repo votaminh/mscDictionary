@@ -473,7 +473,7 @@ public class Game1Fragment extends BaseFragment {
                 tvPronounce.setText(currentWord.getVoice());
                 tvMean.setText(currentWord.getCommonMean());
                 imvMean.setImageBitmap(currentBitmap);
-                Blurry.with(getContext()).radius(100).from(currentBitmap).into(imvBlurBg);
+                Blurry.with(getContext()).radius(10).from(currentBitmap).into(imvBlurBg);
 
 
                 progressBar.setVisibility(View.INVISIBLE);
@@ -654,6 +654,7 @@ public class Game1Fragment extends BaseFragment {
                 new Handler(Looper.getMainLooper()).post(() -> {
                     progressBar.setVisibility(View.INVISIBLE);
                     imvSpeak.setVisibility(View.VISIBLE);
+                    Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
                 });
             }
         });
