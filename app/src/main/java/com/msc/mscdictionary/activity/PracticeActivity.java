@@ -1,6 +1,10 @@
 package com.msc.mscdictionary.activity;
 
 import android.content.Intent;
+import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -20,7 +24,7 @@ public class PracticeActivity extends BaseActivity {
     LottieAnimationView animationView;
 
     TextView tvStart;
-    EditText edFrom, edTo;
+    EditText edAmount;
     List<Word> listWord = new ArrayList<>();
 
     OffFavouriteDAO favouriteDAO;
@@ -37,8 +41,7 @@ public class PracticeActivity extends BaseActivity {
         enableAnimate();
 
         tvStart = findViewById(R.id.tvStart);
-        edFrom = findViewById(R.id.edFrom);
-        edTo = findViewById(R.id.edTo);
+        edAmount = findViewById(R.id.edAmount);
 
         initValues();
         onClick();
@@ -48,8 +51,41 @@ public class PracticeActivity extends BaseActivity {
         favouriteDAO = new OffFavouriteDAO(this);
         listWord = favouriteDAO.getAllWordFavourite();
 
-        edFrom.setText("0");
-        edTo.setText(listWord.size() + "");
+        edAmount.setText(listWord.size() + "");
+        edAmount.setSelection(edAmount.getText().length());
+        edAmount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                try {
+                    int i = Integer.parseInt(s.toString());
+                    if( i > listWord.size()){
+                        edAmount.setText(listWord.size() + "");
+                        edAmount.setSelection(edAmount.getText().length());
+                        new Handler().post(() -> {
+                            Toast.makeText(PracticeActivity.this, getString(R.string.error_more_than_size) + listWord.size(), Toast.LENGTH_SHORT).show();
+                        });
+                    }else if( i <= 0){
+                        edAmount.setText(1 + "");
+                        edAmount.setSelection(edAmount.getText().length());
+                        new Handler().post(() -> {
+                            Toast.makeText(PracticeActivity.this, getString(R.string.error_min_size), Toast.LENGTH_SHORT).show();
+                        });
+                    }
+                }catch (Exception e){
+
+                }
+            }
+        });
     }
 
     private void onClick() {
@@ -58,9 +94,8 @@ public class PracticeActivity extends BaseActivity {
                 Toast.makeText(this, getString(R.string.wanted_practice), Toast.LENGTH_SHORT).show();
             }else {
                 disableAnimate();
-                int from = Integer.parseInt(edFrom.getText().toString());
-                int to = Integer.parseInt(edTo.getText().toString());
-
+                int from = 0;
+                int to = Integer.parseInt(edAmount.getText().toString());
                 startGame1(from, to);
             }
         });

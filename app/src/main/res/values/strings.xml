@@ -92,4 +92,6 @@
     <string name="title_dialog_ask_out_game">Out off game</string>
     <string name="message_dialog_ask_out_game">Do you want out game now, the reuslt can not saved</string>
     <string name="continue_lable">Continue</string>
+    <string name="error_more_than_size">"Max is "</string>
+    <string name="error_min_size">Min is 1</string>
 </resources>
